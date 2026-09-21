@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Social Euphoria — Curating Hell to Have Fun</title>
+<meta name="description" content="Social Euphoria is Dehradun's most exclusive nightlife collective. We take over luxury resorts, hidden estates, and glasshouse rooftops to orchestrate experiences that blur the line between euphoria and chaos.">
+<meta name="theme-color" content="#ff2d6f">
+<meta property="og:title" content="Social Euphoria — Curating Hell to Have Fun">
+<meta property="og:description" content="Dehradun's most exclusive nightlife collective. Invite-only events at luxury venues.">
+<meta property="og:type" content="website">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/lenis@1.1.1/dist/lenis.min.js"></script>
+
+<style>
+/* ========== RESET & BASE ========== */
+*, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+html { font-size: 16px; }
+body {
+  font-family: 'Outfit', system-ui, sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  overflow-x: hidden;
+  cursor: none;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: inherit; text-decoration: none; }
+img { display: block; max-width: 100%; }
+button { cursor: none; border: none; background: none; font-family: inherit; color: inherit; }
+
+/* ========== DESIGN SYSTEM ========== */
+:root {
+  --bg: #0a0a0a;
+  --bg2: #111111;
+  --bg3: #1a1a1a;
+  --neon-pink: #ff2d6f;
+  --neon-blue: #00f0ff;
+  --neon-purple: #b829dd;
+  --gold: #ffd700;
+  --text: #f5f0eb;
+  --text-muted: rgba(245,240,235,0.4);
+  --text-dim: rgba(245,240,235,0.15);
+  --text-ghost: rgba(245,240,235,0.06);
+  --ease: cubic-bezier(.76, 0, .24, 1);
+  --ease-o: cubic-bezier(.16, 1, .3, 1);
+  --glass: rgba(255,255,255,0.04);
+  --glass-border: rgba(255,255,255,0.08);
+}
+
+/* ========== CUSTOM CURSOR ========== */
+.cursor-dot {
+  position: fixed; top: 0; left: 0;
+  width: 8px; height: 8px;
+  background: var(--neon-pink);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10001;
+  mix-blend-mode: difference;
+  transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s;
+}
+.cursor-ring {
+  position: fixed; top: 0; left: 0;
+  width: 40px; height: 40px;
+  border: 1.5px solid rgba(255,45,111,0.5);
+  border-radius: 50%;
+  pointer-events: none;
+  z-index: 10000;
+  transition: width 0.4s var(--ease), height 0.4s var(--ease), border-color 0.3s;
+}
+.cursor-ring.expand {
+  width: 80px; height: 80px;
+  border-color: var(--neon-pink);
+}
+.cursor-label {
+  position: fixed; top: 0; left: 0;
+  pointer-events: none;
+  z-index: 10002;
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  opacity: 0;
+  transition: opacity 0.3s;
+  font-weight: 500;
+}
+.cursor-label.visible { opacity: 1; }
+
+/* ========== LOADER ========== */
+#loader {
+  position: fixed; inset: 0;
+  background: var(--bg);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  transition: clip-path 1.2s var(--ease);
+  clip-path: inset(0 0 0 0);
+}
+#loader.exit { clip-path: inset(0 0 100% 0); }
+.loader-counter {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(80px, 15vw, 200px);
+  font-weight: 700;
+  color: var(--neon-pink);
+  text-shadow: 0 0 60px rgba(255,45,111,0.5), 0 0 120px rgba(255,45,111,0.2);
+  line-height: 1;
+}
+.loader-bar {
+  width: 200px; height: 2px;
+  background: var(--text-dim);
+  margin-top: 30px;
+  border-radius: 2px;
+  overflow: hidden;
+}
+.loader-bar-fill {
+  width: 0%; height: 100%;
+  background: var(--neon-pink);
+  box-shadow: 0 0 20px var(--neon-pink);
+  transition: width 0.1s linear;
+}
+.loader-tagline {
+  margin-top: 24px;
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ========== HEADER ========== */
+#header {
+  position: fixed; top: 0; left: 0; right: 0;
+  z-index: 1000;
+  padding: 20px clamp(24px, 4vw, 56px);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  mix-blend-mode: difference;
+  transition: transform 0.6s var(--ease);
+}
+#header.hidden { transform: translateY(-100%); }
+.header-logo {
+  font-family: 'Playfair Display', serif;
+  font-size: 18px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+.header-logo span { color: var(--neon-pink); }
+.header-nav { display: flex; gap: 32px; align-items: center; }
+.header-nav a {
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 400;
+  opacity: 0.7;
+  transition: opacity 0.3s, color 0.3s;
+}
+.header-nav a:hover { opacity: 1; color: var(--neon-pink); }
+.header-cta {
+  padding: 10px 24px;
+  border: 1px solid var(--neon-pink);
+  font-size: 10px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  transition: background 0.3s, color 0.3s;
+}
+.header-cta:hover { background: var(--neon-pink); color: #000; }
+.mobile-menu-btn {
+  display: none;
+  flex-direction: column;
+  gap: 6px;
+  padding: 8px;
+}
+.mobile-menu-btn span {
+  display: block;
+  width: 28px; height: 1.5px;
+  background: var(--text);
+  transition: transform 0.4s var(--ease), opacity 0.3s;
+}
+
+/* ========== HERO ========== */
+#hero {
+  position: relative;
+  height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+}
+.hero-bg-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, transparent 0%, var(--bg) 70%);
+  z-index: 2;
+}
+.hero-content {
+  position: relative;
+  z-index: 3;
+  text-align: center;
+  padding: 0 clamp(24px, 4vw, 56px);
+}
+.hero-eyebrow {
+  font-size: 10px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 24px;
+  opacity: 0;
+}
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(60px, 12vw, 160px);
+  font-weight: 900;
+  line-height: 0.95;
+  letter-spacing: -2px;
+  text-transform: uppercase;
+}
+.hero-title .line { display: block; overflow: hidden; }
+.hero-title .word {
+  display: inline-block;
+  transform: translateY(120%);
+  will-change: transform;
+}
+.hero-tagline {
+  margin-top: 32px;
+  font-size: clamp(14px, 2vw, 20px);
+  font-weight: 300;
+  color: var(--text-muted);
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  opacity: 0;
+}
+.hero-tagline em {
+  font-style: italic;
+  color: var(--neon-pink);
+  font-family: 'Playfair Display', serif;
+}
+.hero-scroll {
+  position: absolute;
+  bottom: 40px;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 3;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 12px;
+  opacity: 0;
+}
+.hero-scroll-text {
+  font-size: 9px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.hero-scroll-line {
+  width: 1px; height: 60px;
+  background: linear-gradient(to bottom, var(--neon-pink), transparent);
+  animation: scrollPulse 2s ease-in-out infinite;
+}
+@keyframes scrollPulse {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
+  50% { opacity: 1; transform: scaleY(1); }
+}
+
+/* ========== MARQUEE ========== */
+#marquee {
+  padding: 40px 0;
+  overflow: hidden;
+  border-top: 1px solid var(--text-ghost);
+  border-bottom: 1px solid var(--text-ghost);
+}
+.marquee-track {
+  display: flex;
+  gap: 60px;
+  white-space: nowrap;
+  animation: marqueeScroll 25s linear infinite;
+}
+.marquee-track span {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(20px, 3vw, 36px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.marquee-track span.dot {
+  color: var(--neon-pink);
+  font-style: normal;
+}
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to { transform: translateX(-50%); }
+}
+
+/* ========== ABOUT ========== */
+#about {
+  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.about-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 48px;
+}
+.about-text {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(24px, 4vw, 52px);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--text);
+}
+.about-text .w {
+  opacity: 0.1;
+  transition: opacity 0.4s ease;
+  display: inline;
+}
+.about-text .w.on { opacity: 1; }
+.about-stats {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 32px;
+  margin-top: 100px;
+  padding-top: 60px;
+  border-top: 1px solid var(--text-ghost);
+}
+.stat-item { text-align: center; }
+.stat-number {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 700;
+  color: var(--neon-pink);
+  line-height: 1;
+}
+.stat-label {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 12px;
+  font-weight: 300;
+}
+
+/* ========== IMAGE REVEAL ========== */
+.image-reveal-section {
+  padding: 0 clamp(24px, 4vw, 56px);
+  max-width: 1400px;
+  margin: 0 auto 0;
+}
+.image-reveal {
+  width: 100%;
+  aspect-ratio: 16/9;
+  border-radius: 12px;
+  overflow: hidden;
+  clip-path: inset(15% 15% 15% 15% round 12px);
+}
+.image-reveal img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transform: scale(1.15);
+}
+
+/* ========== WHAT WE DO - HORIZONTAL SCROLL ========== */
+#whatwedo {
+  padding: clamp(100px, 18vh, 220px) 0;
+}
+.whatwedo-header {
+  padding: 0 clamp(24px, 4vw, 56px);
+  margin-bottom: 60px;
+}
+.whatwedo-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 24px;
+}
+.whatwedo-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 6vw, 80px);
+  font-weight: 700;
+  line-height: 1.05;
+}
+.hscroll-wrapper {
+  overflow: hidden;
+}
+.hscroll-track {
+  display: flex;
+  gap: 32px;
+  padding: 0 clamp(24px, 4vw, 56px);
+  width: max-content;
+}
+.event-card {
+  width: clamp(300px, 30vw, 420px);
+  flex-shrink: 0;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: none;
+}
+.event-card-img {
+  width: 100%;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  filter: grayscale(60%) brightness(0.7);
+  transition: filter 0.6s var(--ease), transform 0.6s var(--ease);
+}
+.event-card:hover .event-card-img {
+  filter: grayscale(0%) brightness(1);
+  transform: scale(1.05);
+}
+.event-card-overlay {
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  padding: 40px 28px;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
+  transform: translateY(20px);
+  opacity: 0.7;
+  transition: transform 0.5s var(--ease), opacity 0.5s;
+}
+.event-card:hover .event-card-overlay {
+  transform: translateY(0);
+  opacity: 1;
+}
+.event-card-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.event-card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.5;
+}
+.event-card-tag {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 4px 12px;
+  border: 1px solid var(--neon-pink);
+  font-size: 9px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+}
+
+/* ========== PREVIOUS EVENTS CAROUSEL ========== */
+#events {
+  padding: clamp(100px, 18vh, 220px) 0;
+  background: var(--bg2);
+}
+.events-header {
+  padding: 0 clamp(24px, 4vw, 56px);
+  margin-bottom: 60px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+}
+.events-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 24px;
+}
+.events-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 6vw, 80px);
+  font-weight: 700;
+}
+.events-nav { display: flex; gap: 12px; }
+.events-nav button {
+  width: 50px; height: 50px;
+  border: 1px solid var(--text-dim);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 20px;
+  transition: border-color 0.3s, background 0.3s;
+}
+.events-nav button:hover {
+  border-color: var(--neon-pink);
+  background: rgba(255,45,111,0.1);
+}
+.carousel-track {
+  display: flex;
+  gap: 24px;
+  padding: 0 clamp(24px, 4vw, 56px);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+  scroll-behavior: smooth;
+}
+.carousel-track::-webkit-scrollbar { display: none; }
+.carousel-card {
+  flex-shrink: 0;
+  width: clamp(300px, 35vw, 500px);
+  scroll-snap-align: start;
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--text-ghost);
+  transition: border-color 0.4s;
+}
+.carousel-card:hover {
+  border-color: var(--neon-pink);
+  box-shadow: 0 0 40px rgba(255,45,111,0.15);
+}
+.carousel-card img {
+  width: 100%;
+  aspect-ratio: 16/10;
+  object-fit: cover;
+  transition: transform 0.6s var(--ease);
+}
+.carousel-card:hover img { transform: scale(1.05); }
+.carousel-card-info {
+  padding: 24px;
+  background: var(--bg3);
+}
+.carousel-card-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 22px;
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+.carousel-card-meta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+.carousel-card-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 8px 16px;
+  background: rgba(255,45,111,0.1);
+  border: 1px solid rgba(255,45,111,0.3);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  transition: background 0.3s;
+}
+.carousel-card-link:hover { background: rgba(255,45,111,0.2); }
+
+/* ========== THE RULES ========== */
+#rules {
+  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.rules-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: start;
+}
+.rules-left {}
+.rules-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 24px;
+}
+.rules-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(48px, 7vw, 100px);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+}
+.rules-title::after {
+  content: '';
+  display: block;
+  width: 80px;
+  height: 3px;
+  background: var(--neon-pink);
+  margin-top: 32px;
+  box-shadow: 0 0 20px var(--neon-pink);
+}
+.rules-subtitle {
+  margin-top: 32px;
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.6;
+}
+.rules-right {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+.rule-card {
+  padding: 28px;
+  background: var(--glass);
+  border: 1px solid var(--glass-border);
+  border-radius: 12px;
+  backdrop-filter: blur(20px);
+  transition: border-color 0.3s, transform 0.3s var(--ease);
+}
+.rule-card:hover {
+  border-color: rgba(255,45,111,0.3);
+  transform: translateX(8px);
+}
+.rule-card-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 12px;
+}
+.rule-card-num {
+  font-family: 'Playfair Display', serif;
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--neon-pink);
+  min-width: 40px;
+}
+.rule-card-title {
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+.rule-card-desc {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.6;
+  padding-left: 56px;
+}
+.rules-cta {
+  margin-top: 32px;
+  display: inline-block;
+  padding: 16px 40px;
+  background: var(--neon-pink);
+  color: #000;
+  font-size: 12px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+}
+.rules-cta:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 40px rgba(255,45,111,0.4);
+}
+
+/* ========== FOUNDER ========== */
+#founder {
+  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
+  background: var(--bg2);
+}
+.founder-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 80px;
+  align-items: center;
+}
+.founder-image-wrap {
+  position: relative;
+  border-radius: 16px;
+  overflow: hidden;
+}
+.founder-image-wrap::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  border: 1px solid rgba(255,45,111,0.2);
+  border-radius: 16px;
+  pointer-events: none;
+}
+.founder-image-wrap img {
+  width: 100%;
+  aspect-ratio: 1;
+  object-fit: cover;
+  transition: transform 0.8s var(--ease);
+}
+.founder-image-wrap:hover img { transform: scale(1.03); }
+.founder-label {
+  font-size: 10px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 16px;
+}
+.founder-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 900;
+  line-height: 1.05;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+.founder-role {
+  font-size: 14px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 300;
+  margin-bottom: 32px;
+}
+.founder-bio {
+  font-size: 16px;
+  font-weight: 300;
+  color: var(--text-muted);
+  line-height: 1.8;
+  margin-bottom: 40px;
+}
+.founder-socials {
+  display: flex;
+  gap: 16px;
+}
+.founder-social-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px 24px;
+  border: 1px solid var(--text-dim);
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  font-weight: 400;
+  transition: border-color 0.3s, background 0.3s;
+}
+.founder-social-link:hover {
+  border-color: var(--neon-pink);
+  background: rgba(255,45,111,0.1);
+}
+.founder-social-link svg { width: 18px; height: 18px; fill: currentColor; }
+
+/* ========== CTA ========== */
+#cta {
+  padding: clamp(120px, 22vh, 280px) clamp(24px, 4vw, 56px);
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+}
+.cta-bg {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(ellipse at 50% 50%, rgba(255,45,111,0.08) 0%, transparent 60%);
+}
+.cta-content { position: relative; z-index: 1; }
+.cta-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(40px, 8vw, 110px);
+  font-weight: 900;
+  line-height: 1;
+  text-transform: uppercase;
+  margin-bottom: 24px;
+}
+.cta-title em {
+  font-style: italic;
+  color: var(--neon-pink);
+}
+.cta-sub {
+  font-size: clamp(14px, 1.5vw, 18px);
+  font-weight: 300;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 48px;
+  line-height: 1.6;
+}
+.cta-buttons {
+  display: flex;
+  gap: 20px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+.cta-btn-primary {
+  padding: 18px 48px;
+  background: var(--neon-pink);
+  color: #000;
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 600;
+  transition: transform 0.3s var(--ease), box-shadow 0.3s;
+  animation: ctaPulse 2s ease-in-out infinite;
+}
+@keyframes ctaPulse {
+  0%, 100% { box-shadow: 0 0 20px rgba(255,45,111,0.3); }
+  50% { box-shadow: 0 0 50px rgba(255,45,111,0.6); }
+}
+.cta-btn-primary:hover {
+  transform: scale(1.05);
+  animation-play-state: paused;
+  box-shadow: 0 0 60px rgba(255,45,111,0.5);
+}
+.cta-btn-secondary {
+  padding: 18px 48px;
+  border: 1px solid var(--text-dim);
+  font-size: 13px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-weight: 400;
+  transition: border-color 0.3s, background 0.3s;
+}
+.cta-btn-secondary:hover {
+  border-color: var(--neon-blue);
+  background: rgba(0,240,255,0.05);
+  color: var(--neon-blue);
+}
+
+/* ========== FOOTER ========== */
+#footer {
+  padding: 60px clamp(24px, 4vw, 56px);
+  border-top: 1px solid var(--neon-pink);
+  box-shadow: 0 -1px 40px rgba(255,45,111,0.1);
+}
+.footer-grid {
+  max-width: 1200px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr;
+  gap: 60px;
+}
+.footer-brand-name {
+  font-family: 'Playfair Display', serif;
+  font-size: 24px;
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+.footer-brand-name span { color: var(--neon-pink); }
+.footer-brand-tagline {
+  font-size: 13px;
+  color: var(--text-muted);
+  font-weight: 300;
+  font-style: italic;
+}
+.footer-col-title {
+  font-size: 10px;
+  letter-spacing: 4px;
+  text-transform: uppercase;
+  color: var(--neon-pink);
+  margin-bottom: 20px;
+}
+.footer-links {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+.footer-links a {
+  font-size: 14px;
+  font-weight: 300;
+  color: var(--text-muted);
+  transition: color 0.3s;
+}
+.footer-links a:hover { color: var(--text); }
+.footer-bottom {
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding-top: 24px;
+  border-top: 1px solid var(--text-ghost);
+  display: flex;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--text-muted);
+  font-weight: 300;
+}
+
+/* ========== FILM GRAIN ========== */
+#grain-canvas {
+  position: fixed;
+  inset: 0;
+  z-index: 9998;
+  pointer-events: none;
+  opacity: 0.04;
+  mix-blend-mode: overlay;
+}
+
+/* ========== MOBILE RESPONSIVE ========== */
+@media (max-width: 768px) {
+  body { cursor: auto; }
+  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
+  .header-nav { display: none; }
+  .mobile-menu-btn { display: flex; }
+  .about-stats { grid-template-columns: repeat(2, 1fr); }
+  .rules-grid { grid-template-columns: 1fr; gap: 48px; }
+  .founder-grid { grid-template-columns: 1fr; gap: 48px; }
+  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+  .events-header { flex-direction: column; align-items: flex-start; gap: 20px; }
+  .cta-buttons { flex-direction: column; align-items: center; }
+}
+
+/* ========== MOBILE MENU ========== */
+#mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: rgba(10,10,10,0.97);
+  z-index: 999;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.5s var(--ease);
+}
+#mobile-menu.open { opacity: 1; pointer-events: auto; }
+#mobile-menu a {
+  font-family: 'Playfair Display', serif;
+  font-size: 36px;
+  font-weight: 700;
+  text-transform: uppercase;
+  transition: color 0.3s;
+}
+#mobile-menu a:hover { color: var(--neon-pink); }
+
+/* ========== SOUND TOGGLE ========== */
+.sound-toggle {
+  position: fixed;
+  bottom: 30px;
+  right: 30px;
+  z-index: 100;
+  display: flex;
+  align-items: flex-end;
+  gap: 3px;
+  padding: 12px;
+  cursor: none;
+}
+.sound-toggle .bar {
+  width: 3px;
+  background: var(--neon-pink);
+  border-radius: 2px;
+  transition: height 0.3s;
+}
+.sound-toggle.playing .bar { animation: eqBar 0.8s ease-in-out infinite alternate; }
+.sound-toggle .bar:nth-child(1) { height: 8px; animation-delay: 0s; }
+.sound-toggle .bar:nth-child(2) { height: 16px; animation-delay: 0.15s; }
+.sound-toggle .bar:nth-child(3) { height: 10px; animation-delay: 0.3s; }
+.sound-toggle .bar:nth-child(4) { height: 20px; animation-delay: 0.45s; }
+.sound-toggle .bar:nth-child(5) { height: 6px; animation-delay: 0.6s; }
+@keyframes eqBar {
+  0% { height: 4px; }
+  100% { height: 24px; }
+}
+.sound-toggle:not(.playing) .bar { height: 3px !important; animation: none; }
+</style>
+</head>
+<body>
+
+<!-- ========== CURSOR ========== -->
+<div class="cursor-dot" id="cursorDot"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+<div class="cursor-label" id="cursorLabel">View</div>
+
+<!-- ========== FILM GRAIN ========== -->
+<canvas id="grain-canvas"></canvas>
+
+<!-- ========== LOADER ========== -->
+<div id="loader">
+  <div class="loader-counter" id="loaderCounter">0</div>
+  <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
+  <div class="loader-tagline">Social Euphoria Presents</div>
+</div>
+
+<!-- ========== HEADER ========== -->
+<header id="header">
+  <a href="#" class="header-logo">Social<span>.</span>Euphoria</a>
+  <nav class="header-nav">
+    <a href="#about" data-c="m">About</a>
+    <a href="#whatwedo" data-c="m">Events</a>
+    <a href="#rules" data-c="m">The Rules</a>
+    <a href="#founder" data-c="m">Big Daddy</a>
+    <a href="#cta" class="header-cta" data-c="m">Get Invited</a>
+  </nav>
+  <button class="mobile-menu-btn" id="menuBtn" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<!-- ========== MOBILE MENU ========== -->
+<div id="mobile-menu">
+  <a href="#about" class="mobile-link">About</a>
+  <a href="#whatwedo" class="mobile-link">Events</a>
+  <a href="#rules" class="mobile-link">The Rules</a>
+  <a href="#founder" class="mobile-link">Big Daddy</a>
+  <a href="#cta" class="mobile-link">Get Invited</a>
+</div>
+
+<!-- ========== HERO ========== -->
+<section id="hero">
+  <canvas id="hero-canvas"></canvas>
+  <div class="hero-bg-overlay"></div>
+  <div class="hero-content">
+    <div class="hero-eyebrow" id="heroEyebrow">Dehradun's Most Exclusive Nightlife Collective</div>
+    <h1 class="hero-title">
+      <span class="line"><span class="word">Social</span></span>
+      <span class="line"><span class="word">Euphoria</span></span>
+    </h1>
+    <p class="hero-tagline" id="heroTagline">Curating <em>Hell</em> to Have Fun</p>
+  </div>
+  <div class="hero-scroll" id="heroScroll">
+    <span class="hero-scroll-text">Enter The Chaos</span>
+    <div class="hero-scroll-line"></div>
+  </div>
+</section>
+
+<!-- ========== MARQUEE ========== -->
+<section id="marquee">
+  <div class="marquee-track">
+    <span>Sunset Soirées</span><span class="dot">✦</span>
+    <span>Pool Parties</span><span class="dot">✦</span>
+    <span>Halloween Carnivals</span><span class="dot">✦</span>
+    <span>Glasshouse Takeovers</span><span class="dot">✦</span>
+    <span>Invite Only</span><span class="dot">✦</span>
+    <span>Neon Raves</span><span class="dot">✦</span>
+    <span>Luxury Resorts</span><span class="dot">✦</span>
+    <span>Sunset Soirées</span><span class="dot">✦</span>
+    <span>Pool Parties</span><span class="dot">✦</span>
+    <span>Halloween Carnivals</span><span class="dot">✦</span>
+    <span>Glasshouse Takeovers</span><span class="dot">✦</span>
+    <span>Invite Only</span><span class="dot">✦</span>
+    <span>Neon Raves</span><span class="dot">✦</span>
+    <span>Luxury Resorts</span><span class="dot">✦</span>
+  </div>
+</section>
+
+<!-- ========== ABOUT ========== -->
+<section id="about">
+  <div class="about-label">Who We Are</div>
+  <p class="about-text" id="aboutText">
+    Social Euphoria is Dehradun's most exclusive nightlife collective. We don't do venues — we take over luxury resorts, hidden estate properties, and glasshouse rooftops to orchestrate massive experiential gatherings that blur the line between euphoria and absolute chaos. Every event is a universe. Every night is a memory you can't forget.
+  </p>
+  <div class="about-stats">
+    <div class="stat-item">
+      <div class="stat-number" data-target="50">0</div>
+      <div class="stat-label">Events Curated</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" data-target="10000">0</div>
+      <div class="stat-label">Guests Hosted</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" data-target="15">0</div>
+      <div class="stat-label">Luxury Venues</div>
+    </div>
+    <div class="stat-item">
+      <div class="stat-number" data-target="1">0</div>
+      <div class="stat-label">City. Infinite Nights.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== IMAGE REVEAL ========== -->
+<div class="image-reveal-section">
+  <div class="image-reveal" id="imageReveal">
+    <img src="assets/images/hero_party_bg.jpg" alt="Social Euphoria event atmosphere" loading="lazy">
+  </div>
+</div>
+
+<!-- ========== WHAT WE DO ========== -->
+<section id="whatwedo">
+  <div class="whatwedo-header">
+    <div>
+      <div class="whatwedo-label">What We Curate</div>
+      <h2 class="whatwedo-title">Our Signature<br>Experiences</h2>
+    </div>
+  </div>
+  <div class="hscroll-wrapper" id="hscrollWrapper">
+    <div class="hscroll-track" id="hscrollTrack">
+      <div class="event-card" data-c="v">
+        <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirée" class="event-card-img" loading="lazy">
+        <div class="event-card-overlay">
+          <div class="event-card-name">Sunset Soirées</div>
+          <p class="event-card-desc">Afternoon-to-night poolside sessions. Deep house & bolly-tech music with heavy aesthetic curation. Golden hour to starlit madness.</p>
+          <span class="event-card-tag">Signature</span>
+        </div>
+      </div>
+      <div class="event-card" data-c="v">
+        <img src="assets/images/h2oli_festival.jpg" alt="H²OLI Festival" class="event-card-img" loading="lazy">
+        <div class="event-card-overlay">
+          <div class="event-card-name">H²OLI Festival</div>
+          <p class="event-card-desc">Dehradun's biggest pool/foam/dhol festival at Vishram Resort. A town staple. Foam cannons, neon lights, pure chaos.</p>
+          <span class="event-card-tag">Festival</span>
+        </div>
+      </div>
+      <div class="event-card" data-c="v">
+        <img src="assets/images/after_dark.jpg" alt="After Dark Carnival" class="event-card-img" loading="lazy">
+        <div class="event-card-overlay">
+          <div class="event-card-name">After Dark Carnivals</div>
+          <p class="event-card-desc">Halloween spectaculars & neon raves with massive audio-visual setups, UV paint, and immersive pop-up experiences.</p>
+          <span class="event-card-tag">Carnival</span>
+        </div>
+      </div>
+      <div class="event-card" data-c="v">
+        <img src="assets/images/white_lotus.jpg" alt="White Lotus Takeover" class="event-card-img" loading="lazy">
+        <div class="event-card-overlay">
+          <div class="event-card-name">White Lotus Takeovers</div>
+          <p class="event-card-desc">Conceptual property takeovers at Le Méridien Dehradun & Fairfield by Marriott. All-white dress code. Ultra-luxury vibes.</p>
+          <span class="event-card-tag">Premium</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== PREVIOUS EVENTS ========== -->
+<section id="events">
+  <div class="events-header">
+    <div>
+      <div class="events-label">The Archives</div>
+      <h2 class="events-title">Previous Events</h2>
+    </div>
+    <div class="events-nav">
+      <button id="carouselPrev" data-c="m" aria-label="Previous">←</button>
+      <button id="carouselNext" data-c="m" aria-label="Next">→</button>
+    </div>
+  </div>
+  <div class="carousel-track" id="carouselTrack">
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirée Vol. 3" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">Sunset Soirée Vol. III</div>
+        <div class="carousel-card-meta">
+          <span>Le Méridien Dehradun</span>
+          <span>150 Guests</span>
+        </div>
+        <a href="https://www.instagram.com/reel/DHs44gpyFKb/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          Watch Recap
+        </a>
+      </div>
+    </div>
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/h2oli_festival.jpg" alt="H²OLI 2024" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">H²OLI 2024</div>
+        <div class="carousel-card-meta">
+          <span>Vishram Resort</span>
+          <span>500+ Guests</span>
+        </div>
+        <a href="https://www.instagram.com/reel/DGdSKBtIKdj/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          Watch Recap
+        </a>
+      </div>
+    </div>
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/after_dark.jpg" alt="After Dark Halloween" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">After Dark: Halloween</div>
+        <div class="carousel-card-meta">
+          <span>Secret Venue</span>
+          <span>200 Guests</span>
+        </div>
+        <a href="https://www.instagram.com/reel/DNSH8UKRrh1/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          Watch Recap
+        </a>
+      </div>
+    </div>
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/gallery_1.jpg" alt="Glasshouse Takeover" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">Glasshouse Takeover</div>
+        <div class="carousel-card-meta">
+          <span>Rooftop Venue</span>
+          <span>120 Guests</span>
+        </div>
+        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          View Gallery
+        </a>
+      </div>
+    </div>
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/white_lotus.jpg" alt="White Lotus Night" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">White Lotus Night</div>
+        <div class="carousel-card-meta">
+          <span>Fairfield by Marriott</span>
+          <span>100 Guests</span>
+        </div>
+        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          View Gallery
+        </a>
+      </div>
+    </div>
+    <div class="carousel-card" data-c="v">
+      <img src="assets/images/gallery_2.jpg" alt="Neon Rave" loading="lazy">
+      <div class="carousel-card-info">
+        <div class="carousel-card-title">Neon Rave Night</div>
+        <div class="carousel-card-meta">
+          <span>Undisclosed Location</span>
+          <span>175 Guests</span>
+        </div>
+        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
+          View Gallery
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== THE RULES ========== -->
+<section id="rules">
+  <div class="rules-grid">
+    <div class="rules-left">
+      <div class="rules-label">How It Works</div>
+      <h2 class="rules-title">The<br>Rules</h2>
+      <p class="rules-subtitle">Social Euphoria is not your average night out. We maintain a specific crowd dynamic. Exclusivity isn't a flex — it's the experience.</p>
+    </div>
+    <div class="rules-right">
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-card-num">01</span>
+          <span class="rule-card-title">The Guest List</span>
+        </div>
+        <p class="rule-card-desc">Request your invite via the link in our Instagram bio. If your profile is approved, you're on the exclusive free or discounted early guest list.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-card-num">02</span>
+          <span class="rule-card-title">Strict Timing</span>
+        </div>
+        <p class="rule-card-desc">Invite list closes at 8:00 PM sharp. Arrive even a minute late and your invite is voided. No exceptions. No excuses.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-card-num">03</span>
+          <span class="rule-card-title">Paid Cover</span>
+        </div>
+        <p class="rule-card-desc">After 8 PM, entry shifts to paid cover at the gate — if the venue hasn't hit full capacity. First come, first served.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-card-num">04</span>
+          <span class="rule-card-title">Gates Close at 9 PM</span>
+        </div>
+        <p class="rule-card-desc">The gates close permanently at 9 PM. No late-night walk-ins. Period. You're either in or you're not.</p>
+      </div>
+      <div class="rule-card">
+        <div class="rule-card-header">
+          <span class="rule-card-num">05</span>
+          <span class="rule-card-title">Dress Code</span>
+        </div>
+        <p class="rule-card-desc">Mandatory and theme-aligned. Swimwear for sundowners, neon raver gear for After Dark, all-white for property takeovers. No compliance, no entry.</p>
+      </div>
+      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="rules-cta" data-c="m">Request Your Invite</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOUNDER ========== -->
+<section id="founder">
+  <div class="founder-grid">
+    <div class="founder-image-wrap">
+      <img src="assets/images/founder.jpg" alt="Abhay Rawat - Founder of Social Euphoria" loading="lazy">
+    </div>
+    <div class="founder-info">
+      <div class="founder-label">The Big Daddy</div>
+      <h2 class="founder-name">Abhay<br>Rawat</h2>
+      <div class="founder-role">Founder & Creative Director</div>
+      <p class="founder-bio">
+        The architect behind Dehradun's most exclusive nightlife experiences. Abhay doesn't just throw parties — he engineers atmospheres. From handpicking venues to curating every sonic and visual detail, he's the reason Social Euphoria exists at the intersection of chaos and luxury.
+        <br><br>
+        With a vision to transform Dehradun's social scene from the ground up, Abhay built Social Euphoria into the city's most sought-after nightlife collective — where every event is a story, every guest list is curated, and every night ends with a memory that refuses to fade.
+      </p>
+      <div class="founder-socials">
+        <a href="https://www.instagram.com/abhayrawat12/" target="_blank" class="founder-social-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          @abhayrawat12
+        </a>
+        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="founder-social-link" data-c="m">
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
+          @social._euphoria
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ========== CTA ========== -->
+<section id="cta">
+  <div class="cta-bg"></div>
+  <div class="cta-content">
+    <h2 class="cta-title">Ready to<br>Lose Your <em>Mind</em>?</h2>
+    <p class="cta-sub">The next Social Euphoria event is loading. Get on the list before it's too late. Once the gates close, they don't reopen.</p>
+    <div class="cta-buttons">
+      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="cta-btn-primary" data-c="m">Request Invite</a>
+      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="cta-btn-secondary" data-c="m">Follow @social._euphoria</a>
+    </div>
+  </div>
+</section>
+
+<!-- ========== FOOTER ========== -->
+<footer id="footer">
+  <div class="footer-grid">
+    <div>
+      <div class="footer-brand-name">Social<span>.</span>Euphoria</div>
+      <div class="footer-brand-tagline">"Curating Hell to Have Fun"</div>
+    </div>
+    <div>
+      <div class="footer-col-title">Connect</div>
+      <div class="footer-links">
+        <a href="https://www.instagram.com/social._euphoria/" target="_blank" data-c="m">Instagram — @social._euphoria</a>
+        <a href="https://www.instagram.com/abhayrawat12/" target="_blank" data-c="m">Founder — @abhayrawat12</a>
+        <a href="mailto:socialeuphoria.ddn@gmail.com" data-c="m">socialeuphoria.ddn@gmail.com</a>
+      </div>
+    </div>
+    <div>
+      <div class="footer-col-title">Navigate</div>
+      <div class="footer-links">
+        <a href="#about" data-c="m">About</a>
+        <a href="#whatwedo" data-c="m">Events</a>
+        <a href="#rules" data-c="m">The Rules</a>
+        <a href="#founder" data-c="m">Big Daddy</a>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <span>© 2025 Social Euphoria. All rights reserved.</span>
+    <span>Dehradun, Uttarakhand</span>
+  </div>
+</footer>
+
+<!-- ========== SOUND TOGGLE ========== -->
+<button class="sound-toggle" id="soundToggle" data-c="m" aria-label="Toggle sound">
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+  <span class="bar"></span>
+</button>
+
+<!-- ========== JAVASCRIPT ========== -->
+<script>
+(function() {
+'use strict';
+
+// ===== LENIS SMOOTH SCROLL =====
+const lenis = new Lenis({
+  duration: 1.2,
+  easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+  smoothWheel: true,
+  wheelMultiplier: 0.85,
+});
+lenis.on('scroll', ScrollTrigger.update);
+gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.lagSmoothing(0);
+lenis.stop();
+
+// ===== CUSTOM CURSOR =====
+const dot = document.getElementById('cursorDot');
+const ring = document.getElementById('cursorRing');
+const label = document.getElementById('cursorLabel');
+let mouseX = 0, mouseY = 0;
+let dotX = 0, dotY = 0;
+let ringX = 0, ringY = 0;
+
+if (window.innerWidth > 768) {
+  document.addEventListener('mousemove', e => {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  });
+
+  document.querySelectorAll('[data-c]').forEach(el => {
+    el.addEventListener('mouseenter', () => {
+      const type = el.getAttribute('data-c');
+      if (type === 'm') {
+        ring.classList.add('expand');
+      } else if (type === 'v') {
+        ring.classList.add('expand');
+        label.classList.add('visible');
+      }
+    });
+    el.addEventListener('mouseleave', () => {
+      ring.classList.remove('expand');
+      label.classList.remove('visible');
+    });
+  });
+
+  function animateCursor() {
+    dotX += (mouseX - dotX) * 0.22;
+    dotY += (mouseY - dotY) * 0.22;
+    ringX += (mouseX - ringX) * 0.09;
+    ringY += (mouseY - ringY) * 0.09;
+    dot.style.transform = `translate(${dotX - 4}px, ${dotY - 4}px)`;
+    ring.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
+    label.style.transform = `translate(${ringX + 30}px, ${ringY - 8}px)`;
+    requestAnimationFrame(animateCursor);
+  }
+  animateCursor();
+}
+
+// ===== FILM GRAIN =====
+const grainCanvas = document.getElementById('grain-canvas');
+const grainCtx = grainCanvas.getContext('2d');
+let grainFrame = 0;
+
+function resizeGrain() {
+  grainCanvas.width = window.innerWidth / 2;
+  grainCanvas.height = window.innerHeight / 2;
+}
+resizeGrain();
+window.addEventListener('resize', resizeGrain);
+
+function renderGrain() {
+  grainFrame++;
+  if (grainFrame % 3 !== 0) { requestAnimationFrame(renderGrain); return; }
+  const w = grainCanvas.width, h = grainCanvas.height;
+  const imgData = grainCtx.createImageData(w, h);
+  const data = imgData.data;
+  for (let i = 0; i < data.length; i += 4) {
+    const v = Math.random() * 255;
+    data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
+  }
+  grainCtx.putImageData(imgData, 0, 0);
+  requestAnimationFrame(renderGrain);
+}
+renderGrain();
+
+// ===== THREE.JS HERO PARTICLES =====
+const heroCanvas = document.getElementById('hero-canvas');
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+camera.position.z = 5;
+
+const renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, antialias: true });
+renderer.setSize(window.innerWidth, window.innerHeight);
+renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+// Particle system
+const particleCount = 5000;
+const geometry = new THREE.BufferGeometry();
+const positions = new Float32Array(particleCount * 3);
+const colors = new Float32Array(particleCount * 3);
+const sizes = new Float32Array(particleCount);
+
+const neonColors = [
+  [1.0, 0.176, 0.435],   // neon pink
+  [0.0, 0.941, 1.0],     // cyan
+  [0.722, 0.161, 0.867],  // purple
+];
+
+for (let i = 0; i < particleCount; i++) {
+  // Fibonacci sphere distribution
+  const phi = Math.acos(1 - 2 * (i + 0.5) / particleCount);
+  const theta = Math.PI * (1 + Math.sqrt(5)) * i;
+  const r = 2.5 + Math.random() * 0.5;
+
+  positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
+  positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
+  positions[i * 3 + 2] = r * Math.cos(phi);
+
+  const color = neonColors[Math.floor(Math.random() * neonColors.length)];
+  colors[i * 3] = color[0];
+  colors[i * 3 + 1] = color[1];
+  colors[i * 3 + 2] = color[2];
+
+  sizes[i] = Math.random() * 3 + 1;
+}
+
+geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+
+const vertexShader = `
+  attribute float size;
+  varying vec3 vColor;
+  uniform float uTime;
+  void main() {
+    vColor = color;
+    vec3 pos = position;
+    float noise = sin(pos.x * 2.0 + uTime) * cos(pos.y * 2.0 + uTime * 0.7) * 0.3;
+    pos += normal * noise * 0.1;
+    pos.x += sin(uTime * 0.5 + pos.y * 1.5) * 0.15;
+    pos.y += cos(uTime * 0.3 + pos.x * 1.5) * 0.15;
+    vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
+    gl_PointSize = size * (200.0 / -mvPos.z);
+    gl_Position = projectionMatrix * mvPos;
+  }
+`;
+
+const fragmentShader = `
+  varying vec3 vColor;
+  void main() {
+    float d = length(gl_PointCoord - 0.5);
+    if (d > 0.5) discard;
+    float alpha = smoothstep(0.5, 0.1, d) * 0.7;
+    gl_FragColor = vec4(vColor, alpha);
+  }
+`;
+
+const material = new THREE.ShaderMaterial({
+  vertexShader,
+  fragmentShader,
+  uniforms: { uTime: { value: 0 } },
+  vertexColors: true,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+
+// Compute normals for noise
+geometry.computeVertexNormals();
+const points = new THREE.Points(geometry, material);
+scene.add(points);
+
+// Background dust particles
+const dustCount = 800;
+const dustGeo = new THREE.BufferGeometry();
+const dustPos = new Float32Array(dustCount * 3);
+const dustCol = new Float32Array(dustCount * 3);
+const dustSizes = new Float32Array(dustCount);
+
+for (let i = 0; i < dustCount; i++) {
+  dustPos[i * 3] = (Math.random() - 0.5) * 20;
+  dustPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
+  dustPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
+  dustCol[i * 3] = 0.937; dustCol[i * 3 + 1] = 0.871; dustCol[i * 3 + 2] = 0.851;
+  dustSizes[i] = Math.random() * 1.5 + 0.5;
+}
+
+dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
+dustGeo.setAttribute('color', new THREE.BufferAttribute(dustCol, 3));
+dustGeo.setAttribute('size', new THREE.BufferAttribute(dustSizes, 1));
+
+const dustMat = new THREE.ShaderMaterial({
+  vertexShader: `
+    attribute float size;
+    varying vec3 vColor;
+    void main() {
+      vColor = color;
+      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
+      gl_PointSize = size * (100.0 / -mvPos.z);
+      gl_Position = projectionMatrix * mvPos;
+    }
+  `,
+  fragmentShader: `
+    varying vec3 vColor;
+    void main() {
+      float d = length(gl_PointCoord - 0.5);
+      if (d > 0.5) discard;
+      float alpha = smoothstep(0.5, 0.2, d) * 0.15;
+      gl_FragColor = vec4(vColor, alpha);
+    }
+  `,
+  vertexColors: true,
+  transparent: true,
+  blending: THREE.AdditiveBlending,
+  depthWrite: false,
+});
+const dust = new THREE.Points(dustGeo, dustMat);
+scene.add(dust);
+
+let targetRotX = 0, targetRotY = 0;
+document.addEventListener('mousemove', e => {
+  targetRotX = (e.clientY / window.innerHeight - 0.5) * 0.5;
+  targetRotY = (e.clientX / window.innerWidth - 0.5) * 0.5;
+});
+
+let heroVisible = true;
+function animateThree() {
+  if (!heroVisible) { requestAnimationFrame(animateThree); return; }
+  material.uniforms.uTime.value = performance.now() * 0.001;
+  points.rotation.x += (targetRotX - points.rotation.x) * 0.04;
+  points.rotation.y += (targetRotY - points.rotation.y) * 0.04;
+  points.rotation.z += 0.001;
+  dust.rotation.y += 0.0003;
+  dust.rotation.x += 0.0001;
+  renderer.render(scene, camera);
+  requestAnimationFrame(animateThree);
+}
+animateThree();
+
+// Fade hero canvas on scroll
+window.addEventListener('scroll', () => {
+  const scrollY = window.scrollY;
+  const heroH = window.innerHeight;
+  const opacity = 1 - (scrollY / heroH);
+  heroCanvas.style.opacity = Math.max(0, opacity);
+  heroVisible = opacity > 0;
+});
+
+window.addEventListener('resize', () => {
+  camera.aspect = window.innerWidth / window.innerHeight;
+  camera.updateProjectionMatrix();
+  renderer.setSize(window.innerWidth, window.innerHeight);
+});
+
+// ===== LOADER =====
+const loaderEl = document.getElementById('loader');
+const counterEl = document.getElementById('loaderCounter');
+const barEl = document.getElementById('loaderBar');
+let count = 0;
+
+function runLoader() {
+  const interval = setInterval(() => {
+    count += Math.floor(Math.random() * 3) + 1;
+    if (count >= 100) {
+      count = 100;
+      clearInterval(interval);
+      counterEl.textContent = '100';
+      barEl.style.width = '100%';
+      setTimeout(() => {
+        loaderEl.classList.add('exit');
+        lenis.start();
+        setTimeout(revealHero, 600);
+      }, 400);
+      return;
+    }
+    counterEl.textContent = count;
+    barEl.style.width = count + '%';
+  }, 40);
+}
+
+function revealHero() {
+  const tl = gsap.timeline();
+  tl.to('.hero-title .word', {
+    y: 0, duration: 1.5, stagger: 0.15, ease: 'expo.out'
+  })
+  .to('#heroEyebrow', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.8')
+  .to('#heroTagline', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.6')
+  .to('#heroScroll', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.4');
+}
+
+// Start loader on window load
+window.addEventListener('load', () => { setTimeout(runLoader, 300); });
+
+// ===== HEADER SCROLL BEHAVIOR =====
+let lastScroll = 0;
+const header = document.getElementById('header');
+lenis.on('scroll', ({ scroll }) => {
+  if (scroll > 200) {
+    if (scroll > lastScroll) {
+      header.classList.add('hidden');
+    } else {
+      header.classList.remove('hidden');
+    }
+  } else {
+    header.classList.remove('hidden');
+  }
+  lastScroll = scroll;
+});
+
+// ===== MOBILE MENU =====
+const menuBtn = document.getElementById('menuBtn');
+const mobileMenu = document.getElementById('mobile-menu');
+let menuOpen = false;
+menuBtn.addEventListener('click', () => {
+  menuOpen = !menuOpen;
+  mobileMenu.classList.toggle('open', menuOpen);
+  menuBtn.children[0].style.transform = menuOpen ? 'rotate(45deg) translate(5px, 5px)' : '';
+  menuBtn.children[1].style.opacity = menuOpen ? '0' : '1';
+  menuBtn.children[2].style.transform = menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : '';
+});
+document.querySelectorAll('.mobile-link').forEach(link => {
+  link.addEventListener('click', () => {
+    menuOpen = false;
+    mobileMenu.classList.remove('open');
+    menuBtn.children[0].style.transform = '';
+    menuBtn.children[1].style.opacity = '1';
+    menuBtn.children[2].style.transform = '';
+  });
+});
+
+// ===== WORD-BY-WORD SCROLL REVEAL =====
+const aboutText = document.getElementById('aboutText');
+const text = aboutText.textContent.trim();
+aboutText.innerHTML = text.split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
+const words = aboutText.querySelectorAll('.w');
+
+ScrollTrigger.create({
+  trigger: '#about',
+  start: 'top 75%',
+  end: 'bottom 40%',
+  scrub: 0.6,
+  onUpdate: self => {
+    words.forEach((w, i) => {
+      w.classList.toggle('on', i / words.length < self.progress);
+    });
+  }
+});
+
+// ===== STATS COUNTER =====
+document.querySelectorAll('.stat-number').forEach(stat => {
+  const target = parseInt(stat.getAttribute('data-target'));
+  ScrollTrigger.create({
+    trigger: stat,
+    start: 'top 85%',
+    once: true,
+    onEnter: () => {
+      gsap.to({ val: 0 }, {
+        val: target,
+        duration: 2,
+        ease: 'power2.out',
+        onUpdate: function() {
+          const v = Math.floor(this.targets()[0].val);
+          stat.textContent = target >= 1000 ? v.toLocaleString() + '+' : v + '+';
+        }
+      });
+    }
+  });
+});
+
+// ===== IMAGE REVEAL =====
+gsap.to('#imageReveal', {
+  clipPath: 'inset(0% 0% 0% 0% round 12px)',
+  scrollTrigger: {
+    trigger: '#imageReveal',
+    start: 'top 85%',
+    end: 'top 25%',
+    scrub: 0.8,
+  }
+});
+gsap.to('#imageReveal img', {
+  scale: 1,
+  scrollTrigger: {
+    trigger: '#imageReveal',
+    start: 'top 85%',
+    end: 'top 10%',
+    scrub: 1.2,
+  }
+});
+
+// ===== HORIZONTAL SCROLL GALLERY =====
+const hscrollTrack = document.getElementById('hscrollTrack');
+const hscrollWrapper = document.getElementById('hscrollWrapper');
+
+gsap.to(hscrollTrack, {
+  x: () => -(hscrollTrack.scrollWidth - window.innerWidth + 56),
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '#whatwedo',
+    start: 'top top',
+    end: () => '+=' + hscrollTrack.scrollWidth,
+    pin: true,
+    scrub: 1,
+    invalidateOnRefresh: true,
+  }
+});
+
+// ===== CAROUSEL NAVIGATION =====
+const carouselTrack = document.getElementById('carouselTrack');
+const carouselPrev = document.getElementById('carouselPrev');
+const carouselNext = document.getElementById('carouselNext');
+const cardWidth = 520;
+
+carouselNext.addEventListener('click', () => {
+  carouselTrack.scrollBy({ left: cardWidth, behavior: 'smooth' });
+});
+carouselPrev.addEventListener('click', () => {
+  carouselTrack.scrollBy({ left: -cardWidth, behavior: 'smooth' });
+});
+
+// ===== SCROLL-TRIGGERED REVEALS =====
+gsap.utils.toArray('.rule-card').forEach((card, i) => {
+  gsap.from(card, {
+    y: 40, opacity: 0,
+    duration: 0.8,
+    delay: i * 0.1,
+    ease: 'power2.out',
+    scrollTrigger: {
+      trigger: card,
+      start: 'top 85%',
+      once: true,
+    }
+  });
+});
+
+gsap.from('.founder-image-wrap', {
+  x: -60, opacity: 0,
+  duration: 1.2,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '#founder', start: 'top 70%', once: true }
+});
+
+gsap.from('.founder-info', {
+  x: 60, opacity: 0,
+  duration: 1.2,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '#founder', start: 'top 70%', once: true }
+});
+
+gsap.from('.cta-title', {
+  y: 60, opacity: 0,
+  duration: 1,
+  ease: 'power3.out',
+  scrollTrigger: { trigger: '#cta', start: 'top 70%', once: true }
+});
+
+// ===== SOUND TOGGLE =====
+const soundToggle = document.getElementById('soundToggle');
+let audioCtx, oscillator, isPlaying = false;
+soundToggle.addEventListener('click', () => {
+  if (!isPlaying) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const o = audioCtx.createOscillator();
+    const g = audioCtx.createGain();
+    o.type = 'sine';
+    o.frequency.setValueAtTime(60, audioCtx.currentTime);
+    g.gain.setValueAtTime(0.03, audioCtx.currentTime);
+    o.connect(g);
+    g.connect(audioCtx.destination);
+    o.start();
+    oscillator = { o, g };
+    soundToggle.classList.add('playing');
+    isPlaying = true;
+  } else {
+    oscillator.g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
+    oscillator.o.stop(audioCtx.currentTime + 0.5);
+    soundToggle.classList.remove('playing');
+    isPlaying = false;
+  }
+});
+
+// ===== SMOOTH SCROLL ANCHOR LINKS =====
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(anchor.getAttribute('href'));
+    if (target) lenis.scrollTo(target, { offset: -80 });
+  });
+});
+
+// ===== PARALLAX ON FOUNDER IMAGE =====
+gsap.to('.founder-image-wrap img', {
+  y: -40,
+  scrollTrigger: {
+    trigger: '#founder',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 1,
+  }
+});
+
+})();
+</script>
+</body>
+</html>
