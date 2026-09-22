@@ -3,1379 +3,2131 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Social Euphoria — Curating Hell to Have Fun</title>
-<meta name="description" content="Social Euphoria is Dehradun's most exclusive nightlife collective. We take over luxury resorts, hidden estates, and glasshouse rooftops to orchestrate experiences that blur the line between euphoria and chaos.">
-<meta name="theme-color" content="#ff2d6f">
+<title>Social Euphoria — Curating Hell to Have Fun | Dehradun Nightlife Collective</title>
+<meta name="description" content="Social Euphoria is Dehradun's premier roving nightlife collective curated by Abhay Rawat. Exclusive resort takeovers, sunset soirées, pool festivals, and immersive raves.">
+<meta name="theme-color" content="#e60026">
 <meta property="og:title" content="Social Euphoria — Curating Hell to Have Fun">
-<meta property="og:description" content="Dehradun's most exclusive nightlife collective. Invite-only events at luxury venues.">
+<meta property="og:description" content="Dehradun's exclusive nightlife collective. Black, White, Red. Curating hell to have fun.">
 <meta property="og:type" content="website">
+
+<!-- Google Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;500;600;700&family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400;1,700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,400;1,700&family=Space+Grotesk:wght@500;700&display=swap" rel="stylesheet">
+
+<!-- Libraries -->
 <script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.1/dist/lenis.min.js"></script>
 
 <style>
-/* ========== RESET & BASE ========== */
+/* ==========================================================================
+   DESIGN SYSTEM: 50% Black, 30% Red, 20% White (Social Euphoria Brand Spec)
+   ========================================================================== */
 *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
-html { font-size: 16px; }
+
+:root {
+  /* 50% Black Base */
+  --bg: #060607;
+  --bg-card: #0d0d10;
+  --bg-elevated: #15151b;
+  --bg-overlay: rgba(6, 6, 7, 0.88);
+
+  /* 30% Electric & Crimson Red Accents */
+  --red-primary: #e60026;
+  --red-glow: #ff1744;
+  --red-dark: #8b0015;
+  --red-dim: rgba(230, 0, 38, 0.12);
+  --red-border: rgba(230, 0, 38, 0.35);
+  --red-shadow: 0 0 35px rgba(230, 0, 38, 0.45);
+
+  /* 20% Crisp White Highlights & Typography */
+  --text-white: #ffffff;
+  --text-muted: rgba(255, 255, 255, 0.75);
+  --text-dim: rgba(255, 255, 255, 0.38);
+  --text-ghost: rgba(255, 255, 255, 0.08);
+
+  --font-main: 'Outfit', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: 'Playfair Display', Georgia, serif;
+  --font-display: 'Space Grotesk', sans-serif;
+
+  --ease-smooth: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-inout: cubic-bezier(0.77, 0, 0.175, 1);
+  --radius: 12px;
+}
+
+html {
+  font-size: 16px;
+  background-color: var(--bg);
+  color: var(--text-white);
+  overflow-x: hidden;
+}
+
 body {
-  font-family: 'Outfit', system-ui, sans-serif;
-  background: var(--bg);
-  color: var(--text);
+  font-family: var(--font-main);
+  background-color: var(--bg);
+  color: var(--text-white);
   overflow-x: hidden;
   cursor: none;
   -webkit-font-smoothing: antialiased;
 }
+
 a { color: inherit; text-decoration: none; }
-img { display: block; max-width: 100%; }
-button { cursor: none; border: none; background: none; font-family: inherit; color: inherit; }
+button { font-family: inherit; border: none; background: none; color: inherit; cursor: none; }
 
-/* ========== DESIGN SYSTEM ========== */
-:root {
-  --bg: #0a0a0a;
-  --bg2: #111111;
-  --bg3: #1a1a1a;
-  --neon-pink: #ff2d6f;
-  --neon-blue: #00f0ff;
-  --neon-purple: #b829dd;
-  --gold: #ffd700;
-  --text: #f5f0eb;
-  --text-muted: rgba(245,240,235,0.4);
-  --text-dim: rgba(245,240,235,0.15);
-  --text-ghost: rgba(245,240,235,0.06);
-  --ease: cubic-bezier(.76, 0, .24, 1);
-  --ease-o: cubic-bezier(.16, 1, .3, 1);
-  --glass: rgba(255,255,255,0.04);
-  --glass-border: rgba(255,255,255,0.08);
-}
-
-/* ========== CUSTOM CURSOR ========== */
-.cursor-dot {
+/* Custom Cursor */
+.custom-cursor-dot {
   position: fixed; top: 0; left: 0;
-  width: 8px; height: 8px;
-  background: var(--neon-pink);
+  width: 7px; height: 7px;
+  background: var(--red-glow);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 10001;
-  mix-blend-mode: difference;
-  transition: width 0.3s var(--ease), height 0.3s var(--ease), opacity 0.3s;
+  z-index: 99999;
+  mix-blend-mode: screen;
+  box-shadow: 0 0 12px var(--red-glow);
+  transform: translate(-50%, -50%);
 }
-.cursor-ring {
+
+.custom-cursor-ring {
   position: fixed; top: 0; left: 0;
-  width: 40px; height: 40px;
-  border: 1.5px solid rgba(255,45,111,0.5);
+  width: 38px; height: 38px;
+  border: 1.5px solid rgba(230, 0, 38, 0.6);
   border-radius: 50%;
   pointer-events: none;
-  z-index: 10000;
-  transition: width 0.4s var(--ease), height 0.4s var(--ease), border-color 0.3s;
+  z-index: 99998;
+  transform: translate(-50%, -50%);
+  transition: width 0.3s var(--ease-smooth), height 0.3s var(--ease-smooth), border-color 0.3s;
 }
-.cursor-ring.expand {
-  width: 80px; height: 80px;
-  border-color: var(--neon-pink);
-}
-.cursor-label {
-  position: fixed; top: 0; left: 0;
-  pointer-events: none;
-  z-index: 10002;
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  color: var(--neon-pink);
-  opacity: 0;
-  transition: opacity 0.3s;
-  font-weight: 500;
-}
-.cursor-label.visible { opacity: 1; }
 
-/* ========== LOADER ========== */
+.custom-cursor-ring.hovering {
+  width: 65px; height: 65px;
+  border-color: var(--red-glow);
+  background: rgba(230, 0, 38, 0.08);
+}
+
+/* ==========================================================================
+   LOADER (0 - 100%)
+   ========================================================================== */
 #loader {
-  position: fixed; inset: 0;
-  background: var(--bg);
-  z-index: 9999;
+  position: fixed;
+  inset: 0;
+  background: #000;
+  z-index: 100000;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  transition: clip-path 1.2s var(--ease);
+  transition: clip-path 1s cubic-bezier(0.85, 0, 0.15, 1);
   clip-path: inset(0 0 0 0);
 }
-#loader.exit { clip-path: inset(0 0 100% 0); }
-.loader-counter {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(80px, 15vw, 200px);
-  font-weight: 700;
-  color: var(--neon-pink);
-  text-shadow: 0 0 60px rgba(255,45,111,0.5), 0 0 120px rgba(255,45,111,0.2);
-  line-height: 1;
-}
-.loader-bar {
-  width: 200px; height: 2px;
-  background: var(--text-dim);
-  margin-top: 30px;
-  border-radius: 2px;
-  overflow: hidden;
-}
-.loader-bar-fill {
-  width: 0%; height: 100%;
-  background: var(--neon-pink);
-  box-shadow: 0 0 20px var(--neon-pink);
-  transition: width 0.1s linear;
-}
-.loader-tagline {
-  margin-top: 24px;
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--text-muted);
+
+#loader.loaded {
+  clip-path: inset(0 0 100% 0);
+  pointer-events: none;
 }
 
-/* ========== HEADER ========== */
-#header {
-  position: fixed; top: 0; left: 0; right: 0;
+.loader-logo-wrap {
+  width: 90px;
+  height: 90px;
+  border-radius: 50%;
+  padding: 3px;
+  background: linear-gradient(135deg, var(--red-glow), #000, var(--red-primary));
+  box-shadow: 0 0 40px rgba(230, 0, 38, 0.6);
+  margin-bottom: 24px;
+  animation: pulseLogo 2s infinite alternate;
+}
+
+.loader-logo-wrap img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+@keyframes pulseLogo {
+  0% { transform: scale(0.96); box-shadow: 0 0 25px rgba(230, 0, 38, 0.4); }
+  100% { transform: scale(1.04); box-shadow: 0 0 50px rgba(230, 0, 38, 0.8); }
+}
+
+.loader-counter {
+  font-family: var(--font-display);
+  font-size: clamp(64px, 12vw, 140px);
+  font-weight: 800;
+  color: var(--text-white);
+  line-height: 1;
+  text-shadow: 0 0 40px rgba(230, 0, 38, 0.7);
+}
+
+.loader-bar-track {
+  width: 240px;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.1);
+  border-radius: 2px;
+  margin-top: 24px;
+  overflow: hidden;
+}
+
+.loader-bar-fill {
+  width: 0%;
+  height: 100%;
+  background: linear-gradient(90deg, var(--red-primary), var(--text-white));
+  box-shadow: 0 0 15px var(--red-glow);
+  transition: width 0.1s linear;
+}
+
+.loader-tagline {
+  margin-top: 20px;
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  font-weight: 600;
+}
+
+/* ==========================================================================
+   NAVIGATION
+   ========================================================================== */
+#navbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
   z-index: 1000;
-  padding: 20px clamp(24px, 4vw, 56px);
+  padding: 22px clamp(24px, 5vw, 60px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  mix-blend-mode: difference;
-  transition: transform 0.6s var(--ease);
+  backdrop-filter: blur(12px);
+  background: rgba(6, 6, 7, 0.4);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  transition: transform 0.5s var(--ease-smooth);
 }
-#header.hidden { transform: translateY(-100%); }
-.header-logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 18px;
+
+#navbar.hidden { transform: translateY(-100%); }
+
+.nav-brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.nav-logo-img {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  border: 1.5px solid var(--red-glow);
+  box-shadow: 0 0 12px rgba(230, 0, 38, 0.5);
+  object-fit: cover;
+}
+
+.nav-brand-text {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+}
+
+.nav-brand-text span {
+  color: var(--red-primary);
+}
+
+.nav-links {
+  display: flex;
+  align-items: center;
+  gap: 36px;
+}
+
+.nav-links a {
+  font-size: 12px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.nav-links a:hover {
+  color: var(--text-white);
+  text-shadow: 0 0 10px rgba(230, 0, 38, 0.8);
+}
+
+.nav-cta {
+  padding: 10px 24px;
+  background: var(--red-primary);
+  color: var(--text-white);
+  border-radius: 30px;
+  font-size: 11px;
   font-weight: 700;
   letter-spacing: 2px;
   text-transform: uppercase;
-}
-.header-logo span { color: var(--neon-pink); }
-.header-nav { display: flex; gap: 32px; align-items: center; }
-.header-nav a {
-  font-size: 11px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 400;
-  opacity: 0.7;
-  transition: opacity 0.3s, color 0.3s;
-}
-.header-nav a:hover { opacity: 1; color: var(--neon-pink); }
-.header-cta {
-  padding: 10px 24px;
-  border: 1px solid var(--neon-pink);
-  font-size: 10px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  transition: background 0.3s, color 0.3s;
-}
-.header-cta:hover { background: var(--neon-pink); color: #000; }
-.mobile-menu-btn {
-  display: none;
-  flex-direction: column;
-  gap: 6px;
-  padding: 8px;
-}
-.mobile-menu-btn span {
-  display: block;
-  width: 28px; height: 1.5px;
-  background: var(--text);
-  transition: transform 0.4s var(--ease), opacity 0.3s;
+  box-shadow: 0 0 20px rgba(230, 0, 38, 0.4);
+  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s;
 }
 
-/* ========== HERO ========== */
+.nav-cta:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 30px rgba(230, 0, 38, 0.7);
+}
+
+/* ==========================================================================
+   HERO: High-Blur Red Video Filter + 3D Depth Canvas + Prominent Logo
+   ========================================================================== */
 #hero {
   position: relative;
   height: 100vh;
+  min-height: 700px;
   display: flex;
   align-items: center;
   justify-content: center;
   overflow: hidden;
 }
-#hero-canvas {
+
+/* Background Video with 60-65% Red Filter Blur */
+.hero-video-wrap {
   position: absolute;
   inset: 0;
   z-index: 1;
+  overflow: hidden;
+  will-change: transform, filter;
 }
-.hero-bg-overlay {
+
+#hero-bg-video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  /* 60% - 65% optical blur as requested */
+  filter: blur(14px) brightness(0.65) saturate(2) contrast(1.15);
+  transform: scale(1.12);
+  transition: filter 0.5s ease-out;
+}
+
+/* Red & Black Duotone Filter Overlay */
+.hero-red-filter-overlay {
   position: absolute;
   inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, transparent 0%, var(--bg) 70%);
   z-index: 2;
+  background: linear-gradient(135deg, rgba(230, 0, 38, 0.45) 0%, rgba(6, 6, 7, 0.75) 60%, rgba(6, 6, 7, 0.95) 100%);
+  mix-blend-mode: multiply;
+  pointer-events: none;
 }
+
+.hero-radial-vignette {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  background: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.15) 0%, rgba(6, 6, 7, 0.85) 70%, #060607 100%);
+  pointer-events: none;
+}
+
+/* Three.js Interactive 3D Particles Canvas */
+#hero-canvas {
+  position: absolute;
+  inset: 0;
+  z-index: 4;
+  pointer-events: none;
+}
+
+/* Hero Content Stack */
 .hero-content {
   position: relative;
-  z-index: 3;
+  z-index: 5;
   text-align: center;
-  padding: 0 clamp(24px, 4vw, 56px);
+  padding: 0 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  will-change: transform, opacity;
 }
-.hero-eyebrow {
-  font-size: 10px;
-  letter-spacing: 6px;
-  text-transform: uppercase;
-  color: var(--neon-pink);
-  margin-bottom: 24px;
+
+/* Hero Logo Badge */
+.hero-logo-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 14px;
+  background: rgba(13, 13, 16, 0.65);
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(230, 0, 38, 0.45);
+  padding: 8px 22px 8px 10px;
+  border-radius: 50px;
+  box-shadow: 0 0 35px rgba(230, 0, 38, 0.35);
+  margin-bottom: 28px;
+  transform: translateY(30px);
   opacity: 0;
 }
-.hero-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(60px, 12vw, 160px);
+
+.hero-logo-img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  border: 1.5px solid var(--red-glow);
+  object-fit: cover;
+}
+
+.hero-badge-tag {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--text-white);
+  font-weight: 700;
+}
+
+.hero-badge-tag span {
+  color: var(--red-glow);
+}
+
+/* Hero Titles */
+.hero-main-title {
+  font-family: var(--font-display);
+  font-size: clamp(52px, 11vw, 150px);
   font-weight: 900;
-  line-height: 0.95;
+  line-height: 0.92;
   letter-spacing: -2px;
   text-transform: uppercase;
+  color: var(--text-white);
+  text-shadow: 0 0 50px rgba(0, 0, 0, 0.9);
 }
-.hero-title .line { display: block; overflow: hidden; }
-.hero-title .word {
-  display: inline-block;
-  transform: translateY(120%);
-  will-change: transform;
+
+.hero-main-title .red-text {
+  color: var(--red-primary);
+  text-shadow: 0 0 45px rgba(230, 0, 38, 0.8), 0 0 90px rgba(230, 0, 38, 0.35);
 }
+
 .hero-tagline {
-  margin-top: 32px;
-  font-size: clamp(14px, 2vw, 20px);
-  font-weight: 300;
-  color: var(--text-muted);
+  margin-top: 30px;
+  font-family: var(--font-serif);
+  font-size: clamp(18px, 3vw, 32px);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--text-white);
+  letter-spacing: 1px;
+  opacity: 0;
+  transform: translateY(30px);
+}
+
+.hero-tagline span {
+  color: var(--red-glow);
+  font-weight: 700;
+  text-shadow: 0 0 20px rgba(230, 0, 38, 0.6);
+}
+
+.hero-sub-p {
+  margin-top: 14px;
+  font-size: 13px;
   letter-spacing: 4px;
   text-transform: uppercase;
+  color: var(--text-dim);
+  font-weight: 500;
   opacity: 0;
+  transform: translateY(20px);
 }
-.hero-tagline em {
-  font-style: italic;
-  color: var(--neon-pink);
-  font-family: 'Playfair Display', serif;
+
+.hero-actions {
+  margin-top: 36px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+  opacity: 0;
+  transform: translateY(20px);
 }
-.hero-scroll {
+
+.btn-hero-primary {
+  padding: 16px 40px;
+  background: var(--red-primary);
+  color: var(--text-white);
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  box-shadow: 0 0 35px rgba(230, 0, 38, 0.5);
+  transition: transform 0.3s var(--ease-smooth), box-shadow 0.3s;
+}
+
+.btn-hero-primary:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 50px rgba(230, 0, 38, 0.85);
+}
+
+.btn-hero-secondary {
+  padding: 16px 36px;
+  border: 1.5px solid rgba(255, 255, 255, 0.25);
+  background: rgba(13, 13, 16, 0.45);
+  backdrop-filter: blur(10px);
+  color: var(--text-white);
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  transition: border-color 0.3s, background 0.3s;
+}
+
+.btn-hero-secondary:hover {
+  border-color: var(--red-primary);
+  background: var(--red-dim);
+}
+
+.hero-scroll-indicator {
   position: absolute;
-  bottom: 40px;
+  bottom: 30px;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 3;
+  z-index: 5;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 12px;
+  gap: 8px;
   opacity: 0;
 }
+
 .hero-scroll-text {
   font-size: 9px;
   letter-spacing: 4px;
   text-transform: uppercase;
-  color: var(--text-muted);
-}
-.hero-scroll-line {
-  width: 1px; height: 60px;
-  background: linear-gradient(to bottom, var(--neon-pink), transparent);
-  animation: scrollPulse 2s ease-in-out infinite;
-}
-@keyframes scrollPulse {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.5); }
-  50% { opacity: 1; transform: scaleY(1); }
+  color: var(--text-dim);
 }
 
-/* ========== MARQUEE ========== */
-#marquee {
-  padding: 40px 0;
-  overflow: hidden;
-  border-top: 1px solid var(--text-ghost);
-  border-bottom: 1px solid var(--text-ghost);
+.hero-scroll-bar {
+  width: 1px;
+  height: 48px;
+  background: linear-gradient(to bottom, var(--red-primary), transparent);
+  animation: scrollPulse 2s infinite ease-in-out;
 }
-.marquee-track {
+
+@keyframes scrollPulse {
+  0%, 100% { transform: scaleY(0.4); opacity: 0.3; }
+  50% { transform: scaleY(1); opacity: 1; }
+}
+
+/* ==========================================================================
+   MARQUEE BAR
+   ========================================================================== */
+#marquee-section {
+  padding: 24px 0;
+  background: #09090b;
+  border-top: 1px solid var(--red-border);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  overflow: hidden;
+  box-shadow: 0 0 30px rgba(230, 0, 38, 0.15);
+}
+
+.marquee-content {
   display: flex;
   gap: 60px;
   white-space: nowrap;
-  animation: marqueeScroll 25s linear infinite;
-}
-.marquee-track span {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(20px, 3vw, 36px);
-  font-style: italic;
-  font-weight: 400;
-  color: var(--text-muted);
-  flex-shrink: 0;
-}
-.marquee-track span.dot {
-  color: var(--neon-pink);
-  font-style: normal;
-}
-@keyframes marqueeScroll {
-  from { transform: translateX(0); }
-  to { transform: translateX(-50%); }
+  animation: marqueeRun 28s linear infinite;
 }
 
-/* ========== ABOUT ========== */
+.marquee-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 20px;
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2.2vw, 24px);
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  color: var(--text-white);
+}
+
+.marquee-item .symbol {
+  color: var(--red-glow);
+  font-size: 20px;
+}
+
+@keyframes marqueeRun {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ==========================================================================
+   ABOUT & STATS
+   ========================================================================== */
 #about {
-  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
-  max-width: 1200px;
+  padding: 120px clamp(24px, 5vw, 60px);
+  max-width: 1280px;
   margin: 0 auto;
 }
-.about-label {
-  font-size: 10px;
+
+.about-header-tag {
+  font-size: 11px;
   letter-spacing: 5px;
   text-transform: uppercase;
-  color: var(--neon-pink);
-  margin-bottom: 48px;
+  color: var(--red-glow);
+  font-weight: 700;
+  margin-bottom: 20px;
 }
-.about-text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(24px, 4vw, 52px);
+
+.about-manifesto {
+  font-family: var(--font-serif);
+  font-size: clamp(26px, 4vw, 52px);
+  line-height: 1.25;
+  color: var(--text-white);
   font-weight: 400;
-  line-height: 1.3;
-  color: var(--text);
+  margin-bottom: 80px;
 }
-.about-text .w {
-  opacity: 0.1;
-  transition: opacity 0.4s ease;
-  display: inline;
+
+.about-manifesto .highlight {
+  color: var(--red-primary);
+  font-style: italic;
+  font-weight: 700;
 }
-.about-text .w.on { opacity: 1; }
-.about-stats {
+
+.about-stats-grid {
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: 32px;
-  margin-top: 100px;
-  padding-top: 60px;
-  border-top: 1px solid var(--text-ghost);
+  gap: 28px;
+  padding-top: 40px;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
-.stat-item { text-align: center; }
-.stat-number {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 700;
-  color: var(--neon-pink);
+
+.stat-box {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: var(--radius);
+  padding: 32px 24px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.4s var(--ease-smooth), border-color 0.4s;
+}
+
+.stat-box:hover {
+  transform: translateY(-6px);
+  border-color: var(--red-border);
+}
+
+.stat-box::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0;
+  width: 100%; height: 3px;
+  background: linear-gradient(90deg, var(--red-primary), transparent);
+}
+
+.stat-value {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 5vw, 60px);
+  font-weight: 800;
+  color: var(--text-white);
   line-height: 1;
 }
+
+.stat-value span { color: var(--red-glow); }
+
 .stat-label {
+  margin-top: 12px;
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  margin-top: 12px;
-  font-weight: 300;
 }
 
-/* ========== IMAGE REVEAL ========== */
-.image-reveal-section {
-  padding: 0 clamp(24px, 4vw, 56px);
-  max-width: 1400px;
-  margin: 0 auto 0;
-}
-.image-reveal {
-  width: 100%;
-  aspect-ratio: 16/9;
-  border-radius: 12px;
+/* ==========================================================================
+   3D 5-CARD COVERFLOW / DEPTH CAROUSEL (Voice Instruction 2)
+   ========================================================================== */
+#carousel-3d-section {
+  padding: 120px 0;
+  background: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.08) 0%, transparent 70%), #060607;
   overflow: hidden;
-  clip-path: inset(15% 15% 15% 15% round 12px);
+  position: relative;
 }
-.image-reveal img {
+
+.carousel-section-head {
+  text-align: center;
+  margin-bottom: 70px;
+  padding: 0 24px;
+}
+
+.carousel-tag {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  font-weight: 700;
+  margin-bottom: 12px;
+}
+
+.carousel-heading {
+  font-family: var(--font-display);
+  font-size: clamp(32px, 5vw, 64px);
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.carousel-heading span { color: var(--red-primary); }
+
+.carousel-sub {
+  margin-top: 12px;
+  font-size: 14px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+/* 3D Stage */
+.carousel-stage {
+  position: relative;
+  width: 100%;
+  height: 520px;
+  perspective: 1200px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.carousel-card-item {
+  position: absolute;
+  width: clamp(300px, 35vw, 440px);
+  height: 480px;
+  border-radius: 18px;
+  overflow: hidden;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  transform-style: preserve-3d;
+  transition: transform 0.65s var(--ease-smooth), opacity 0.65s, filter 0.65s, box-shadow 0.65s;
+  cursor: pointer;
+  user-select: none;
+}
+
+.carousel-card-img {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transform: scale(1.15);
+  transition: transform 0.8s var(--ease-smooth);
 }
 
-/* ========== WHAT WE DO - HORIZONTAL SCROLL ========== */
-#whatwedo {
-  padding: clamp(100px, 18vh, 220px) 0;
+.carousel-card-item:hover .carousel-card-img {
+  transform: scale(1.08);
 }
-.whatwedo-header {
-  padding: 0 clamp(24px, 4vw, 56px);
-  margin-bottom: 60px;
-}
-.whatwedo-label {
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--neon-pink);
-  margin-bottom: 24px;
-}
-.whatwedo-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 6vw, 80px);
-  font-weight: 700;
-  line-height: 1.05;
-}
-.hscroll-wrapper {
-  overflow: hidden;
-}
-.hscroll-track {
-  display: flex;
-  gap: 32px;
-  padding: 0 clamp(24px, 4vw, 56px);
-  width: max-content;
-}
-.event-card {
-  width: clamp(300px, 30vw, 420px);
-  flex-shrink: 0;
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  cursor: none;
-}
-.event-card-img {
-  width: 100%;
-  aspect-ratio: 3/4;
-  object-fit: cover;
-  filter: grayscale(60%) brightness(0.7);
-  transition: filter 0.6s var(--ease), transform 0.6s var(--ease);
-}
-.event-card:hover .event-card-img {
-  filter: grayscale(0%) brightness(1);
-  transform: scale(1.05);
-}
-.event-card-overlay {
+
+.carousel-card-overlay {
   position: absolute;
-  bottom: 0; left: 0; right: 0;
-  padding: 40px 28px;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, transparent 100%);
-  transform: translateY(20px);
-  opacity: 0.7;
-  transition: transform 0.5s var(--ease), opacity 0.5s;
+  inset: 0;
+  background: linear-gradient(to top, rgba(6, 6, 7, 0.95) 0%, rgba(6, 6, 7, 0.4) 45%, transparent 100%);
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 30px;
 }
-.event-card:hover .event-card-overlay {
-  transform: translateY(0);
-  opacity: 1;
-}
-.event-card-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
+
+.carousel-card-tag {
+  align-self: flex-start;
+  padding: 5px 14px;
+  background: var(--red-primary);
+  color: #fff;
+  border-radius: 20px;
+  font-size: 10px;
   font-weight: 700;
-  margin-bottom: 8px;
-}
-.event-card-desc {
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--text-muted);
-  line-height: 1.5;
-}
-.event-card-tag {
-  display: inline-block;
-  margin-top: 12px;
-  padding: 4px 12px;
-  border: 1px solid var(--neon-pink);
-  font-size: 9px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--neon-pink);
+  margin-bottom: 12px;
+  box-shadow: 0 0 15px rgba(230, 0, 38, 0.5);
 }
 
-/* ========== PREVIOUS EVENTS CAROUSEL ========== */
-#events {
-  padding: clamp(100px, 18vh, 220px) 0;
-  background: var(--bg2);
-}
-.events-header {
-  padding: 0 clamp(24px, 4vw, 56px);
-  margin-bottom: 60px;
-  display: flex;
-  align-items: flex-end;
-  justify-content: space-between;
-}
-.events-label {
-  font-size: 10px;
-  letter-spacing: 5px;
+.carousel-card-name {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--text-white);
   text-transform: uppercase;
-  color: var(--neon-pink);
-  margin-bottom: 24px;
 }
-.events-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 6vw, 80px);
-  font-weight: 700;
+
+.carousel-card-venue {
+  margin-top: 6px;
+  font-size: 12px;
+  color: var(--text-muted);
+  letter-spacing: 1px;
 }
-.events-nav { display: flex; gap: 12px; }
-.events-nav button {
-  width: 50px; height: 50px;
-  border: 1px solid var(--text-dim);
+
+/* 3D Stack Classes (5 items) */
+.c-center {
+  transform: translate3d(0, 0, 80px) scale(1.05);
+  z-index: 10;
+  opacity: 1;
+  filter: blur(0px);
+  border-color: var(--red-primary);
+  box-shadow: 0 25px 60px rgba(230, 0, 38, 0.45);
+}
+
+.c-left-1 {
+  transform: translate3d(-340px, 0, -40px) scale(0.88) rotateY(18deg);
+  z-index: 8;
+  opacity: 0.78;
+  filter: blur(1.5px) brightness(0.85);
+}
+
+.c-right-1 {
+  transform: translate3d(340px, 0, -40px) scale(0.88) rotateY(-18deg);
+  z-index: 8;
+  opacity: 0.78;
+  filter: blur(1.5px) brightness(0.85);
+}
+
+.c-left-2 {
+  transform: translate3d(-620px, 0, -120px) scale(0.72) rotateY(32deg);
+  z-index: 5;
+  opacity: 0.45;
+  filter: blur(3px) brightness(0.65);
+}
+
+.c-right-2 {
+  transform: translate3d(620px, 0, -120px) scale(0.72) rotateY(-32deg);
+  z-index: 5;
+  opacity: 0.45;
+  filter: blur(3px) brightness(0.65);
+}
+
+.c-hidden {
+  transform: translate3d(0, 0, -250px) scale(0.5);
+  z-index: 1;
+  opacity: 0;
+  pointer-events: none;
+}
+
+/* Carousel Controls */
+.carousel-controls {
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 20px;
-  transition: border-color 0.3s, background 0.3s;
-}
-.events-nav button:hover {
-  border-color: var(--neon-pink);
-  background: rgba(255,45,111,0.1);
-}
-.carousel-track {
-  display: flex;
   gap: 24px;
-  padding: 0 clamp(24px, 4vw, 56px);
-  overflow-x: auto;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
-  scroll-behavior: smooth;
+  margin-top: 40px;
 }
-.carousel-track::-webkit-scrollbar { display: none; }
-.carousel-card {
-  flex-shrink: 0;
-  width: clamp(300px, 35vw, 500px);
-  scroll-snap-align: start;
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-  border: 1px solid var(--text-ghost);
-  transition: border-color 0.4s;
+
+.c-nav-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  border: 1.5px solid rgba(255, 255, 255, 0.2);
+  background: var(--bg-card);
+  color: var(--text-white);
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  transition: all 0.3s var(--ease-smooth);
 }
-.carousel-card:hover {
-  border-color: var(--neon-pink);
-  box-shadow: 0 0 40px rgba(255,45,111,0.15);
+
+.c-nav-btn:hover {
+  border-color: var(--red-primary);
+  background: var(--red-primary);
+  box-shadow: 0 0 25px rgba(230, 0, 38, 0.6);
+  transform: scale(1.1);
 }
-.carousel-card img {
-  width: 100%;
-  aspect-ratio: 16/10;
-  object-fit: cover;
-  transition: transform 0.6s var(--ease);
+
+/* ==========================================================================
+   AMAZON-STYLE CATALOG & BUILT-IN VIDEO RECAP PLAYER (Voice Instruction 2)
+   ========================================================================== */
+#event-catalog {
+  padding: 120px clamp(24px, 5vw, 60px);
+  max-width: 1360px;
+  margin: 0 auto;
 }
-.carousel-card:hover img { transform: scale(1.05); }
-.carousel-card-info {
-  padding: 24px;
-  background: var(--bg3);
-}
-.carousel-card-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 22px;
-  font-weight: 700;
-  margin-bottom: 8px;
-}
-.carousel-card-meta {
+
+.catalog-header {
   display: flex;
   justify-content: space-between;
-  align-items: center;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 300;
+  align-items: flex-end;
+  margin-bottom: 50px;
+  flex-wrap: wrap;
+  gap: 24px;
 }
-.carousel-card-link {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  margin-top: 16px;
-  padding: 8px 16px;
-  background: rgba(255,45,111,0.1);
-  border: 1px solid rgba(255,45,111,0.3);
+
+.catalog-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 4vw, 54px);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.catalog-title span { color: var(--red-primary); }
+
+/* Event Switcher Tabs */
+.catalog-tabs {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.catalog-tab-btn {
+  padding: 10px 22px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 30px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  transition: all 0.3s;
+}
+
+.catalog-tab-btn.active, .catalog-tab-btn:hover {
+  background: var(--red-primary);
+  color: var(--text-white);
+  border-color: var(--red-primary);
+  box-shadow: 0 0 20px rgba(230, 0, 38, 0.5);
+}
+
+/* Amazon-Style Showcase Layout */
+.catalog-showcase {
+  display: grid;
+  grid-template-columns: 1.25fr 1fr;
+  gap: 48px;
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 20px;
+  padding: 40px;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.7);
+}
+
+/* Left: 4 Photos Multi-Angle Amazon Catalog View */
+.catalog-left-col {
+  display: flex;
+  gap: 20px;
+}
+
+.catalog-thumb-strip {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  width: 88px;
+  flex-shrink: 0;
+}
+
+.thumb-item {
+  width: 88px;
+  height: 88px;
+  border-radius: 10px;
+  overflow: hidden;
+  border: 2px solid transparent;
+  cursor: pointer;
+  background: #000;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.thumb-item.active {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 15px rgba(230, 0, 38, 0.6);
+  transform: scale(1.04);
+}
+
+.thumb-item img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.catalog-main-display {
+  flex: 1;
+  height: 480px;
+  border-radius: 14px;
+  overflow: hidden;
+  position: relative;
+  background: #000;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.catalog-main-display img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.5s var(--ease-smooth);
+}
+
+.catalog-main-display:hover img {
+  transform: scale(1.05);
+}
+
+.catalog-main-badge {
+  position: absolute;
+  top: 16px;
+  left: 16px;
+  background: rgba(6, 6, 7, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid var(--red-border);
+  padding: 6px 14px;
+  border-radius: 20px;
   font-size: 10px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--neon-pink);
-  transition: background 0.3s;
+  color: var(--red-glow);
+  font-weight: 700;
 }
-.carousel-card-link:hover { background: rgba(255,45,111,0.2); }
 
-/* ========== THE RULES ========== */
-#rules {
-  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
-  max-width: 1200px;
-  margin: 0 auto;
+/* Right: Direct In-Site Video Reel Player */
+.catalog-right-col {
+  display: flex;
+  flex-direction: column;
 }
-.rules-grid {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: start;
-}
-.rules-left {}
-.rules-label {
-  font-size: 10px;
-  letter-spacing: 5px;
+
+.event-details-tag {
+  font-size: 11px;
+  letter-spacing: 3px;
   text-transform: uppercase;
-  color: var(--neon-pink);
+  color: var(--red-glow);
+  font-weight: 700;
+  margin-bottom: 8px;
+}
+
+.event-details-title {
+  font-family: var(--font-display);
+  font-size: 32px;
+  font-weight: 800;
+  text-transform: uppercase;
+  color: var(--text-white);
+  margin-bottom: 12px;
+}
+
+.event-details-desc {
+  font-size: 14px;
+  line-height: 1.65;
+  color: var(--text-muted);
   margin-bottom: 24px;
 }
-.rules-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(48px, 7vw, 100px);
+
+/* The Player Wrapper */
+.in-site-reel-player {
+  position: relative;
+  width: 100%;
+  height: 250px;
+  border-radius: 14px;
+  overflow: hidden;
+  background: #000;
+  border: 1px solid var(--red-border);
+  box-shadow: 0 10px 30px rgba(230, 0, 38, 0.2);
+  margin-bottom: 24px;
+}
+
+.in-site-reel-player video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.reel-player-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, transparent 50%);
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  padding: 16px 20px;
+  pointer-events: none;
+}
+
+.reel-status {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.reel-status::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  background: var(--red-glow);
+  border-radius: 50%;
+  box-shadow: 0 0 10px var(--red-glow);
+  animation: liveBlink 1.5s infinite;
+}
+
+@keyframes liveBlink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+.reel-ctrl-btns {
+  pointer-events: auto;
+  display: flex;
+  gap: 10px;
+}
+
+.reel-ctrl-btn {
+  padding: 6px 14px;
+  background: rgba(13, 13, 16, 0.85);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  border-radius: 20px;
+  font-size: 11px;
+  font-weight: 700;
+  color: #fff;
+  transition: all 0.2s;
+}
+
+.reel-ctrl-btn:hover {
+  background: var(--red-primary);
+  border-color: var(--red-primary);
+}
+
+/* Event Metadata specs */
+.event-meta-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 12px;
+  margin-top: auto;
+}
+
+.meta-box {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 12px 16px;
+}
+
+.meta-box-label {
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-dim);
+}
+
+.meta-box-value {
+  margin-top: 4px;
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--text-white);
+}
+
+/* ==========================================================================
+   FOUNDER: BIG DADDY ABHAY RAWAT (Voice Instruction 2)
+   ========================================================================== */
+#founder-section {
+  padding: 140px clamp(24px, 5vw, 60px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.founder-card {
+  background: var(--bg-card);
+  border: 1px solid rgba(230, 0, 38, 0.3);
+  border-radius: 24px;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: 1fr 1.2fr;
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.8), 0 0 50px rgba(230, 0, 38, 0.15);
+  position: relative;
+}
+
+.founder-img-wrap {
+  position: relative;
+  min-height: 550px;
+  background: #000;
+  overflow: hidden;
+}
+
+.founder-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: contrast(1.1) brightness(0.95);
+  transition: transform 0.8s var(--ease-smooth);
+}
+
+.founder-card:hover .founder-img {
+  transform: scale(1.04);
+}
+
+.founder-img-badge {
+  position: absolute;
+  bottom: 24px;
+  left: 24px;
+  background: rgba(6, 6, 7, 0.85);
+  backdrop-filter: blur(15px);
+  border: 1px solid var(--red-border);
+  border-radius: 30px;
+  padding: 8px 20px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.founder-img-badge .dot {
+  width: 8px; height: 8px;
+  border-radius: 50%;
+  background: var(--red-glow);
+  box-shadow: 0 0 10px var(--red-glow);
+}
+
+.founder-img-badge span {
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-white);
+}
+
+.founder-content {
+  padding: clamp(36px, 6vw, 70px);
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+
+.founder-eyebrow {
+  font-size: 12px;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  font-weight: 800;
+  margin-bottom: 12px;
+}
+
+.founder-name {
+  font-family: var(--font-serif);
+  font-size: clamp(38px, 5vw, 68px);
   font-weight: 900;
   line-height: 1;
   text-transform: uppercase;
-}
-.rules-title::after {
-  content: '';
-  display: block;
-  width: 80px;
-  height: 3px;
-  background: var(--neon-pink);
-  margin-top: 32px;
-  box-shadow: 0 0 20px var(--neon-pink);
-}
-.rules-subtitle {
-  margin-top: 32px;
-  font-size: 16px;
-  font-weight: 300;
-  color: var(--text-muted);
-  line-height: 1.6;
-}
-.rules-right {
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
-}
-.rule-card {
-  padding: 28px;
-  background: var(--glass);
-  border: 1px solid var(--glass-border);
-  border-radius: 12px;
-  backdrop-filter: blur(20px);
-  transition: border-color 0.3s, transform 0.3s var(--ease);
-}
-.rule-card:hover {
-  border-color: rgba(255,45,111,0.3);
-  transform: translateX(8px);
-}
-.rule-card-header {
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  margin-bottom: 12px;
-}
-.rule-card-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 28px;
-  font-weight: 700;
-  color: var(--neon-pink);
-  min-width: 40px;
-}
-.rule-card-title {
-  font-size: 16px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
-.rule-card-desc {
-  font-size: 14px;
-  font-weight: 300;
-  color: var(--text-muted);
-  line-height: 1.6;
-  padding-left: 56px;
-}
-.rules-cta {
-  margin-top: 32px;
-  display: inline-block;
-  padding: 16px 40px;
-  background: var(--neon-pink);
-  color: #000;
-  font-size: 12px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s;
-}
-.rules-cta:hover {
-  transform: scale(1.05);
-  box-shadow: 0 0 40px rgba(255,45,111,0.4);
-}
-
-/* ========== FOUNDER ========== */
-#founder {
-  padding: clamp(100px, 18vh, 220px) clamp(24px, 4vw, 56px);
-  background: var(--bg2);
-}
-.founder-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 80px;
-  align-items: center;
-}
-.founder-image-wrap {
-  position: relative;
-  border-radius: 16px;
-  overflow: hidden;
-}
-.founder-image-wrap::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  border: 1px solid rgba(255,45,111,0.2);
-  border-radius: 16px;
-  pointer-events: none;
-}
-.founder-image-wrap img {
-  width: 100%;
-  aspect-ratio: 1;
-  object-fit: cover;
-  transition: transform 0.8s var(--ease);
-}
-.founder-image-wrap:hover img { transform: scale(1.03); }
-.founder-label {
-  font-size: 10px;
-  letter-spacing: 5px;
-  text-transform: uppercase;
-  color: var(--neon-pink);
+  color: var(--text-white);
   margin-bottom: 16px;
 }
-.founder-name {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(36px, 5vw, 64px);
-  font-weight: 900;
-  line-height: 1.05;
-  text-transform: uppercase;
-  margin-bottom: 8px;
-}
-.founder-role {
+
+.founder-title-role {
   font-size: 14px;
-  letter-spacing: 3px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--text-muted);
-  font-weight: 300;
-  margin-bottom: 32px;
+  font-weight: 600;
+  margin-bottom: 28px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
 }
+
+.founder-title-role::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.1);
+}
+
+.founder-quote {
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 20px;
+  line-height: 1.5;
+  color: var(--text-white);
+  border-left: 3px solid var(--red-primary);
+  padding-left: 20px;
+  margin-bottom: 24px;
+}
+
 .founder-bio {
-  font-size: 16px;
-  font-weight: 300;
+  font-size: 14px;
+  line-height: 1.7;
   color: var(--text-muted);
-  line-height: 1.8;
-  margin-bottom: 40px;
+  margin-bottom: 36px;
 }
+
 .founder-socials {
   display: flex;
   gap: 16px;
+  flex-wrap: wrap;
 }
-.founder-social-link {
+
+.founder-ig-btn {
   display: inline-flex;
   align-items: center;
-  gap: 8px;
-  padding: 12px 24px;
-  border: 1px solid var(--text-dim);
+  gap: 12px;
+  padding: 12px 28px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  border-radius: 40px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--text-white);
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.founder-ig-btn.primary {
+  background: var(--red-primary);
+  border-color: var(--red-primary);
+  box-shadow: 0 0 25px rgba(230, 0, 38, 0.4);
+}
+
+.founder-ig-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--red-glow);
+  box-shadow: 0 0 30px rgba(230, 0, 38, 0.6);
+}
+
+/* ==========================================================================
+   THE RULES (Cult Dynamic)
+   ========================================================================== */
+#rules-section {
+  padding: 120px clamp(24px, 5vw, 60px);
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.rules-wrapper {
+  display: grid;
+  grid-template-columns: 1fr 1.6fr;
+  gap: 60px;
+}
+
+.rules-intro-title {
+  font-family: var(--font-display);
+  font-size: clamp(36px, 5vw, 64px);
+  font-weight: 800;
+  line-height: 1;
+  text-transform: uppercase;
+  color: var(--text-white);
+  margin-bottom: 20px;
+}
+
+.rules-intro-title span { color: var(--red-primary); }
+
+.rules-intro-sub {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.rules-list {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.rule-item {
+  background: var(--bg-card);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 14px;
+  padding: 24px 28px;
+  display: flex;
+  gap: 24px;
+  align-items: flex-start;
+  transition: border-color 0.3s, transform 0.3s;
+}
+
+.rule-item:hover {
+  border-color: var(--red-border);
+  transform: translateX(6px);
+}
+
+.rule-num {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 800;
+  color: var(--red-primary);
+  line-height: 1;
+}
+
+.rule-title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  text-transform: uppercase;
+  color: var(--text-white);
+  margin-bottom: 6px;
+}
+
+.rule-desc {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--text-muted);
+}
+
+/* ==========================================================================
+   CALL TO ACTION & FOOTER
+   ========================================================================== */
+#cta-section {
+  padding: 140px clamp(24px, 5vw, 60px);
+  text-align: center;
+  background: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.18) 0%, transparent 65%), #060607;
+  position: relative;
+  overflow: hidden;
+  border-top: 1px solid var(--red-border);
+}
+
+.cta-tag {
+  font-size: 11px;
+  letter-spacing: 5px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  font-weight: 800;
+  margin-bottom: 16px;
+}
+
+.cta-title {
+  font-family: var(--font-display);
+  font-size: clamp(40px, 8vw, 100px);
+  font-weight: 900;
+  text-transform: uppercase;
+  line-height: 0.95;
+  color: var(--text-white);
+  margin-bottom: 24px;
+}
+
+.cta-title span { color: var(--red-primary); }
+
+.cta-sub {
+  font-size: 16px;
+  color: var(--text-muted);
+  max-width: 600px;
+  margin: 0 auto 40px;
+  line-height: 1.6;
+}
+
+.cta-btn-main {
+  display: inline-block;
+  padding: 18px 56px;
+  background: var(--red-primary);
+  color: var(--text-white);
+  border-radius: 40px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  box-shadow: 0 0 45px rgba(230, 0, 38, 0.6);
+  transition: all 0.3s var(--ease-smooth);
+}
+
+.cta-btn-main:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 65px rgba(230, 0, 38, 0.9);
+}
+
+footer {
+  padding: 60px clamp(24px, 5vw, 60px);
+  background: #030304;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.footer-inner {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 30px;
+}
+
+.footer-brand-title {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.footer-brand-title span { color: var(--red-primary); }
+
+.footer-copy {
+  font-size: 12px;
+  color: var(--text-dim);
+  letter-spacing: 1px;
+}
+
+.footer-social-links {
+  display: flex;
+  gap: 24px;
+}
+
+.footer-social-links a {
   font-size: 12px;
   letter-spacing: 2px;
   text-transform: uppercase;
-  font-weight: 400;
-  transition: border-color 0.3s, background 0.3s;
-}
-.founder-social-link:hover {
-  border-color: var(--neon-pink);
-  background: rgba(255,45,111,0.1);
-}
-.founder-social-link svg { width: 18px; height: 18px; fill: currentColor; }
-
-/* ========== CTA ========== */
-#cta {
-  padding: clamp(120px, 22vh, 280px) clamp(24px, 4vw, 56px);
-  text-align: center;
-  position: relative;
-  overflow: hidden;
-}
-.cta-bg {
-  position: absolute;
-  inset: 0;
-  background: radial-gradient(ellipse at 50% 50%, rgba(255,45,111,0.08) 0%, transparent 60%);
-}
-.cta-content { position: relative; z-index: 1; }
-.cta-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(40px, 8vw, 110px);
-  font-weight: 900;
-  line-height: 1;
-  text-transform: uppercase;
-  margin-bottom: 24px;
-}
-.cta-title em {
-  font-style: italic;
-  color: var(--neon-pink);
-}
-.cta-sub {
-  font-size: clamp(14px, 1.5vw, 18px);
-  font-weight: 300;
-  color: var(--text-muted);
-  max-width: 600px;
-  margin: 0 auto 48px;
-  line-height: 1.6;
-}
-.cta-buttons {
-  display: flex;
-  gap: 20px;
-  justify-content: center;
-  flex-wrap: wrap;
-}
-.cta-btn-primary {
-  padding: 18px 48px;
-  background: var(--neon-pink);
-  color: #000;
-  font-size: 13px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 600;
-  transition: transform 0.3s var(--ease), box-shadow 0.3s;
-  animation: ctaPulse 2s ease-in-out infinite;
-}
-@keyframes ctaPulse {
-  0%, 100% { box-shadow: 0 0 20px rgba(255,45,111,0.3); }
-  50% { box-shadow: 0 0 50px rgba(255,45,111,0.6); }
-}
-.cta-btn-primary:hover {
-  transform: scale(1.05);
-  animation-play-state: paused;
-  box-shadow: 0 0 60px rgba(255,45,111,0.5);
-}
-.cta-btn-secondary {
-  padding: 18px 48px;
-  border: 1px solid var(--text-dim);
-  font-size: 13px;
-  letter-spacing: 3px;
-  text-transform: uppercase;
-  font-weight: 400;
-  transition: border-color 0.3s, background 0.3s;
-}
-.cta-btn-secondary:hover {
-  border-color: var(--neon-blue);
-  background: rgba(0,240,255,0.05);
-  color: var(--neon-blue);
-}
-
-/* ========== FOOTER ========== */
-#footer {
-  padding: 60px clamp(24px, 4vw, 56px);
-  border-top: 1px solid var(--neon-pink);
-  box-shadow: 0 -1px 40px rgba(255,45,111,0.1);
-}
-.footer-grid {
-  max-width: 1200px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 2fr 1fr 1fr;
-  gap: 60px;
-}
-.footer-brand-name {
-  font-family: 'Playfair Display', serif;
-  font-size: 24px;
-  font-weight: 700;
-  margin-bottom: 12px;
-}
-.footer-brand-name span { color: var(--neon-pink); }
-.footer-brand-tagline {
-  font-size: 13px;
-  color: var(--text-muted);
-  font-weight: 300;
-  font-style: italic;
-}
-.footer-col-title {
-  font-size: 10px;
-  letter-spacing: 4px;
-  text-transform: uppercase;
-  color: var(--neon-pink);
-  margin-bottom: 20px;
-}
-.footer-links {
-  display: flex;
-  flex-direction: column;
-  gap: 12px;
-}
-.footer-links a {
-  font-size: 14px;
-  font-weight: 300;
   color: var(--text-muted);
   transition: color 0.3s;
 }
-.footer-links a:hover { color: var(--text); }
-.footer-bottom {
-  max-width: 1200px;
-  margin: 40px auto 0;
-  padding-top: 24px;
-  border-top: 1px solid var(--text-ghost);
-  display: flex;
-  justify-content: space-between;
-  font-size: 12px;
-  color: var(--text-muted);
-  font-weight: 300;
+
+.footer-social-links a:hover {
+  color: var(--red-glow);
 }
 
-/* ========== FILM GRAIN ========== */
-#grain-canvas {
+/* ==========================================================================
+   RSVP MODAL
+   ========================================================================== */
+#rsvp-modal {
   position: fixed;
   inset: 0;
-  z-index: 9998;
-  pointer-events: none;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
-}
-
-/* ========== MOBILE RESPONSIVE ========== */
-@media (max-width: 768px) {
-  body { cursor: auto; }
-  .cursor-dot, .cursor-ring, .cursor-label { display: none; }
-  .header-nav { display: none; }
-  .mobile-menu-btn { display: flex; }
-  .about-stats { grid-template-columns: repeat(2, 1fr); }
-  .rules-grid { grid-template-columns: 1fr; gap: 48px; }
-  .founder-grid { grid-template-columns: 1fr; gap: 48px; }
-  .footer-grid { grid-template-columns: 1fr; gap: 32px; }
-  .events-header { flex-direction: column; align-items: flex-start; gap: 20px; }
-  .cta-buttons { flex-direction: column; align-items: center; }
-}
-
-/* ========== MOBILE MENU ========== */
-#mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: rgba(10,10,10,0.97);
-  z-index: 999;
+  background: rgba(0, 0, 0, 0.85);
+  backdrop-filter: blur(15px);
+  z-index: 10001;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 32px;
+  padding: 20px;
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.5s var(--ease);
+  transition: opacity 0.4s var(--ease-smooth);
 }
-#mobile-menu.open { opacity: 1; pointer-events: auto; }
-#mobile-menu a {
-  font-family: 'Playfair Display', serif;
-  font-size: 36px;
-  font-weight: 700;
-  text-transform: uppercase;
-  transition: color 0.3s;
-}
-#mobile-menu a:hover { color: var(--neon-pink); }
 
-/* ========== SOUND TOGGLE ========== */
-.sound-toggle {
-  position: fixed;
-  bottom: 30px;
-  right: 30px;
-  z-index: 100;
+#rsvp-modal.open {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+.modal-content {
+  background: var(--bg-card);
+  border: 1.5px solid var(--red-border);
+  border-radius: 20px;
+  width: 100%;
+  max-width: 520px;
+  padding: 40px;
+  position: relative;
+  box-shadow: 0 25px 80px rgba(0, 0, 0, 0.9), 0 0 50px rgba(230, 0, 38, 0.3);
+  transform: translateY(30px);
+  transition: transform 0.4s var(--ease-smooth);
+}
+
+#rsvp-modal.open .modal-content {
+  transform: translateY(0);
+}
+
+.modal-close-btn {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.2);
   display: flex;
-  align-items: flex-end;
+  align-items: center;
+  justify-content: center;
+  font-size: 16px;
+  color: var(--text-muted);
+  transition: all 0.2s;
+}
+
+.modal-close-btn:hover {
+  color: #fff;
+  border-color: var(--red-primary);
+  background: var(--red-primary);
+}
+
+.modal-title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 800;
+  text-transform: uppercase;
+  margin-bottom: 8px;
+}
+
+.modal-title span { color: var(--red-primary); }
+
+.modal-sub {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 24px;
+}
+
+.form-group {
+  margin-bottom: 18px;
+}
+
+.form-group label {
+  display: block;
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.form-control {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: 8px;
+  color: #fff;
+  font-family: var(--font-main);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.form-control:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 12px rgba(230, 0, 38, 0.3);
+}
+
+.btn-submit-rsvp {
+  width: 100%;
+  padding: 14px;
+  background: var(--red-primary);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  margin-top: 10px;
+  box-shadow: 0 0 25px rgba(230, 0, 38, 0.4);
+  transition: all 0.3s;
+}
+
+.btn-submit-rsvp:hover {
+  box-shadow: 0 0 40px rgba(230, 0, 38, 0.7);
+  transform: translateY(-2px);
+}
+
+/* ==========================================================================
+   SOUND TOGGLE BEAT
+   ========================================================================== */
+.sound-toggle-fab {
+  position: fixed;
+  bottom: 28px;
+  right: 28px;
+  z-index: 1000;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: var(--bg-card);
+  border: 1.5px solid var(--red-border);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 3px;
-  padding: 12px;
-  cursor: none;
+  cursor: pointer;
+  transition: all 0.3s var(--ease-smooth);
 }
-.sound-toggle .bar {
+
+.sound-toggle-fab:hover {
+  border-color: var(--red-glow);
+  box-shadow: 0 0 25px rgba(230, 0, 38, 0.5);
+  transform: scale(1.08);
+}
+
+.sound-bar {
   width: 3px;
-  background: var(--neon-pink);
+  background: var(--red-glow);
   border-radius: 2px;
-  transition: height 0.3s;
+  height: 6px;
+  transition: height 0.2s ease;
 }
-.sound-toggle.playing .bar { animation: eqBar 0.8s ease-in-out infinite alternate; }
-.sound-toggle .bar:nth-child(1) { height: 8px; animation-delay: 0s; }
-.sound-toggle .bar:nth-child(2) { height: 16px; animation-delay: 0.15s; }
-.sound-toggle .bar:nth-child(3) { height: 10px; animation-delay: 0.3s; }
-.sound-toggle .bar:nth-child(4) { height: 20px; animation-delay: 0.45s; }
-.sound-toggle .bar:nth-child(5) { height: 6px; animation-delay: 0.6s; }
-@keyframes eqBar {
-  0% { height: 4px; }
-  100% { height: 24px; }
+
+.sound-toggle-fab.playing .sound-bar:nth-child(1) { animation: eqJump 0.8s infinite 0.1s; }
+.sound-toggle-fab.playing .sound-bar:nth-child(2) { animation: eqJump 0.8s infinite 0.3s; }
+.sound-toggle-fab.playing .sound-bar:nth-child(3) { animation: eqJump 0.8s infinite 0.2s; }
+.sound-toggle-fab.playing .sound-bar:nth-child(4) { animation: eqJump 0.8s infinite 0.4s; }
+
+@keyframes eqJump {
+  0%, 100% { height: 6px; }
+  50% { height: 22px; }
 }
-.sound-toggle:not(.playing) .bar { height: 3px !important; animation: none; }
+
+/* ==========================================================================
+   RESPONSIVE QUERIES
+   ========================================================================== */
+@media (max-width: 960px) {
+  .catalog-showcase { grid-template-columns: 1fr; }
+  .founder-card { grid-template-columns: 1fr; }
+  .founder-img-wrap { min-height: 380px; }
+  .rules-wrapper { grid-template-columns: 1fr; }
+  .about-stats-grid { grid-template-columns: repeat(2, 1fr); }
+  .nav-links { display: none; }
+}
+
+@media (max-width: 600px) {
+  .catalog-left-col { flex-direction: column-reverse; }
+  .catalog-thumb-strip { flex-direction: row; width: 100%; overflow-x: auto; }
+  .catalog-main-display { height: 320px; }
+  .about-stats-grid { grid-template-columns: 1fr; }
+}
 </style>
 </head>
 <body>
 
-<!-- ========== CURSOR ========== -->
-<div class="cursor-dot" id="cursorDot"></div>
-<div class="cursor-ring" id="cursorRing"></div>
-<div class="cursor-label" id="cursorLabel">View</div>
+<!-- Custom Cursor -->
+<div class="custom-cursor-dot" id="cursorDot"></div>
+<div class="custom-cursor-ring" id="cursorRing"></div>
 
-<!-- ========== FILM GRAIN ========== -->
-<canvas id="grain-canvas"></canvas>
-
-<!-- ========== LOADER ========== -->
+<!-- ==========================================================================
+     LOADER (100% Counter + Exit Animation)
+     ========================================================================== -->
 <div id="loader">
+  <div class="loader-logo-wrap">
+    <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Official Logo">
+  </div>
   <div class="loader-counter" id="loaderCounter">0</div>
-  <div class="loader-bar"><div class="loader-bar-fill" id="loaderBar"></div></div>
-  <div class="loader-tagline">Social Euphoria Presents</div>
+  <div class="loader-bar-track">
+    <div class="loader-bar-fill" id="loaderBar"></div>
+  </div>
+  <div class="loader-tagline">Curating Hell to Have Fun</div>
 </div>
 
-<!-- ========== HEADER ========== -->
-<header id="header">
-  <a href="#" class="header-logo">Social<span>.</span>Euphoria</a>
-  <nav class="header-nav">
-    <a href="#about" data-c="m">About</a>
-    <a href="#whatwedo" data-c="m">Events</a>
-    <a href="#rules" data-c="m">The Rules</a>
-    <a href="#founder" data-c="m">Big Daddy</a>
-    <a href="#cta" class="header-cta" data-c="m">Get Invited</a>
+<!-- ==========================================================================
+     NAVBAR
+     ========================================================================== -->
+<header id="navbar">
+  <a href="#" class="nav-brand">
+    <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Logo" class="nav-logo-img">
+    <div class="nav-brand-text">Social<span>.</span>Euphoria</div>
+  </a>
+
+  <nav class="nav-links">
+    <a href="#about">About</a>
+    <a href="#carousel-3d-section">Events</a>
+    <a href="#event-catalog">Catalog & Recaps</a>
+    <a href="#founder-section">Big Daddy</a>
+    <a href="#rules-section">Rules</a>
   </nav>
-  <button class="mobile-menu-btn" id="menuBtn" aria-label="Menu">
-    <span></span><span></span><span></span>
-  </button>
+
+  <button class="nav-cta" id="btnOpenRsvp">Request Invite</button>
 </header>
 
-<!-- ========== MOBILE MENU ========== -->
-<div id="mobile-menu">
-  <a href="#about" class="mobile-link">About</a>
-  <a href="#whatwedo" class="mobile-link">Events</a>
-  <a href="#rules" class="mobile-link">The Rules</a>
-  <a href="#founder" class="mobile-link">Big Daddy</a>
-  <a href="#cta" class="mobile-link">Get Invited</a>
+<!-- ==========================================================================
+     HERO: Video Background with 60-65% Red Blur + 3D Depth + Parallax
+     ========================================================================== -->
+<section id="hero">
+  <!-- Video Background with 60-65% optical blur and red filter -->
+  <div class="hero-video-wrap" id="heroVideoWrap">
+    <video id="hero-bg-video" autoplay muted loop playsinline src="assets/videos/reel_sunset.mp4"></video>
+  </div>
+  <div class="hero-red-filter-overlay"></div>
+  <div class="hero-radial-vignette"></div>
+
+  <!-- Three.js Ambient Particle Space -->
+  <canvas id="hero-canvas"></canvas>
+
+  <!-- Hero Content -->
+  <div class="hero-content" id="heroContent">
+    <div class="hero-logo-badge" id="heroBadge">
+      <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Badge" class="hero-logo-img">
+      <span class="hero-badge-tag">The Cult <span>✦</span> Dehradun</span>
+    </div>
+
+    <h1 class="hero-main-title" id="heroTitle">
+      Social<br><span class="red-text">Euphoria</span>
+    </h1>
+
+    <p class="hero-tagline" id="heroTagline">
+      Curating <span>Hell</span> to Have Fun
+    </p>
+
+    <p class="hero-sub-p" id="heroSub">
+      Dehradun's Roving Nightlife Collective · Invite Only
+    </p>
+
+    <div class="hero-actions" id="heroActions">
+      <button class="btn-hero-primary" id="btnHeroRsvp">Get On The List</button>
+      <a href="#event-catalog" class="btn-hero-secondary">Explore Recaps</a>
+    </div>
+  </div>
+
+  <div class="hero-scroll-indicator" id="heroScroll">
+    <span class="hero-scroll-text">Scroll to Enter</span>
+    <div class="hero-scroll-bar"></div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     MARQUEE STRIP
+     ========================================================================== -->
+<div id="marquee-section">
+  <div class="marquee-content">
+    <div class="marquee-item">Sunset Soirées <span class="symbol">✦</span></div>
+    <div class="marquee-item">Vishram Resort Pool Takeovers <span class="symbol">✦</span></div>
+    <div class="marquee-item">H²OLI Festival <span class="symbol">✦</span></div>
+    <div class="marquee-item">After Dark Carnivals <span class="symbol">✦</span></div>
+    <div class="marquee-item">Le Méridien Dehradun <span class="symbol">✦</span></div>
+    <div class="marquee-item">The White Lotus <span class="symbol">✦</span></div>
+    <div class="marquee-item">Fairfield by Marriott <span class="symbol">✦</span></div>
+    <div class="marquee-item">Project X Edition <span class="symbol">✦</span></div>
+    <div class="marquee-item">Sunset Soirées <span class="symbol">✦</span></div>
+    <div class="marquee-item">Vishram Resort Pool Takeovers <span class="symbol">✦</span></div>
+    <div class="marquee-item">H²OLI Festival <span class="symbol">✦</span></div>
+    <div class="marquee-item">After Dark Carnivals <span class="symbol">✦</span></div>
+    <div class="marquee-item">Le Méridien Dehradun <span class="symbol">✦</span></div>
+    <div class="marquee-item">The White Lotus <span class="symbol">✦</span></div>
+  </div>
 </div>
 
-<!-- ========== HERO ========== -->
-<section id="hero">
-  <canvas id="hero-canvas"></canvas>
-  <div class="hero-bg-overlay"></div>
-  <div class="hero-content">
-    <div class="hero-eyebrow" id="heroEyebrow">Dehradun's Most Exclusive Nightlife Collective</div>
-    <h1 class="hero-title">
-      <span class="line"><span class="word">Social</span></span>
-      <span class="line"><span class="word">Euphoria</span></span>
-    </h1>
-    <p class="hero-tagline" id="heroTagline">Curating <em>Hell</em> to Have Fun</p>
-  </div>
-  <div class="hero-scroll" id="heroScroll">
-    <span class="hero-scroll-text">Enter The Chaos</span>
-    <div class="hero-scroll-line"></div>
-  </div>
-</section>
-
-<!-- ========== MARQUEE ========== -->
-<section id="marquee">
-  <div class="marquee-track">
-    <span>Sunset Soirées</span><span class="dot">✦</span>
-    <span>Pool Parties</span><span class="dot">✦</span>
-    <span>Halloween Carnivals</span><span class="dot">✦</span>
-    <span>Glasshouse Takeovers</span><span class="dot">✦</span>
-    <span>Invite Only</span><span class="dot">✦</span>
-    <span>Neon Raves</span><span class="dot">✦</span>
-    <span>Luxury Resorts</span><span class="dot">✦</span>
-    <span>Sunset Soirées</span><span class="dot">✦</span>
-    <span>Pool Parties</span><span class="dot">✦</span>
-    <span>Halloween Carnivals</span><span class="dot">✦</span>
-    <span>Glasshouse Takeovers</span><span class="dot">✦</span>
-    <span>Invite Only</span><span class="dot">✦</span>
-    <span>Neon Raves</span><span class="dot">✦</span>
-    <span>Luxury Resorts</span><span class="dot">✦</span>
-  </div>
-</section>
-
-<!-- ========== ABOUT ========== -->
+<!-- ==========================================================================
+     ABOUT & MANIFESTO
+     ========================================================================== -->
 <section id="about">
-  <div class="about-label">Who We Are</div>
-  <p class="about-text" id="aboutText">
-    Social Euphoria is Dehradun's most exclusive nightlife collective. We don't do venues — we take over luxury resorts, hidden estate properties, and glasshouse rooftops to orchestrate massive experiential gatherings that blur the line between euphoria and absolute chaos. Every event is a universe. Every night is a memory you can't forget.
+  <div class="about-header-tag">The Philosophy</div>
+  <p class="about-manifesto">
+    Social Euphoria is not a club. It is a roving nightlife sanctuary founded by <span class="highlight">Abhay Rawat</span>. We orchestrate massive luxury resort takeovers, glasshouse rooftop parties, and high-energy estate gatherings where <span class="highlight">euphoria</span> and pure chaos collide.
   </p>
-  <div class="about-stats">
-    <div class="stat-item">
-      <div class="stat-number" data-target="50">0</div>
+
+  <div class="about-stats-grid">
+    <div class="stat-box">
+      <div class="stat-value"><span class="counter" data-target="50">50</span>+</div>
       <div class="stat-label">Events Curated</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number" data-target="10000">0</div>
+    <div class="stat-box">
+      <div class="stat-value"><span class="counter" data-target="10000">10,000</span>+</div>
       <div class="stat-label">Guests Hosted</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number" data-target="15">0</div>
+    <div class="stat-box">
+      <div class="stat-value"><span class="counter" data-target="15">15</span>+</div>
       <div class="stat-label">Luxury Venues</div>
     </div>
-    <div class="stat-item">
-      <div class="stat-number" data-target="1">0</div>
-      <div class="stat-label">City. Infinite Nights.</div>
+    <div class="stat-box">
+      <div class="stat-value">1<span>/1</span></div>
+      <div class="stat-label">Unmatched Cult</div>
     </div>
   </div>
 </section>
 
-<!-- ========== IMAGE REVEAL ========== -->
-<div class="image-reveal-section">
-  <div class="image-reveal" id="imageReveal">
-    <img src="assets/images/hero_party_bg.jpg" alt="Social Euphoria event atmosphere" loading="lazy">
+<!-- ==========================================================================
+     3D 5-CARD COVERFLOW CAROUSEL (Voice Instruction 2)
+     ========================================================================== -->
+<section id="carousel-3d-section">
+  <div class="carousel-section-head">
+    <div class="carousel-tag">The Signature 5</div>
+    <h2 class="carousel-heading">Curated <span>Gatherings</span></h2>
+    <p class="carousel-sub">Interactive 3D depth stack · Click or use navigation buttons</p>
   </div>
-</div>
 
-<!-- ========== WHAT WE DO ========== -->
-<section id="whatwedo">
-  <div class="whatwedo-header">
+  <div class="carousel-stage" id="carouselStage">
+    <!-- Card 0: Sunset Soirées -->
+    <div class="carousel-card-item c-center" data-index="0">
+      <img src="assets/images/sunset_real_1.jpg" alt="Sunset Soirées" class="carousel-card-img">
+      <div class="carousel-card-overlay">
+        <span class="carousel-card-tag">Signature Series</span>
+        <div class="carousel-card-name">Sunset Soirées Vol. III</div>
+        <div class="carousel-card-venue">Le Méridien Dehradun · Golden Hour to Midnight</div>
+      </div>
+    </div>
+
+    <!-- Card 1: H2OLI Festival -->
+    <div class="carousel-card-item c-right-1" data-index="1">
+      <img src="assets/images/h2oli_real_1.jpg" alt="H2OLI Festival" class="carousel-card-img">
+      <div class="carousel-card-overlay">
+        <span class="carousel-card-tag">Festival</span>
+        <div class="carousel-card-name">H²OLI Pool & Foam Festival</div>
+        <div class="carousel-card-venue">Vishram Resort · 500+ Curated Revelers</div>
+      </div>
+    </div>
+
+    <!-- Card 2: After Dark Carnival -->
+    <div class="carousel-card-item c-right-2" data-index="2">
+      <img src="assets/images/afterdark_real_1.jpg" alt="After Dark Carnival" class="carousel-card-img">
+      <div class="carousel-card-overlay">
+        <span class="carousel-card-tag">Night Carnival</span>
+        <div class="carousel-card-name">After Dark: Halloween Rave</div>
+        <div class="carousel-card-venue">Secret Estate · UV Cannons & Heavy Bass</div>
+      </div>
+    </div>
+
+    <!-- Card 3: The White Lotus -->
+    <div class="carousel-card-item c-left-2" data-index="3">
+      <img src="assets/images/white_lotus.jpg" alt="The White Lotus" class="carousel-card-img">
+      <div class="carousel-card-overlay">
+        <span class="carousel-card-tag">Ultra Luxury</span>
+        <div class="carousel-card-name">The White Lotus Takeover</div>
+        <div class="carousel-card-venue">Fairfield by Marriott · All-White Dress Code</div>
+      </div>
+    </div>
+
+    <!-- Card 4: Project X Edition -->
+    <div class="carousel-card-item c-left-1" data-index="4">
+      <img src="assets/images/hero_party_bg.jpg" alt="Project X Edition" class="carousel-card-img">
+      <div class="carousel-card-overlay">
+        <span class="carousel-card-tag">Pure Chaos</span>
+        <div class="carousel-card-name">Project X: Dehradun Edition</div>
+        <div class="carousel-card-venue">Hidden Luxury Property · High Energy Rave</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="carousel-controls">
+    <button class="c-nav-btn" id="cPrev" aria-label="Previous Card">←</button>
+    <button class="c-nav-btn" id="cNext" aria-label="Next Card">→</button>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     AMAZON-STYLE EVENT MEDIA CATALOG & EMBEDDED IN-SITE RECAP (Voice Instruction 2)
+     ========================================================================== -->
+<section id="event-catalog">
+  <div class="catalog-header">
     <div>
-      <div class="whatwedo-label">What We Curate</div>
-      <h2 class="whatwedo-title">Our Signature<br>Experiences</h2>
+      <div class="about-header-tag">Event Archives & Live Media</div>
+      <h2 class="catalog-title">Event Media <span>Catalog</span></h2>
     </div>
-  </div>
-  <div class="hscroll-wrapper" id="hscrollWrapper">
-    <div class="hscroll-track" id="hscrollTrack">
-      <div class="event-card" data-c="v">
-        <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirée" class="event-card-img" loading="lazy">
-        <div class="event-card-overlay">
-          <div class="event-card-name">Sunset Soirées</div>
-          <p class="event-card-desc">Afternoon-to-night poolside sessions. Deep house & bolly-tech music with heavy aesthetic curation. Golden hour to starlit madness.</p>
-          <span class="event-card-tag">Signature</span>
-        </div>
-      </div>
-      <div class="event-card" data-c="v">
-        <img src="assets/images/h2oli_festival.jpg" alt="H²OLI Festival" class="event-card-img" loading="lazy">
-        <div class="event-card-overlay">
-          <div class="event-card-name">H²OLI Festival</div>
-          <p class="event-card-desc">Dehradun's biggest pool/foam/dhol festival at Vishram Resort. A town staple. Foam cannons, neon lights, pure chaos.</p>
-          <span class="event-card-tag">Festival</span>
-        </div>
-      </div>
-      <div class="event-card" data-c="v">
-        <img src="assets/images/after_dark.jpg" alt="After Dark Carnival" class="event-card-img" loading="lazy">
-        <div class="event-card-overlay">
-          <div class="event-card-name">After Dark Carnivals</div>
-          <p class="event-card-desc">Halloween spectaculars & neon raves with massive audio-visual setups, UV paint, and immersive pop-up experiences.</p>
-          <span class="event-card-tag">Carnival</span>
-        </div>
-      </div>
-      <div class="event-card" data-c="v">
-        <img src="assets/images/white_lotus.jpg" alt="White Lotus Takeover" class="event-card-img" loading="lazy">
-        <div class="event-card-overlay">
-          <div class="event-card-name">White Lotus Takeovers</div>
-          <p class="event-card-desc">Conceptual property takeovers at Le Méridien Dehradun & Fairfield by Marriott. All-white dress code. Ultra-luxury vibes.</p>
-          <span class="event-card-tag">Premium</span>
-        </div>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ========== PREVIOUS EVENTS ========== -->
-<section id="events">
-  <div class="events-header">
-    <div>
-      <div class="events-label">The Archives</div>
-      <h2 class="events-title">Previous Events</h2>
-    </div>
-    <div class="events-nav">
-      <button id="carouselPrev" data-c="m" aria-label="Previous">←</button>
-      <button id="carouselNext" data-c="m" aria-label="Next">→</button>
+    <div class="catalog-tabs">
+      <button class="catalog-tab-btn active" data-event="sunset">Sunset Soirée</button>
+      <button class="catalog-tab-btn" data-event="h2oli">H²OLI Festival</button>
+      <button class="catalog-tab-btn" data-event="afterdark">After Dark</button>
+      <button class="catalog-tab-btn" data-event="whitelotus">White Lotus</button>
     </div>
   </div>
-  <div class="carousel-track" id="carouselTrack">
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirée Vol. 3" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">Sunset Soirée Vol. III</div>
-        <div class="carousel-card-meta">
-          <span>Le Méridien Dehradun</span>
-          <span>150 Guests</span>
-        </div>
-        <a href="https://www.instagram.com/reel/DHs44gpyFKb/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          Watch Recap
-        </a>
-      </div>
-    </div>
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/h2oli_festival.jpg" alt="H²OLI 2024" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">H²OLI 2024</div>
-        <div class="carousel-card-meta">
-          <span>Vishram Resort</span>
-          <span>500+ Guests</span>
-        </div>
-        <a href="https://www.instagram.com/reel/DGdSKBtIKdj/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          Watch Recap
-        </a>
-      </div>
-    </div>
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/after_dark.jpg" alt="After Dark Halloween" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">After Dark: Halloween</div>
-        <div class="carousel-card-meta">
-          <span>Secret Venue</span>
-          <span>200 Guests</span>
-        </div>
-        <a href="https://www.instagram.com/reel/DNSH8UKRrh1/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          Watch Recap
-        </a>
-      </div>
-    </div>
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/gallery_1.jpg" alt="Glasshouse Takeover" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">Glasshouse Takeover</div>
-        <div class="carousel-card-meta">
-          <span>Rooftop Venue</span>
-          <span>120 Guests</span>
-        </div>
-        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          View Gallery
-        </a>
-      </div>
-    </div>
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/white_lotus.jpg" alt="White Lotus Night" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">White Lotus Night</div>
-        <div class="carousel-card-meta">
-          <span>Fairfield by Marriott</span>
-          <span>100 Guests</span>
-        </div>
-        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          View Gallery
-        </a>
-      </div>
-    </div>
-    <div class="carousel-card" data-c="v">
-      <img src="assets/images/gallery_2.jpg" alt="Neon Rave" loading="lazy">
-      <div class="carousel-card-info">
-        <div class="carousel-card-title">Neon Rave Night</div>
-        <div class="carousel-card-meta">
-          <span>Undisclosed Location</span>
-          <span>175 Guests</span>
-        </div>
-        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="carousel-card-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>
-          View Gallery
-        </a>
-      </div>
-    </div>
-  </div>
-</section>
 
-<!-- ========== THE RULES ========== -->
-<section id="rules">
-  <div class="rules-grid">
-    <div class="rules-left">
-      <div class="rules-label">How It Works</div>
-      <h2 class="rules-title">The<br>Rules</h2>
-      <p class="rules-subtitle">Social Euphoria is not your average night out. We maintain a specific crowd dynamic. Exclusivity isn't a flex — it's the experience.</p>
-    </div>
-    <div class="rules-right">
-      <div class="rule-card">
-        <div class="rule-card-header">
-          <span class="rule-card-num">01</span>
-          <span class="rule-card-title">The Guest List</span>
+  <div class="catalog-showcase">
+    <!-- Left: 4 Photos Multi-Angle Amazon Catalog View -->
+    <div class="catalog-left-col">
+      <div class="catalog-thumb-strip" id="thumbStrip">
+        <div class="thumb-item active" data-img="assets/images/sunset_real_1.jpg">
+          <img src="assets/images/sunset_real_1.jpg" alt="Angle 1">
         </div>
-        <p class="rule-card-desc">Request your invite via the link in our Instagram bio. If your profile is approved, you're on the exclusive free or discounted early guest list.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-card-header">
-          <span class="rule-card-num">02</span>
-          <span class="rule-card-title">Strict Timing</span>
+        <div class="thumb-item" data-img="assets/images/sunset_real_2.jpg">
+          <img src="assets/images/sunset_real_2.jpg" alt="Angle 2">
         </div>
-        <p class="rule-card-desc">Invite list closes at 8:00 PM sharp. Arrive even a minute late and your invite is voided. No exceptions. No excuses.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-card-header">
-          <span class="rule-card-num">03</span>
-          <span class="rule-card-title">Paid Cover</span>
+        <div class="thumb-item" data-img="assets/images/sunset_real_3.jpg">
+          <img src="assets/images/sunset_real_3.jpg" alt="Angle 3">
         </div>
-        <p class="rule-card-desc">After 8 PM, entry shifts to paid cover at the gate — if the venue hasn't hit full capacity. First come, first served.</p>
-      </div>
-      <div class="rule-card">
-        <div class="rule-card-header">
-          <span class="rule-card-num">04</span>
-          <span class="rule-card-title">Gates Close at 9 PM</span>
+        <div class="thumb-item" data-img="assets/images/sunset_real_4.jpg">
+          <img src="assets/images/sunset_real_4.jpg" alt="Angle 4">
         </div>
-        <p class="rule-card-desc">The gates close permanently at 9 PM. No late-night walk-ins. Period. You're either in or you're not.</p>
       </div>
-      <div class="rule-card">
-        <div class="rule-card-header">
-          <span class="rule-card-num">05</span>
-          <span class="rule-card-title">Dress Code</span>
-        </div>
-        <p class="rule-card-desc">Mandatory and theme-aligned. Swimwear for sundowners, neon raver gear for After Dark, all-white for property takeovers. No compliance, no entry.</p>
-      </div>
-      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="rules-cta" data-c="m">Request Your Invite</a>
-    </div>
-  </div>
-</section>
 
-<!-- ========== FOUNDER ========== -->
-<section id="founder">
-  <div class="founder-grid">
-    <div class="founder-image-wrap">
-      <img src="assets/images/founder.jpg" alt="Abhay Rawat - Founder of Social Euphoria" loading="lazy">
+      <div class="catalog-main-display">
+        <img id="catalogMainImg" src="assets/images/sunset_real_1.jpg" alt="Active Event Showcase">
+        <div class="catalog-main-badge" id="catalogBadge">Authentic Instagram Capture</div>
+      </div>
     </div>
-    <div class="founder-info">
-      <div class="founder-label">The Big Daddy</div>
-      <h2 class="founder-name">Abhay<br>Rawat</h2>
-      <div class="founder-role">Founder & Creative Director</div>
-      <p class="founder-bio">
-        The architect behind Dehradun's most exclusive nightlife experiences. Abhay doesn't just throw parties — he engineers atmospheres. From handpicking venues to curating every sonic and visual detail, he's the reason Social Euphoria exists at the intersection of chaos and luxury.
-        <br><br>
-        With a vision to transform Dehradun's social scene from the ground up, Abhay built Social Euphoria into the city's most sought-after nightlife collective — where every event is a story, every guest list is curated, and every night ends with a memory that refuses to fade.
+
+    <!-- Right: In-Site Video Reel Player & Specs -->
+    <div class="catalog-right-col">
+      <div class="event-details-tag" id="catalogSub">Le Méridien Dehradun · Exclusive Guest List</div>
+      <h3 class="event-details-title" id="catalogTitle">Sunset Soirée Vol. III</h3>
+      <p class="event-details-desc" id="catalogDesc">
+        Dehradun's quintessential sundowner experience. High aesthetic bolly-tech & melodic deep house poolside sets, transitions into neon starlit party atmosphere with curated attendees.
       </p>
+
+      <!-- Direct Playable Reel Video Player -->
+      <div class="in-site-reel-player">
+        <video id="catalogReelVideo" autoplay muted loop playsinline src="assets/videos/reel_sunset.mp4"></video>
+        <div class="reel-player-overlay">
+          <div class="reel-status">Official Instagram Reel</div>
+          <div class="reel-ctrl-btns">
+            <button class="reel-ctrl-btn" id="btnReelAudio">Unmute 🔊</button>
+            <button class="reel-ctrl-btn" id="btnReelFullscreen">Expand ⛶</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Event Metadata specs -->
+      <div class="event-meta-grid">
+        <div class="meta-box">
+          <div class="meta-box-label">Music Profile</div>
+          <div class="meta-box-value" id="metaMusic">Bolly-Tech & Deep House</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-box-label">Atmosphere</div>
+          <div class="meta-box-value" id="metaAtmo">Poolside Luxury Sunset</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-box-label">Dress Code</div>
+          <div class="meta-box-value" id="metaDress">Resort Chic / Sunset Glow</div>
+        </div>
+        <div class="meta-box">
+          <div class="meta-box-label">Crowd Curation</div>
+          <div class="meta-box-value" id="metaCrowd">100% Verified Profiles</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ==========================================================================
+     FOUNDER: THE BIG DADDY — ABHAY RAWAT (Voice Instruction 2)
+     ========================================================================== -->
+<section id="founder-section">
+  <div class="founder-card">
+    <div class="founder-img-wrap">
+      <img src="assets/images/abhay_rawat.png" alt="Abhay Rawat - Big Daddy of Social Euphoria" class="founder-img">
+      <div class="founder-img-badge">
+        <div class="dot"></div>
+        <span>The Big Daddy</span>
+      </div>
+    </div>
+
+    <div class="founder-content">
+      <div class="founder-eyebrow">The Visionary Behind The Chaos</div>
+      <h2 class="founder-name">Abhay Rawat</h2>
+      <div class="founder-title-role">Founder & Creative Director · @abhayrawat12</div>
+
+      <div class="founder-quote">
+        "Some parties happen. Ours are remembered. We curate hell so you have the time of your life."
+      </div>
+
+      <p class="founder-bio">
+        The architect behind Dehradun's most exclusive nightlife experiences. Abhay transformed the city's party landscape from conventional nightclub routines into roving, highly exclusive resort takeovers. Also spearheading <strong>@club9.co</strong> and <strong>@euphoric_stays</strong>, he meticulously handpicks every venue, sonic curve, and guest profile to protect the sanctity of the crowd dynamic.
+      </p>
+
       <div class="founder-socials">
-        <a href="https://www.instagram.com/abhayrawat12/" target="_blank" class="founder-social-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          @abhayrawat12
+        <a href="https://www.instagram.com/abhayrawat12" target="_blank" class="founder-ig-btn primary">
+          <span>Follow @abhayrawat12</span>
         </a>
-        <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="founder-social-link" data-c="m">
-          <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"/></svg>
-          @social._euphoria
+        <a href="https://www.instagram.com/social._euphoria" target="_blank" class="founder-ig-btn">
+          <span>@social._euphoria</span>
         </a>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ========== CTA ========== -->
-<section id="cta">
-  <div class="cta-bg"></div>
-  <div class="cta-content">
-    <h2 class="cta-title">Ready to<br>Lose Your <em>Mind</em>?</h2>
-    <p class="cta-sub">The next Social Euphoria event is loading. Get on the list before it's too late. Once the gates close, they don't reopen.</p>
-    <div class="cta-buttons">
-      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="cta-btn-primary" data-c="m">Request Invite</a>
-      <a href="https://www.instagram.com/social._euphoria/" target="_blank" class="cta-btn-secondary" data-c="m">Follow @social._euphoria</a>
+<!-- ==========================================================================
+     THE RULES: HOW IT WORKS
+     ========================================================================== -->
+<section id="rules-section">
+  <div class="rules-wrapper">
+    <div>
+      <div class="about-header-tag">Crowd Dynamic Standards</div>
+      <h2 class="rules-intro-title">The <span>Rules</span> of the Cult</h2>
+      <p class="rules-intro-sub">
+        Social Euphoria maintains an uncompromising door policy. Exclusivity isn't a marketing gimmick — it's the fundamental reason why our energy cannot be replicated elsewhere.
+      </p>
+    </div>
+
+    <div class="rules-list">
+      <div class="rule-item">
+        <div class="rule-num">01</div>
+        <div>
+          <div class="rule-title">Curated Guest List Only</div>
+          <div class="rule-desc">Request your invite through our Instagram portal. Guest profiles undergo individual verification by the organizing team before approval.</div>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">02</div>
+        <div>
+          <div class="rule-title">Strict 8:00 PM Arrival Window</div>
+          <div class="rule-desc">Free and discounted guest list entry closes at 8:00 PM sharp. Any late arrival invalidates the guest list status without exception.</div>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">03</div>
+        <div>
+          <div class="rule-title">Paid Cover Gate Shift</div>
+          <div class="rule-desc">Between 8:00 PM and 9:00 PM, entry is subject to full paid cover at the door — strictly on a first-come, first-served basis subject to capacity.</div>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">04</div>
+        <div>
+          <div class="rule-title">Permanent Gate Lock at 9:00 PM</div>
+          <div class="rule-desc">Gates close permanently at 9:00 PM. No late walk-ins, regardless of status. You are either inside the universe or outside.</div>
+        </div>
+      </div>
+
+      <div class="rule-item">
+        <div class="rule-num">05</div>
+        <div>
+          <div class="rule-title">Mandatory Theme Dress Code</div>
+          <div class="rule-desc">Theme alignment is strictly enforced. Swimwear for pool takeovers, all-white for White Lotus, and neon rave aesthetic for After Dark.</div>
+        </div>
+      </div>
     </div>
   </div>
 </section>
 
-<!-- ========== FOOTER ========== -->
-<footer id="footer">
-  <div class="footer-grid">
+<!-- ==========================================================================
+     CALL TO ACTION
+     ========================================================================== -->
+<section id="cta-section">
+  <div class="cta-tag">Ready For The Madness?</div>
+  <h2 class="cta-title">Curating <span>Hell</span><br>To Have Fun</h2>
+  <p class="cta-sub">
+    The next Social Euphoria gathering is currently under secret curation. Secure your priority spot on the guest list before doors seal.
+  </p>
+  <button class="cta-btn-main" id="btnCtaRsvp">Request An Invite</button>
+</section>
+
+<!-- ==========================================================================
+     FOOTER
+     ========================================================================== -->
+<footer>
+  <div class="footer-inner">
     <div>
-      <div class="footer-brand-name">Social<span>.</span>Euphoria</div>
-      <div class="footer-brand-tagline">"Curating Hell to Have Fun"</div>
+      <div class="footer-brand-title">Social<span>.</span>Euphoria</div>
+      <div class="footer-copy">© 2026 Social Euphoria Collective · Dehradun, Uttarakhand</div>
     </div>
-    <div>
-      <div class="footer-col-title">Connect</div>
-      <div class="footer-links">
-        <a href="https://www.instagram.com/social._euphoria/" target="_blank" data-c="m">Instagram — @social._euphoria</a>
-        <a href="https://www.instagram.com/abhayrawat12/" target="_blank" data-c="m">Founder — @abhayrawat12</a>
-        <a href="mailto:socialeuphoria.ddn@gmail.com" data-c="m">socialeuphoria.ddn@gmail.com</a>
-      </div>
+
+    <div class="footer-social-links">
+      <a href="https://www.instagram.com/social._euphoria" target="_blank">Instagram</a>
+      <a href="https://www.instagram.com/abhayrawat12" target="_blank">Founder: Abhay Rawat</a>
+      <a href="#about">The Cult</a>
     </div>
-    <div>
-      <div class="footer-col-title">Navigate</div>
-      <div class="footer-links">
-        <a href="#about" data-c="m">About</a>
-        <a href="#whatwedo" data-c="m">Events</a>
-        <a href="#rules" data-c="m">The Rules</a>
-        <a href="#founder" data-c="m">Big Daddy</a>
-      </div>
-    </div>
-  </div>
-  <div class="footer-bottom">
-    <span>© 2025 Social Euphoria. All rights reserved.</span>
-    <span>Dehradun, Uttarakhand</span>
   </div>
 </footer>
 
-<!-- ========== SOUND TOGGLE ========== -->
-<button class="sound-toggle" id="soundToggle" data-c="m" aria-label="Toggle sound">
-  <span class="bar"></span>
-  <span class="bar"></span>
-  <span class="bar"></span>
-  <span class="bar"></span>
-  <span class="bar"></span>
+<!-- ==========================================================================
+     RSVP MODAL
+     ========================================================================== -->
+<div id="rsvp-modal">
+  <div class="modal-content">
+    <button class="modal-close-btn" id="btnCloseRsvp">✕</button>
+    <div class="modal-title">Request <span>Invite</span></div>
+    <div class="modal-sub">Social Euphoria Curated Guest List Portal</div>
+
+    <form id="rsvpForm" onsubmit="event.preventDefault(); submitRsvp();">
+      <div class="form-group">
+        <label>Your Full Name</label>
+        <input type="text" class="form-control" required placeholder="e.g. Kabir Sharma">
+      </div>
+      <div class="form-group">
+        <label>Instagram Handle (Required for verification)</label>
+        <input type="text" class="form-control" required placeholder="@yourhandle">
+      </div>
+      <div class="form-group">
+        <label>WhatsApp / Phone</label>
+        <input type="tel" class="form-control" required placeholder="+91 98765 43210">
+      </div>
+      <div class="form-group">
+        <label>Preferred Experience</label>
+        <select class="form-control" style="background:#15151b;">
+          <option>Sunset Soirée (Poolside Deep House)</option>
+          <option>H²OLI Festival (Pool & Foam Carnival)</option>
+          <option>After Dark Neon Rave</option>
+          <option>The White Lotus Luxury Takeover</option>
+          <option>Project X: Secret Estate Edition</option>
+        </select>
+      </div>
+      <button type="submit" class="btn-submit-rsvp" id="btnSubmitForm">Submit Application</button>
+    </form>
+  </div>
+</div>
+
+<!-- ==========================================================================
+     SOUND AMBIENCE TOGGLE
+     ========================================================================== -->
+<button class="sound-toggle-fab" id="soundToggle" aria-label="Toggle Nightlife Audio Ambience">
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
+  <div class="sound-bar"></div>
 </button>
 
-<!-- ========== JAVASCRIPT ========== -->
+<!-- ==========================================================================
+     SCRIPTS & INTERACTIONS
+     ========================================================================== -->
 <script>
 (function() {
 'use strict';
 
-// ===== LENIS SMOOTH SCROLL =====
+// 1. LENIS SMOOTH SCROLL
 const lenis = new Lenis({
   duration: 1.2,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
   smoothWheel: true,
-  wheelMultiplier: 0.85,
+  wheelMultiplier: 0.9,
 });
 lenis.on('scroll', ScrollTrigger.update);
-gsap.ticker.add(t => lenis.raf(t * 1000));
+gsap.ticker.add(time => lenis.raf(time * 1000));
 gsap.ticker.lagSmoothing(0);
-lenis.stop();
+lenis.stop(); // Stopped during loader
 
-// ===== CUSTOM CURSOR =====
-const dot = document.getElementById('cursorDot');
-const ring = document.getElementById('cursorRing');
-const label = document.getElementById('cursorLabel');
-let mouseX = 0, mouseY = 0;
-let dotX = 0, dotY = 0;
-let ringX = 0, ringY = 0;
+// 2. CUSTOM CURSOR
+const cursorDot = document.getElementById('cursorDot');
+const cursorRing = document.getElementById('cursorRing');
+let mouseX = window.innerWidth / 2, mouseY = window.innerHeight / 2;
+let dotX = mouseX, dotY = mouseY;
+let ringX = mouseX, ringY = mouseY;
 
 if (window.innerWidth > 768) {
   document.addEventListener('mousemove', e => {
@@ -1383,63 +2135,86 @@ if (window.innerWidth > 768) {
     mouseY = e.clientY;
   });
 
-  document.querySelectorAll('[data-c]').forEach(el => {
-    el.addEventListener('mouseenter', () => {
-      const type = el.getAttribute('data-c');
-      if (type === 'm') {
-        ring.classList.add('expand');
-      } else if (type === 'v') {
-        ring.classList.add('expand');
-        label.classList.add('visible');
-      }
-    });
-    el.addEventListener('mouseleave', () => {
-      ring.classList.remove('expand');
-      label.classList.remove('visible');
-    });
+  function renderCursor() {
+    dotX += (mouseX - dotX) * 0.35;
+    dotY += (mouseY - dotY) * 0.35;
+    ringX += (mouseX - ringX) * 0.14;
+    ringY += (mouseY - ringY) * 0.14;
+
+    cursorDot.style.transform = `translate(${dotX}px, ${dotY}px)`;
+    cursorRing.style.transform = `translate(${ringX}px, ${ringY}px)`;
+    requestAnimationFrame(renderCursor);
+  }
+  renderCursor();
+
+  document.querySelectorAll('a, button, .carousel-card-item, .thumb-item').forEach(el => {
+    el.addEventListener('mouseenter', () => cursorRing.classList.add('hovering'));
+    el.addEventListener('mouseleave', () => cursorRing.classList.remove('hovering'));
   });
-
-  function animateCursor() {
-    dotX += (mouseX - dotX) * 0.22;
-    dotY += (mouseY - dotY) * 0.22;
-    ringX += (mouseX - ringX) * 0.09;
-    ringY += (mouseY - ringY) * 0.09;
-    dot.style.transform = `translate(${dotX - 4}px, ${dotY - 4}px)`;
-    ring.style.transform = `translate(${ringX - 20}px, ${ringY - 20}px)`;
-    label.style.transform = `translate(${ringX + 30}px, ${ringY - 8}px)`;
-    requestAnimationFrame(animateCursor);
-  }
-  animateCursor();
 }
 
-// ===== FILM GRAIN =====
-const grainCanvas = document.getElementById('grain-canvas');
-const grainCtx = grainCanvas.getContext('2d');
-let grainFrame = 0;
+// 3. 0-100% LOADER
+const loader = document.getElementById('loader');
+const loaderCounter = document.getElementById('loaderCounter');
+const loaderBar = document.getElementById('loaderBar');
+let count = 0;
 
-function resizeGrain() {
-  grainCanvas.width = window.innerWidth / 2;
-  grainCanvas.height = window.innerHeight / 2;
+function runLoader() {
+  const timer = setInterval(() => {
+    count += Math.floor(Math.random() * 4) + 2;
+    if (count >= 100) {
+      count = 100;
+      clearInterval(timer);
+      loaderCounter.textContent = '100';
+      loaderBar.style.width = '100%';
+      setTimeout(revealHeroLanding, 350);
+      return;
+    }
+    loaderCounter.textContent = count;
+    loaderBar.style.width = count + '%';
+  }, 35);
 }
-resizeGrain();
-window.addEventListener('resize', resizeGrain);
 
-function renderGrain() {
-  grainFrame++;
-  if (grainFrame % 3 !== 0) { requestAnimationFrame(renderGrain); return; }
-  const w = grainCanvas.width, h = grainCanvas.height;
-  const imgData = grainCtx.createImageData(w, h);
-  const data = imgData.data;
-  for (let i = 0; i < data.length; i += 4) {
-    const v = Math.random() * 255;
-    data[i] = v; data[i+1] = v; data[i+2] = v; data[i+3] = 255;
-  }
-  grainCtx.putImageData(imgData, 0, 0);
-  requestAnimationFrame(renderGrain);
+function revealHeroLanding() {
+  loader.classList.add('loaded');
+  lenis.start();
+
+  const tl = gsap.timeline();
+  tl.to('#heroBadge', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' })
+    .to('#heroTitle', { opacity: 1, duration: 1.1, ease: 'power3.out' }, '-=0.5')
+    .to('#heroTagline', { opacity: 1, y: 0, duration: 0.9, ease: 'power3.out' }, '-=0.6')
+    .to('#heroSub', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.5')
+    .to('#heroActions', { opacity: 1, y: 0, duration: 0.8, ease: 'power3.out' }, '-=0.4')
+    .to('#heroScroll', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.3');
 }
-renderGrain();
 
-// ===== THREE.JS HERO PARTICLES =====
+window.addEventListener('load', () => setTimeout(runLoader, 200));
+
+// 4. HERO VIDEO PARALLAX & HEAVY BLUR DISSOLVE ON SCROLL (Voice Instruction 2)
+const heroVideo = document.getElementById('hero-bg-video');
+const heroContent = document.getElementById('heroContent');
+const heroVideoWrap = document.getElementById('heroVideoWrap');
+
+window.addEventListener('scroll', () => {
+  const sy = window.scrollY;
+  const vh = window.innerHeight;
+  const ratio = Math.min(sy / vh, 1.2);
+
+  // Optical blur goes from 14px (60-65% blur) up to 40px heavy blur
+  const extraBlur = 14 + (ratio * 26);
+  const scale = 1.12 + (ratio * 0.15);
+  const opacity = Math.max(1 - (ratio * 0.85), 0.15);
+
+  heroVideo.style.filter = `blur(${extraBlur}px) brightness(${0.65 - ratio * 0.3}) saturate(${2 - ratio * 0.6})`;
+  heroVideoWrap.style.transform = `scale(${scale})`;
+  heroVideoWrap.style.opacity = opacity;
+
+  // Parallax logo & content upwards
+  heroContent.style.transform = `translateY(${sy * 0.45}px)`;
+  heroContent.style.opacity = Math.max(1 - (sy / (vh * 0.7)), 0);
+});
+
+// 5. THREE.JS RED & WHITE PARTICLES IN HERO
 const heroCanvas = document.getElementById('hero-canvas');
 const scene = new THREE.Scene();
 const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
@@ -1449,158 +2224,60 @@ const renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, anti
 renderer.setSize(window.innerWidth, window.innerHeight);
 renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-// Particle system
-const particleCount = 5000;
-const geometry = new THREE.BufferGeometry();
-const positions = new Float32Array(particleCount * 3);
-const colors = new Float32Array(particleCount * 3);
-const sizes = new Float32Array(particleCount);
+const pCount = 2200;
+const pGeo = new THREE.BufferGeometry();
+const pPos = new Float32Array(pCount * 3);
+const pCol = new Float32Array(pCount * 3);
 
-const neonColors = [
-  [1.0, 0.176, 0.435],   // neon pink
-  [0.0, 0.941, 1.0],     // cyan
-  [0.722, 0.161, 0.867],  // purple
-];
+// 30% Red, 20% White palette
+for (let i = 0; i < pCount; i++) {
+  pPos[i * 3] = (Math.random() - 0.5) * 14;
+  pPos[i * 3 + 1] = (Math.random() - 0.5) * 14;
+  pPos[i * 3 + 2] = (Math.random() - 0.5) * 10;
 
-for (let i = 0; i < particleCount; i++) {
-  // Fibonacci sphere distribution
-  const phi = Math.acos(1 - 2 * (i + 0.5) / particleCount);
-  const theta = Math.PI * (1 + Math.sqrt(5)) * i;
-  const r = 2.5 + Math.random() * 0.5;
-
-  positions[i * 3] = r * Math.sin(phi) * Math.cos(theta);
-  positions[i * 3 + 1] = r * Math.sin(phi) * Math.sin(theta);
-  positions[i * 3 + 2] = r * Math.cos(phi);
-
-  const color = neonColors[Math.floor(Math.random() * neonColors.length)];
-  colors[i * 3] = color[0];
-  colors[i * 3 + 1] = color[1];
-  colors[i * 3 + 2] = color[2];
-
-  sizes[i] = Math.random() * 3 + 1;
+  if (Math.random() > 0.35) {
+    // Electric Red (#ff1744)
+    pCol[i * 3] = 1.0;
+    pCol[i * 3 + 1] = 0.09;
+    pCol[i * 3 + 2] = 0.27;
+  } else {
+    // Pure White
+    pCol[i * 3] = 1.0;
+    pCol[i * 3 + 1] = 1.0;
+    pCol[i * 3 + 2] = 1.0;
+  }
 }
 
-geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
-geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
-geometry.setAttribute('size', new THREE.BufferAttribute(sizes, 1));
+pGeo.setAttribute('position', new THREE.BufferAttribute(pPos, 3));
+pGeo.setAttribute('color', new THREE.BufferAttribute(pCol, 3));
 
-const vertexShader = `
-  attribute float size;
-  varying vec3 vColor;
-  uniform float uTime;
-  void main() {
-    vColor = color;
-    vec3 pos = position;
-    float noise = sin(pos.x * 2.0 + uTime) * cos(pos.y * 2.0 + uTime * 0.7) * 0.3;
-    pos += normal * noise * 0.1;
-    pos.x += sin(uTime * 0.5 + pos.y * 1.5) * 0.15;
-    pos.y += cos(uTime * 0.3 + pos.x * 1.5) * 0.15;
-    vec4 mvPos = modelViewMatrix * vec4(pos, 1.0);
-    gl_PointSize = size * (200.0 / -mvPos.z);
-    gl_Position = projectionMatrix * mvPos;
-  }
-`;
-
-const fragmentShader = `
-  varying vec3 vColor;
-  void main() {
-    float d = length(gl_PointCoord - 0.5);
-    if (d > 0.5) discard;
-    float alpha = smoothstep(0.5, 0.1, d) * 0.7;
-    gl_FragColor = vec4(vColor, alpha);
-  }
-`;
-
-const material = new THREE.ShaderMaterial({
-  vertexShader,
-  fragmentShader,
-  uniforms: { uTime: { value: 0 } },
+const pMat = new THREE.PointsMaterial({
+  size: 0.045,
   vertexColors: true,
   transparent: true,
-  blending: THREE.AdditiveBlending,
-  depthWrite: false,
+  opacity: 0.8,
+  blending: THREE.AdditiveBlending
 });
 
-// Compute normals for noise
-geometry.computeVertexNormals();
-const points = new THREE.Points(geometry, material);
-scene.add(points);
+const particleMesh = new THREE.Points(pGeo, pMat);
+scene.add(particleMesh);
 
-// Background dust particles
-const dustCount = 800;
-const dustGeo = new THREE.BufferGeometry();
-const dustPos = new Float32Array(dustCount * 3);
-const dustCol = new Float32Array(dustCount * 3);
-const dustSizes = new Float32Array(dustCount);
-
-for (let i = 0; i < dustCount; i++) {
-  dustPos[i * 3] = (Math.random() - 0.5) * 20;
-  dustPos[i * 3 + 1] = (Math.random() - 0.5) * 20;
-  dustPos[i * 3 + 2] = (Math.random() - 0.5) * 20;
-  dustCol[i * 3] = 0.937; dustCol[i * 3 + 1] = 0.871; dustCol[i * 3 + 2] = 0.851;
-  dustSizes[i] = Math.random() * 1.5 + 0.5;
-}
-
-dustGeo.setAttribute('position', new THREE.BufferAttribute(dustPos, 3));
-dustGeo.setAttribute('color', new THREE.BufferAttribute(dustCol, 3));
-dustGeo.setAttribute('size', new THREE.BufferAttribute(dustSizes, 1));
-
-const dustMat = new THREE.ShaderMaterial({
-  vertexShader: `
-    attribute float size;
-    varying vec3 vColor;
-    void main() {
-      vColor = color;
-      vec4 mvPos = modelViewMatrix * vec4(position, 1.0);
-      gl_PointSize = size * (100.0 / -mvPos.z);
-      gl_Position = projectionMatrix * mvPos;
-    }
-  `,
-  fragmentShader: `
-    varying vec3 vColor;
-    void main() {
-      float d = length(gl_PointCoord - 0.5);
-      if (d > 0.5) discard;
-      float alpha = smoothstep(0.5, 0.2, d) * 0.15;
-      gl_FragColor = vec4(vColor, alpha);
-    }
-  `,
-  vertexColors: true,
-  transparent: true,
-  blending: THREE.AdditiveBlending,
-  depthWrite: false,
-});
-const dust = new THREE.Points(dustGeo, dustMat);
-scene.add(dust);
-
-let targetRotX = 0, targetRotY = 0;
+let mouseNormX = 0, mouseNormY = 0;
 document.addEventListener('mousemove', e => {
-  targetRotX = (e.clientY / window.innerHeight - 0.5) * 0.5;
-  targetRotY = (e.clientX / window.innerWidth - 0.5) * 0.5;
+  mouseNormX = (e.clientX / window.innerWidth - 0.5) * 0.8;
+  mouseNormY = (e.clientY / window.innerHeight - 0.5) * 0.8;
 });
 
-let heroVisible = true;
-function animateThree() {
-  if (!heroVisible) { requestAnimationFrame(animateThree); return; }
-  material.uniforms.uTime.value = performance.now() * 0.001;
-  points.rotation.x += (targetRotX - points.rotation.x) * 0.04;
-  points.rotation.y += (targetRotY - points.rotation.y) * 0.04;
-  points.rotation.z += 0.001;
-  dust.rotation.y += 0.0003;
-  dust.rotation.x += 0.0001;
+function animateParticles() {
+  particleMesh.rotation.y += 0.0015;
+  particleMesh.rotation.x += 0.0008;
+  particleMesh.position.x += (mouseNormX - particleMesh.position.x) * 0.05;
+  particleMesh.position.y += (-mouseNormY - particleMesh.position.y) * 0.05;
+
   renderer.render(scene, camera);
-  requestAnimationFrame(animateThree);
+  requestAnimationFrame(animateParticles);
 }
-animateThree();
-
-// Fade hero canvas on scroll
-window.addEventListener('scroll', () => {
-  const scrollY = window.scrollY;
-  const heroH = window.innerHeight;
-  const opacity = 1 - (scrollY / heroH);
-  heroCanvas.style.opacity = Math.max(0, opacity);
-  heroVisible = opacity > 0;
-});
+animateParticles();
 
 window.addEventListener('resize', () => {
   camera.aspect = window.innerWidth / window.innerHeight;
@@ -1608,249 +2285,254 @@ window.addEventListener('resize', () => {
   renderer.setSize(window.innerWidth, window.innerHeight);
 });
 
-// ===== LOADER =====
-const loaderEl = document.getElementById('loader');
-const counterEl = document.getElementById('loaderCounter');
-const barEl = document.getElementById('loaderBar');
-let count = 0;
+// 6. 3D 5-CARD COVERFLOW CAROUSEL LOGIC (Voice Instruction 2)
+const cardElements = Array.from(document.querySelectorAll('.carousel-card-item'));
+let currentCenter = 0;
+const totalCards = cardElements.length;
 
-function runLoader() {
-  const interval = setInterval(() => {
-    count += Math.floor(Math.random() * 3) + 1;
-    if (count >= 100) {
-      count = 100;
-      clearInterval(interval);
-      counterEl.textContent = '100';
-      barEl.style.width = '100%';
-      setTimeout(() => {
-        loaderEl.classList.add('exit');
-        lenis.start();
-        setTimeout(revealHero, 600);
-      }, 400);
-      return;
-    }
-    counterEl.textContent = count;
-    barEl.style.width = count + '%';
-  }, 40);
+function updateCarouselClasses() {
+  const classes = ['c-center', 'c-right-1', 'c-right-2', 'c-left-2', 'c-left-1'];
+  
+  cardElements.forEach((card, idx) => {
+    card.classList.remove('c-center', 'c-right-1', 'c-right-2', 'c-left-1', 'c-left-2', 'c-hidden');
+    
+    // Relative offset from active card
+    let diff = (idx - currentCenter + totalCards) % totalCards;
+    if (diff === 0) card.classList.add('c-center');
+    else if (diff === 1) card.classList.add('c-right-1');
+    else if (diff === 2) card.classList.add('c-right-2');
+    else if (diff === totalCards - 1) card.classList.add('c-left-1');
+    else if (diff === totalCards - 2) card.classList.add('c-left-2');
+    else card.classList.add('c-hidden');
+  });
 }
 
-function revealHero() {
-  const tl = gsap.timeline();
-  tl.to('.hero-title .word', {
-    y: 0, duration: 1.5, stagger: 0.15, ease: 'expo.out'
-  })
-  .to('#heroEyebrow', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.8')
-  .to('#heroTagline', { opacity: 1, duration: 1, ease: 'power2.out' }, '-=0.6')
-  .to('#heroScroll', { opacity: 1, duration: 0.8, ease: 'power2.out' }, '-=0.4');
-}
+document.getElementById('cNext').addEventListener('click', () => {
+  currentCenter = (currentCenter + 1) % totalCards;
+  updateCarouselClasses();
+});
 
-// Start loader on window load
-window.addEventListener('load', () => { setTimeout(runLoader, 300); });
+document.getElementById('cPrev').addEventListener('click', () => {
+  currentCenter = (currentCenter - 1 + totalCards) % totalCards;
+  updateCarouselClasses();
+});
 
-// ===== HEADER SCROLL BEHAVIOR =====
-let lastScroll = 0;
-const header = document.getElementById('header');
-lenis.on('scroll', ({ scroll }) => {
-  if (scroll > 200) {
-    if (scroll > lastScroll) {
-      header.classList.add('hidden');
-    } else {
-      header.classList.remove('hidden');
+cardElements.forEach((card, i) => {
+  card.addEventListener('click', () => {
+    if (currentCenter !== i) {
+      currentCenter = i;
+      updateCarouselClasses();
     }
-  } else {
-    header.classList.remove('hidden');
-  }
-  lastScroll = scroll;
-});
-
-// ===== MOBILE MENU =====
-const menuBtn = document.getElementById('menuBtn');
-const mobileMenu = document.getElementById('mobile-menu');
-let menuOpen = false;
-menuBtn.addEventListener('click', () => {
-  menuOpen = !menuOpen;
-  mobileMenu.classList.toggle('open', menuOpen);
-  menuBtn.children[0].style.transform = menuOpen ? 'rotate(45deg) translate(5px, 5px)' : '';
-  menuBtn.children[1].style.opacity = menuOpen ? '0' : '1';
-  menuBtn.children[2].style.transform = menuOpen ? 'rotate(-45deg) translate(5px, -5px)' : '';
-});
-document.querySelectorAll('.mobile-link').forEach(link => {
-  link.addEventListener('click', () => {
-    menuOpen = false;
-    mobileMenu.classList.remove('open');
-    menuBtn.children[0].style.transform = '';
-    menuBtn.children[1].style.opacity = '1';
-    menuBtn.children[2].style.transform = '';
   });
 });
 
-// ===== WORD-BY-WORD SCROLL REVEAL =====
-const aboutText = document.getElementById('aboutText');
-const text = aboutText.textContent.trim();
-aboutText.innerHTML = text.split(/\s+/).map(w => `<span class="w">${w}</span>`).join(' ');
-const words = aboutText.querySelectorAll('.w');
+// 7. AMAZON-STYLE CATALOG & IN-SITE VIDEO PLAYER DATA
+const catalogData = {
+  sunset: {
+    title: 'Sunset Soirée Vol. III',
+    sub: 'Le Méridien Dehradun · Exclusive Guest List',
+    desc: 'Dehradun\'s quintessential sundowner experience. High aesthetic bolly-tech & melodic deep house poolside sets, transitioning into starlit madness with verified guests.',
+    video: 'assets/videos/reel_sunset.mp4',
+    photos: [
+      'assets/images/sunset_real_1.jpg',
+      'assets/images/sunset_real_2.jpg',
+      'assets/images/sunset_real_3.jpg',
+      'assets/images/sunset_real_4.jpg'
+    ],
+    music: 'Bolly-Tech & Melodic Deep House',
+    atmo: 'Poolside Sunset Glow',
+    dress: 'Resort Chic / Warm Tones',
+    crowd: 'Curated 150 Attendees'
+  },
+  h2oli: {
+    title: 'H²OLI Festival 2024',
+    sub: 'Vishram Resort · 500+ Curated Revelers',
+    desc: 'Dehradun\'s premier pool, foam, and dhol festival. High-pressure foam cannons, neon colors, live dhol sync, and non-stop festival energy across the massive resort grounds.',
+    video: 'assets/videos/reel_h2oli.mp4',
+    photos: [
+      'assets/images/h2oli_real_1.jpg',
+      'assets/images/h2oli_real_2.jpg',
+      'assets/images/h2oli_real_3.jpg',
+      'assets/images/h2oli_real_4.jpg'
+    ],
+    music: 'Festival Commercial & Live Dhol',
+    atmo: 'Foam & Water Pool Madness',
+    dress: 'Festival Swimwear',
+    crowd: '500+ Verified Guests'
+  },
+  afterdark: {
+    title: 'After Dark: Halloween Rave',
+    sub: 'Secret Estate · UV Cannons & Heavy Bass',
+    desc: 'Nighttime sensory overload with custom stage engineering, ultraviolet face art, deep techno & dark house beats that run deep into the night.',
+    video: 'assets/videos/reel_afterdark.mp4',
+    photos: [
+      'assets/images/afterdark_real_1.jpg',
+      'assets/images/afterdark_real_2.jpg',
+      'assets/images/afterdark_real_3.jpg',
+      'assets/images/afterdark_real_4.jpg'
+    ],
+    music: 'Peak Time Techno & Dark House',
+    atmo: 'UV Glowing Carnival Rave',
+    dress: 'Neon Raves & Dark Costumes',
+    crowd: 'Strict 200 Capacity'
+  },
+  whitelotus: {
+    title: 'The White Lotus Takeover',
+    sub: 'Fairfield by Marriott · All-White Dress Code',
+    desc: 'Conceptual luxury property takeover. Minimalist white aesthetics, champagne towers, ambient lighting, and high-energy house anthems overlooking the Doon Valley.',
+    video: 'assets/videos/reel_sunset.mp4',
+    photos: [
+      'assets/images/white_lotus.jpg',
+      'assets/images/sunset_real_1.jpg',
+      'assets/images/sunset_real_2.jpg',
+      'assets/images/sunset_real_4.jpg'
+    ],
+    music: 'Afro-House & Tech Anthems',
+    atmo: 'Rooftop White Minimalist Luxe',
+    dress: 'Strict All-White Mandatory',
+    crowd: 'Exclusive 120 Guests'
+  }
+};
 
-ScrollTrigger.create({
-  trigger: '#about',
-  start: 'top 75%',
-  end: 'bottom 40%',
-  scrub: 0.6,
-  onUpdate: self => {
-    words.forEach((w, i) => {
-      w.classList.toggle('on', i / words.length < self.progress);
+const catalogMainImg = document.getElementById('catalogMainImg');
+const catalogReelVideo = document.getElementById('catalogReelVideo');
+const catalogTitle = document.getElementById('catalogTitle');
+const catalogSub = document.getElementById('catalogSub');
+const catalogDesc = document.getElementById('catalogDesc');
+const metaMusic = document.getElementById('metaMusic');
+const metaAtmo = document.getElementById('metaAtmo');
+const metaDress = document.getElementById('metaDress');
+const metaCrowd = document.getElementById('metaCrowd');
+const thumbStrip = document.getElementById('thumbStrip');
+
+document.querySelectorAll('.catalog-tab-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.catalog-tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    const key = btn.getAttribute('data-event');
+    const data = catalogData[key];
+
+    catalogTitle.textContent = data.title;
+    catalogSub.textContent = data.sub;
+    catalogDesc.textContent = data.desc;
+    metaMusic.textContent = data.music;
+    metaAtmo.textContent = data.atmo;
+    metaDress.textContent = data.dress;
+    metaCrowd.textContent = data.crowd;
+
+    // Switch video reel
+    catalogReelVideo.src = data.video;
+    catalogReelVideo.play();
+
+    // Switch main photo
+    catalogMainImg.src = data.photos[0];
+
+    // Rebuild thumbnails
+    thumbStrip.innerHTML = data.photos.map((src, i) => `
+      <div class="thumb-item ${i === 0 ? 'active' : ''}" data-img="${src}">
+        <img src="${src}" alt="Photo ${i + 1}">
+      </div>
+    `).join('');
+
+    attachThumbClicks();
+  });
+});
+
+function attachThumbClicks() {
+  document.querySelectorAll('.thumb-item').forEach(th => {
+    th.addEventListener('click', () => {
+      document.querySelectorAll('.thumb-item').forEach(t => t.classList.remove('active'));
+      th.classList.add('active');
+      catalogMainImg.src = th.getAttribute('data-img');
     });
-  }
-});
-
-// ===== STATS COUNTER =====
-document.querySelectorAll('.stat-number').forEach(stat => {
-  const target = parseInt(stat.getAttribute('data-target'));
-  ScrollTrigger.create({
-    trigger: stat,
-    start: 'top 85%',
-    once: true,
-    onEnter: () => {
-      gsap.to({ val: 0 }, {
-        val: target,
-        duration: 2,
-        ease: 'power2.out',
-        onUpdate: function() {
-          const v = Math.floor(this.targets()[0].val);
-          stat.textContent = target >= 1000 ? v.toLocaleString() + '+' : v + '+';
-        }
-      });
-    }
   });
-});
+}
+attachThumbClicks();
 
-// ===== IMAGE REVEAL =====
-gsap.to('#imageReveal', {
-  clipPath: 'inset(0% 0% 0% 0% round 12px)',
-  scrollTrigger: {
-    trigger: '#imageReveal',
-    start: 'top 85%',
-    end: 'top 25%',
-    scrub: 0.8,
-  }
-});
-gsap.to('#imageReveal img', {
-  scale: 1,
-  scrollTrigger: {
-    trigger: '#imageReveal',
-    start: 'top 85%',
-    end: 'top 10%',
-    scrub: 1.2,
-  }
-});
-
-// ===== HORIZONTAL SCROLL GALLERY =====
-const hscrollTrack = document.getElementById('hscrollTrack');
-const hscrollWrapper = document.getElementById('hscrollWrapper');
-
-gsap.to(hscrollTrack, {
-  x: () => -(hscrollTrack.scrollWidth - window.innerWidth + 56),
-  ease: 'none',
-  scrollTrigger: {
-    trigger: '#whatwedo',
-    start: 'top top',
-    end: () => '+=' + hscrollTrack.scrollWidth,
-    pin: true,
-    scrub: 1,
-    invalidateOnRefresh: true,
-  }
-});
-
-// ===== CAROUSEL NAVIGATION =====
-const carouselTrack = document.getElementById('carouselTrack');
-const carouselPrev = document.getElementById('carouselPrev');
-const carouselNext = document.getElementById('carouselNext');
-const cardWidth = 520;
-
-carouselNext.addEventListener('click', () => {
-  carouselTrack.scrollBy({ left: cardWidth, behavior: 'smooth' });
-});
-carouselPrev.addEventListener('click', () => {
-  carouselTrack.scrollBy({ left: -cardWidth, behavior: 'smooth' });
-});
-
-// ===== SCROLL-TRIGGERED REVEALS =====
-gsap.utils.toArray('.rule-card').forEach((card, i) => {
-  gsap.from(card, {
-    y: 40, opacity: 0,
-    duration: 0.8,
-    delay: i * 0.1,
-    ease: 'power2.out',
-    scrollTrigger: {
-      trigger: card,
-      start: 'top 85%',
-      once: true,
-    }
-  });
-});
-
-gsap.from('.founder-image-wrap', {
-  x: -60, opacity: 0,
-  duration: 1.2,
-  ease: 'power3.out',
-  scrollTrigger: { trigger: '#founder', start: 'top 70%', once: true }
-});
-
-gsap.from('.founder-info', {
-  x: 60, opacity: 0,
-  duration: 1.2,
-  ease: 'power3.out',
-  scrollTrigger: { trigger: '#founder', start: 'top 70%', once: true }
-});
-
-gsap.from('.cta-title', {
-  y: 60, opacity: 0,
-  duration: 1,
-  ease: 'power3.out',
-  scrollTrigger: { trigger: '#cta', start: 'top 70%', once: true }
-});
-
-// ===== SOUND TOGGLE =====
-const soundToggle = document.getElementById('soundToggle');
-let audioCtx, oscillator, isPlaying = false;
-soundToggle.addEventListener('click', () => {
-  if (!isPlaying) {
-    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-    const o = audioCtx.createOscillator();
-    const g = audioCtx.createGain();
-    o.type = 'sine';
-    o.frequency.setValueAtTime(60, audioCtx.currentTime);
-    g.gain.setValueAtTime(0.03, audioCtx.currentTime);
-    o.connect(g);
-    g.connect(audioCtx.destination);
-    o.start();
-    oscillator = { o, g };
-    soundToggle.classList.add('playing');
-    isPlaying = true;
+// Video Reel Audio & Fullscreen buttons
+const btnReelAudio = document.getElementById('btnReelAudio');
+btnReelAudio.addEventListener('click', () => {
+  if (catalogReelVideo.muted) {
+    catalogReelVideo.muted = false;
+    btnReelAudio.textContent = 'Mute 🔇';
   } else {
-    oscillator.g.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.5);
-    oscillator.o.stop(audioCtx.currentTime + 0.5);
-    soundToggle.classList.remove('playing');
-    isPlaying = false;
+    catalogReelVideo.muted = true;
+    btnReelAudio.textContent = 'Unmute 🔊';
   }
 });
 
-// ===== SMOOTH SCROLL ANCHOR LINKS =====
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', e => {
-    e.preventDefault();
-    const target = document.querySelector(anchor.getAttribute('href'));
-    if (target) lenis.scrollTo(target, { offset: -80 });
-  });
+document.getElementById('btnReelFullscreen').addEventListener('click', () => {
+  if (catalogReelVideo.requestFullscreen) catalogReelVideo.requestFullscreen();
+  else if (catalogReelVideo.webkitRequestFullscreen) catalogReelVideo.webkitRequestFullscreen();
 });
 
-// ===== PARALLAX ON FOUNDER IMAGE =====
-gsap.to('.founder-image-wrap img', {
-  y: -40,
-  scrollTrigger: {
-    trigger: '#founder',
-    start: 'top bottom',
-    end: 'bottom top',
-    scrub: 1,
+// 8. RSVP MODAL
+const rsvpModal = document.getElementById('rsvp-modal');
+const openModal = () => rsvpModal.classList.add('open');
+const closeModal = () => rsvpModal.classList.remove('open');
+
+document.getElementById('btnOpenRsvp').addEventListener('click', openModal);
+document.getElementById('btnHeroRsvp').addEventListener('click', openModal);
+document.getElementById('btnCtaRsvp').addEventListener('click', openModal);
+document.getElementById('btnCloseRsvp').addEventListener('click', closeModal);
+
+rsvpModal.addEventListener('click', e => {
+  if (e.target === rsvpModal) closeModal();
+});
+
+window.submitRsvp = function() {
+  const btn = document.getElementById('btnSubmitForm');
+  btn.textContent = 'Verifying Profile...';
+  setTimeout(() => {
+    btn.textContent = 'Application Received ✓';
+    btn.style.background = '#22c55e';
+    setTimeout(() => {
+      closeModal();
+      btn.textContent = 'Submit Application';
+      btn.style.background = 'var(--red-primary)';
+      document.getElementById('rsvpForm').reset();
+    }, 1500);
+  }, 1000);
+};
+
+// 9. AMBIENT NIGHTLIFE SOUND GENERATOR
+const soundToggle = document.getElementById('soundToggle');
+let audioCtx = null;
+let synthOsc = null;
+let soundPlaying = false;
+
+soundToggle.addEventListener('click', () => {
+  if (!soundPlaying) {
+    audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+
+    osc.type = 'sawtooth';
+    osc.frequency.setValueAtTime(55, audioCtx.currentTime); // Low A bassline
+
+    // Low pass filter for deep club rumble
+    const filter = audioCtx.createBiquadFilter();
+    filter.type = 'lowpass';
+    filter.frequency.setValueAtTime(140, audioCtx.currentTime);
+
+    gain.gain.setValueAtTime(0.04, audioCtx.currentTime);
+
+    osc.connect(filter);
+    filter.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    osc.start();
+    synthOsc = { osc, gain };
+    soundToggle.classList.add('playing');
+    soundPlaying = true;
+  } else {
+    if (synthOsc) {
+      synthOsc.gain.gain.exponentialRampToValueAtTime(0.0001, audioCtx.currentTime + 0.3);
+      setTimeout(() => synthOsc.osc.stop(), 300);
+    }
+    soundToggle.classList.remove('playing');
+    soundPlaying = false;
   }
 });
 
