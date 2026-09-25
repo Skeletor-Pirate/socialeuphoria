@@ -16,7 +16,6 @@
 <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700;800;900&family=Playfair+Display:ital,wght@0,600;0,800;0,900;1,400;1,700&family=Space+Grotesk:wght@500;700;800&display=swap" rel="stylesheet">
 
 <!-- Libraries -->
-<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.1/dist/lenis.min.js"></script>
@@ -341,13 +340,68 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   pointer-events: none;
 }
 
-/* Three.js Ambient Depth Canvas (Subtle Red Aura Wave, NO blocky confetti) */
-#hero-canvas {
+/* ==========================================================================
+   HERO LUXURY DEPTH ATMOSPHERE (Instruction 5 - Clean, Mature, High-End Nightlife)
+   Zero geometric clutter, pure cinematic deep red lighting & breathing aura
+   ========================================================================== */
+.hero-depth-aura {
   position: absolute;
   inset: 0;
-  z-index: 4;
+  z-index: 3;
   pointer-events: none;
-  opacity: 0.75;
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.aura-core {
+  position: absolute;
+  width: min(720px, 90vw);
+  height: min(720px, 90vw);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(230, 0, 38, 0.32) 0%, rgba(230, 0, 38, 0.12) 42%, rgba(6, 6, 7, 0) 72%);
+  filter: blur(50px);
+  will-change: transform, opacity;
+  animation: auraPulse 6.5s ease-in-out infinite alternate;
+}
+
+.aura-inner {
+  position: absolute;
+  width: min(400px, 60vw);
+  height: min(400px, 60vw);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 23, 68, 0.38) 0%, rgba(230, 0, 38, 0.15) 50%, rgba(6, 6, 7, 0) 75%);
+  filter: blur(35px);
+  will-change: transform, opacity;
+  animation: auraInnerBreathe 4.5s ease-in-out infinite alternate;
+}
+
+.aura-beam {
+  position: absolute;
+  width: 140%;
+  height: 180px;
+  background: radial-gradient(ellipse at center, rgba(230, 0, 38, 0.16) 0%, rgba(230, 0, 38, 0.04) 50%, transparent 75%);
+  transform: rotate(-12deg);
+  filter: blur(45px);
+  pointer-events: none;
+  animation: beamDrift 11s ease-in-out infinite alternate;
+}
+
+@keyframes auraPulse {
+  0% { transform: scale(0.92); opacity: 0.65; }
+  100% { transform: scale(1.18); opacity: 1; }
+}
+
+@keyframes auraInnerBreathe {
+  0% { transform: scale(1.1); opacity: 0.85; }
+  100% { transform: scale(0.9); opacity: 0.5; }
+}
+
+@keyframes beamDrift {
+  0% { transform: rotate(-14deg) translateY(-20px); opacity: 0.5; }
+  100% { transform: rotate(-9deg) translateY(20px); opacity: 0.85; }
 }
 
 /* Hero Content Stack */
@@ -1771,8 +1825,12 @@ footer {
     <div class="hero-red-filter-overlay"></div>
     <div class="hero-radial-vignette"></div>
 
-    <!-- Clean Luxury Three.js Ambient Depth Aura (NO confetti clutter) -->
-    <canvas id="hero-canvas"></canvas>
+    <!-- Luxury Nightlife Ambient Depth Aura (Clean, Minimal, High-End Vibe - Voice Instruction 5) -->
+    <div class="hero-depth-aura" id="heroDepthAura">
+      <div class="aura-beam"></div>
+      <div class="aura-core"></div>
+      <div class="aura-inner"></div>
+    </div>
 
     <!-- Hero Content Stack -->
     <div class="hero-content" id="heroContent">
@@ -2284,52 +2342,35 @@ window.addEventListener('scroll', () => {
   heroContent.style.transform = `translateY(${sy * 0.25}px)`;
 });
 
-// 5. THREE.JS CLEAN AMBIENT DEPTH AURA (Audio 4 - No Blocky Squares)
-const heroCanvas = document.getElementById('hero-canvas');
-const scene = new THREE.Scene();
-const camera = new THREE.PerspectiveCamera(65, window.innerWidth / window.innerHeight, 0.1, 1000);
-camera.position.z = 5;
+// 5. LUXURY AMBIENT DEPTH ATMOSPHERE (Instruction 5 - Clean, Mature, High-End Nightlife)
+const heroSection = document.getElementById('hero');
+const heroDepthAura = document.getElementById('heroDepthAura');
 
-const renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, antialias: true });
-renderer.setSize(window.innerWidth, window.innerHeight);
-renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+if (heroSection && heroDepthAura) {
+  let auraX = 0, auraY = 0, currentAuraX = 0, currentAuraY = 0;
+  let auraRaf = null;
 
-// Smooth subtle sine wave grid surface
-const planeGeo = new THREE.PlaneGeometry(14, 10, 32, 24);
-const planeMat = new THREE.MeshBasicMaterial({
-  color: 0xe60026,
-  wireframe: true,
-  transparent: true,
-  opacity: 0.12,
-  blending: THREE.AdditiveBlending
-});
-const planeMesh = new THREE.Mesh(planeGeo, planeMat);
-planeMesh.rotation.x = -Math.PI * 0.25;
-planeMesh.position.y = -1.5;
-planeMesh.position.z = -1;
-scene.add(planeMesh);
-
-let clock = new THREE.Clock();
-
-function animateThree() {
-  const t = clock.getElapsedTime();
-  const pos = planeGeo.attributes.position;
-  for (let i = 0; i < pos.count; i++) {
-    const x = pos.getX(i);
-    const y = pos.getY(i);
-    pos.setZ(i, Math.sin(x * 0.8 + t * 1.2) * 0.25 + Math.cos(y * 0.8 + t) * 0.25);
+  function updateAuraParallax() {
+    currentAuraX += (auraX - currentAuraX) * 0.06;
+    currentAuraY += (auraY - currentAuraY) * 0.06;
+    heroDepthAura.style.transform = `translate3d(${currentAuraX}px, ${currentAuraY}px, 0)`;
+    auraRaf = requestAnimationFrame(updateAuraParallax);
   }
-  planeGeo.attributes.position.needsUpdate = true;
-  renderer.render(scene, camera);
-  requestAnimationFrame(animateThree);
-}
-animateThree();
+  auraRaf = requestAnimationFrame(updateAuraParallax);
 
-window.addEventListener('resize', () => {
-  camera.aspect = window.innerWidth / window.innerHeight;
-  camera.updateProjectionMatrix();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-});
+  heroSection.addEventListener('mousemove', (e) => {
+    const rect = heroSection.getBoundingClientRect();
+    const nx = (e.clientX - rect.left) / rect.width - 0.5;
+    const ny = (e.clientY - rect.top) / rect.height - 0.5;
+    auraX = nx * 36;
+    auraY = ny * 36;
+  }, { passive: true });
+
+  heroSection.addEventListener('mouseleave', () => {
+    auraX = 0;
+    auraY = 0;
+  });
+}
 
 // 6. 3D COVERFLOW CAROUSEL WITH TOUCH SWIPE (Voice Instruction 3 + Screenshot 3)
 const cardElements = Array.from(document.querySelectorAll('.carousel-card-item'));
