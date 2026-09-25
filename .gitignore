@@ -8,3 +8,9 @@ Desktop.ini
 
 # Logs
 *.log
+
+# Private instructions and screenshots (NEVER PUSH)
+instruction/
+screenshots_1/
+screenshots_2/
+
