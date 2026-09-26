@@ -318,9 +318,9 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: blur(14px) brightness(0.6) saturate(1.9) contrast(1.15);
-  transform: scale(1.12);
-  transition: filter 0.4s ease-out;
+  filter: blur(24px) brightness(0.72) saturate(1.85) contrast(1.1);
+  transform: scale(1.15);
+  transition: opacity 0.4s ease, filter 0.4s ease-out;
 }
 
 .hero-red-filter-overlay {
@@ -918,11 +918,41 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
    AMAZON-STYLE EVENT MEDIA CATALOG (Voice Instructions 1 & 3 + Screenshots 4 & 5)
    ========================================================================== */
 #event-catalog {
+  position: relative;
   padding: 100px clamp(16px, 4vw, 50px);
   max-width: 1300px;
   margin: 0 auto;
   width: 100%;
   overflow: hidden;
+}
+
+.catalog-ambient-backdrop {
+  position: absolute;
+  inset: -10%;
+  overflow: hidden;
+  z-index: 0;
+  pointer-events: none;
+  opacity: 0.22;
+}
+
+#catalogBgVideo {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  filter: blur(48px) brightness(0.7) saturate(1.8);
+  transform: scale(1.15);
+  transition: opacity 0.5s ease;
+}
+
+.catalog-ambient-overlay {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(6, 6, 7, 0.2) 0%, #060607 80%);
+}
+
+.catalog-header, .catalog-showcase {
+  position: relative;
+  z-index: 1;
 }
 
 .catalog-header {
@@ -1281,12 +1311,46 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: contrast(1.1) brightness(0.95);
-  transition: transform 0.6s var(--ease-smooth);
+  object-position: center 15%;
+  filter: contrast(1.08) brightness(0.98);
+  transition: transform 0.6s var(--ease-smooth), opacity 0.3s;
 }
 
 .founder-card:hover .founder-img {
   transform: scale(1.03);
+}
+
+.founder-photo-toggle {
+  position: absolute;
+  top: 18px;
+  right: 18px;
+  display: flex;
+  gap: 6px;
+  background: rgba(6, 6, 7, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  padding: 4px;
+  border-radius: 20px;
+  border: 1px solid var(--red-border);
+  z-index: 5;
+}
+
+.founder-toggle-btn {
+  font-size: 10px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  padding: 5px 12px;
+  border-radius: 14px;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.founder-toggle-btn.active, .founder-toggle-btn:hover {
+  background: var(--red-primary);
+  color: #fff;
+  box-shadow: 0 0 12px rgba(230, 0, 38, 0.6);
 }
 
 .founder-img-badge {
@@ -1926,8 +1990,8 @@ footer {
 
     <div class="carousel-stage" id="carouselStage">
       <!-- Card 0: Sunset Soirées -->
-      <div class="carousel-card-item c-center" data-index="0">
-        <img src="assets/images/sunset_real_1.jpg" alt="Sunset Soirées" class="carousel-card-img" loading="lazy">
+      <div class="carousel-card-item c-center" data-index="0" data-video="assets/videos/reel_sunset.mp4">
+        <img src="assets/images/se_authentic_party_1.jpg" alt="Sunset Soirées" class="carousel-card-img" loading="lazy">
         <div class="carousel-card-overlay">
           <span class="carousel-card-tag">Signature Series</span>
           <div class="carousel-card-name">Sunset Soirées Vol. III</div>
@@ -1936,7 +2000,7 @@ footer {
       </div>
 
       <!-- Card 1: H2OLI Festival -->
-      <div class="carousel-card-item c-right-1" data-index="1">
+      <div class="carousel-card-item c-right-1" data-index="1" data-video="assets/videos/reel_h2oli.mp4">
         <img src="assets/images/h2oli_real_1.jpg" alt="H2OLI Festival" class="carousel-card-img" loading="lazy">
         <div class="carousel-card-overlay">
           <span class="carousel-card-tag">Festival</span>
@@ -1946,7 +2010,7 @@ footer {
       </div>
 
       <!-- Card 2: After Dark Carnival -->
-      <div class="carousel-card-item c-right-2" data-index="2">
+      <div class="carousel-card-item c-right-2" data-index="2" data-video="assets/videos/reel_afterdark.mp4">
         <img src="assets/images/afterdark_real_1.jpg" alt="After Dark Carnival" class="carousel-card-img" loading="lazy">
         <div class="carousel-card-overlay">
           <span class="carousel-card-tag">Night Carnival</span>
@@ -1955,9 +2019,9 @@ footer {
         </div>
       </div>
 
-      <!-- Card 3: The White Lotus (Authentic Story Highlight Poster - Audio 2) -->
-      <div class="carousel-card-item c-left-2" data-index="3">
-        <img src="assets/images/white_lotus_poster.jpg" alt="The White Lotus Pool Party" class="carousel-card-img" loading="lazy">
+      <!-- Card 3: The White Lotus (Authentic Pool Party) -->
+      <div class="carousel-card-item c-left-2" data-index="3" data-video="assets/videos/reel_cameraroll.mp4">
+        <img src="assets/images/cameraroll_1.jpg" alt="The White Lotus Pool Party" class="carousel-card-img" loading="lazy">
         <div class="carousel-card-overlay">
           <span class="carousel-card-tag">Ultra Luxury</span>
           <div class="carousel-card-name">The White Lotus Pool Party</div>
@@ -1965,9 +2029,9 @@ footer {
         </div>
       </div>
 
-      <!-- Card 4: Project X Edition (Authentic Party Capture - Audio 2) -->
-      <div class="carousel-card-item c-left-1" data-index="4">
-        <img src="assets/images/cameraroll_1.jpg" alt="Project X Edition" class="carousel-card-img" loading="lazy">
+      <!-- Card 4: Project X Edition (Authentic Party Capture) -->
+      <div class="carousel-card-item c-left-1" data-index="4" data-video="assets/videos/reel_sunset.mp4">
+        <img src="assets/images/se_authentic_party_2.jpg" alt="Project X Edition" class="carousel-card-img" loading="lazy">
         <div class="carousel-card-overlay">
           <span class="carousel-card-tag">Pure Chaos</span>
           <div class="carousel-card-name">Project X: Dehradun Edition</div>
@@ -1984,6 +2048,12 @@ footer {
 
   <!-- AMAZON-STYLE EVENT MEDIA CATALOG & IN-SITE RECAPS (Voice Instructions 1 & 3) -->
   <section id="event-catalog">
+    <!-- Ambient 60% Blurred Background Reel (Audio Instruction 6) -->
+    <div class="catalog-ambient-backdrop">
+      <video id="catalogBgVideo" autoplay muted loop playsinline src="assets/videos/reel_sunset.mp4"></video>
+      <div class="catalog-ambient-overlay"></div>
+    </div>
+
     <div class="catalog-header">
       <div>
         <span class="section-tag">Event Archives & Live Media</span>
@@ -2002,22 +2072,22 @@ footer {
       <!-- Left: 4 Photos Amazon Catalog Multi-Angle View -->
       <div class="catalog-left-col">
         <div class="catalog-thumb-strip" id="thumbStrip">
-          <div class="thumb-item active" data-img="assets/images/sunset_real_1.jpg">
-            <img src="assets/images/sunset_real_1.jpg" alt="Sunset Photo 1">
+          <div class="thumb-item active" data-img="assets/images/se_authentic_party_1.jpg">
+            <img src="assets/images/se_authentic_party_1.jpg" alt="Sunset Photo 1">
+          </div>
+          <div class="thumb-item" data-img="assets/images/sunset_real_1.jpg">
+            <img src="assets/images/sunset_real_1.jpg" alt="Sunset Photo 2">
           </div>
           <div class="thumb-item" data-img="assets/images/sunset_real_2.jpg">
-            <img src="assets/images/sunset_real_2.jpg" alt="Sunset Photo 2">
+            <img src="assets/images/sunset_real_2.jpg" alt="Sunset Photo 3">
           </div>
           <div class="thumb-item" data-img="assets/images/sunset_real_3.jpg">
-            <img src="assets/images/sunset_real_3.jpg" alt="Sunset Photo 3">
-          </div>
-          <div class="thumb-item" data-img="assets/images/sunset_real_4.jpg">
-            <img src="assets/images/sunset_real_4.jpg" alt="Sunset Photo 4">
+            <img src="assets/images/sunset_real_3.jpg" alt="Sunset Photo 4">
           </div>
         </div>
 
         <div class="catalog-main-display">
-          <img id="catalogMainImg" src="assets/images/sunset_real_1.jpg" alt="Active Event Showcase">
+          <img id="catalogMainImg" src="assets/images/se_authentic_party_1.jpg" alt="Active Event Showcase">
           <div class="catalog-main-badge" id="catalogBadge">Authentic Instagram Capture</div>
         </div>
       </div>
@@ -2065,14 +2135,20 @@ footer {
     </div>
   </section>
 
-  <!-- FOUNDER: THE BIG DADDY — ABHAY RAWAT -->
+  <!-- FOUNDER: THE BIG DADDY — ABHAY RAWAT (HD Authentic Photos - Voice Instruction 6) -->
   <section id="founder-section">
     <div class="founder-card">
       <div class="founder-img-wrap">
-        <img src="assets/images/abhay_rawat.png" alt="Abhay Rawat - Big Daddy of Social Euphoria" class="founder-img" loading="lazy">
+        <img src="assets/images/abhay_rawat_card.jpg" alt="Abhay Rawat - Big Daddy of Social Euphoria" class="founder-img" id="founderImg" loading="lazy">
         <div class="founder-img-badge">
           <div class="dot"></div>
-          <span>The Big Daddy</span>
+          <span>The Big Daddy · @abhayrawat12</span>
+        </div>
+        <div class="founder-photo-toggle">
+          <button class="founder-toggle-btn active" data-src="assets/images/abhay_rawat_card.jpg">Magazine</button>
+          <button class="founder-toggle-btn" data-src="assets/images/abhay_insta_sofa_hd.jpg">Lifestyle</button>
+          <button class="founder-toggle-btn" data-src="assets/images/abhay_insta_mountain_hd.jpg">Harshil</button>
+          <button class="founder-toggle-btn" data-src="assets/images/abhay_insta_traditional_hd.jpg">Royal</button>
         </div>
       </div>
 
@@ -2318,22 +2394,52 @@ function revealHeroLanding() {
 
 window.addEventListener('load', () => setTimeout(runLoader, 150));
 
-// 4. PINNED HERO PARALLAX DISSOLVE (Voice Instruction 2)
+// 4. PINNED HERO PARALLAX DISSOLVE (Voice Instruction 2 & 6: 60% Blur Landscape Video)
 const heroVideo = document.getElementById('hero-bg-video');
 const heroContent = document.getElementById('heroContent');
 const heroVideoWrap = document.getElementById('heroVideoWrap');
+const catalogBgVideo = document.getElementById('catalogBgVideo');
+
+// Hero Landscape Reels Cycle (Audio 6: "Social Euphoria ki 1-2 reels chala de with 60% blur")
+const heroReels = [
+  'assets/videos/reel_sunset.mp4',
+  'assets/videos/reel_afterdark.mp4'
+];
+let currentHeroReelIdx = 0;
+
+function switchBackgroundVideo(videoSrc) {
+  if (!heroVideo) return;
+  const currentSrc = heroVideo.getAttribute('src');
+  if (currentSrc === videoSrc) return;
+
+  heroVideo.style.opacity = '0.35';
+  setTimeout(() => {
+    heroVideo.src = videoSrc;
+    heroVideo.play().catch(() => {});
+    heroVideo.style.opacity = '1';
+  }, 220);
+}
+
+if (heroVideo) {
+  heroVideo.addEventListener('ended', () => {
+    currentHeroReelIdx = (currentHeroReelIdx + 1) % heroReels.length;
+    switchBackgroundVideo(heroReels[currentHeroReelIdx]);
+  });
+}
 
 window.addEventListener('scroll', () => {
   const sy = window.scrollY;
   const vh = window.innerHeight;
   const ratio = Math.min(sy / vh, 1);
 
-  // Optical blur smoothly increases from 14px to 38px
-  const extraBlur = 14 + (ratio * 24);
-  const scale = 1.12 - (ratio * 0.1);
-  const opacity = Math.max(1 - (ratio * 0.9), 0.1);
+  // 60% optical base blur (24px) smoothly increases up to 48px
+  const extraBlur = 24 + (ratio * 24);
+  const scale = 1.15 - (ratio * 0.1);
+  const opacity = Math.max(1 - (ratio * 0.9), 0.12);
 
-  heroVideo.style.filter = `blur(${extraBlur}px) brightness(${0.6 - ratio * 0.35}) saturate(${1.9 - ratio * 0.5})`;
+  if (heroVideo) {
+    heroVideo.style.filter = `blur(${extraBlur}px) brightness(${0.72 - ratio * 0.35}) saturate(${1.85 - ratio * 0.4})`;
+  }
   heroVideoWrap.style.transform = `scale(${scale})`;
   heroVideoWrap.style.opacity = opacity;
 
@@ -2372,10 +2478,18 @@ if (heroSection && heroDepthAura) {
   });
 }
 
-// 6. 3D COVERFLOW CAROUSEL WITH TOUCH SWIPE (Voice Instruction 3 + Screenshot 3)
+// 6. 3D COVERFLOW CAROUSEL WITH TOUCH SWIPE & LIVE BACKGROUND REEL SYNC (Voice Instruction 6)
 const cardElements = Array.from(document.querySelectorAll('.carousel-card-item'));
 let currentCenter = 0;
 const totalCards = cardElements.length;
+
+const carouselReels = [
+  'assets/videos/reel_sunset.mp4',
+  'assets/videos/reel_h2oli.mp4',
+  'assets/videos/reel_afterdark.mp4',
+  'assets/videos/reel_cameraroll.mp4',
+  'assets/videos/reel_sunset.mp4'
+];
 
 function updateCarouselClasses() {
   cardElements.forEach((card, idx) => {
@@ -2388,6 +2502,14 @@ function updateCarouselClasses() {
     else if (diff === totalCards - 2) card.classList.add('c-left-2');
     else card.classList.add('c-hidden');
   });
+
+  // Instruction 6: Any event click immediately plays that event's reel in the background with 60% blur!
+  const targetReel = carouselReels[currentCenter];
+  switchBackgroundVideo(targetReel);
+  if (catalogBgVideo) {
+    catalogBgVideo.src = targetReel;
+    catalogBgVideo.play().catch(() => {});
+  }
 }
 
 function nextCard() {
@@ -2427,7 +2549,7 @@ stage.addEventListener('touchend', e => {
   else if (touchEndX - touchStartX > 45) prevCard();
 }, { passive: true });
 
-// 7. AMAZON-STYLE EVENT CATALOG & DIRECT IN-SITE RECAPS (Voice Instructions 1 & 2)
+// 7. AMAZON-STYLE EVENT CATALOG & DIRECT IN-SITE RECAPS (Crystal Clear HD Photos - Audio 6)
 const catalogData = {
   sunset: {
     title: 'Sunset Soirée Vol. III',
@@ -2435,10 +2557,10 @@ const catalogData = {
     desc: 'Dehradun\'s quintessential sundowner experience. High aesthetic bolly-tech & melodic deep house poolside sets, transitioning into starlit madness with verified guests.',
     video: 'assets/videos/reel_sunset.mp4',
     photos: [
+      'assets/images/se_authentic_party_1.jpg',
       'assets/images/sunset_real_1.jpg',
       'assets/images/sunset_real_2.jpg',
-      'assets/images/sunset_real_3.jpg',
-      'assets/images/sunset_real_4.jpg'
+      'assets/images/sunset_real_3.jpg'
     ],
     music: 'Bolly-Tech & Melodic Deep House',
     atmo: 'Poolside Sunset Glow',
@@ -2483,10 +2605,10 @@ const catalogData = {
     desc: 'Conceptual luxury property takeover. Minimalist white aesthetics, champagne towers, ambient lighting, and high-energy house anthems overlooking the Doon Valley.',
     video: 'assets/videos/reel_cameraroll.mp4',
     photos: [
-      'assets/images/white_lotus_poster.jpg',
       'assets/images/cameraroll_1.jpg',
       'assets/images/cameraroll_2.jpg',
-      'assets/images/cameraroll_3.jpg'
+      'assets/images/cameraroll_3.jpg',
+      'assets/images/cameraroll_4.jpg'
     ],
     music: 'Afro-House & Tech Anthems',
     atmo: 'Rooftop White Minimalist Luxe',
@@ -2515,6 +2637,13 @@ document.querySelectorAll('.catalog-tab-btn').forEach(btn => {
     const data = catalogData[key];
     if (!data) return;
 
+    // Instruction 6: "tum kisi bhi event pe click karte ho, to event kholne se pehle background mein wo chalna chahiye"
+    switchBackgroundVideo(data.video);
+    if (catalogBgVideo) {
+      catalogBgVideo.src = data.video;
+      catalogBgVideo.play().catch(() => {});
+    }
+
     catalogTitle.textContent = data.title;
     catalogSub.textContent = data.sub;
     catalogDesc.textContent = data.desc;
@@ -2527,7 +2656,7 @@ document.querySelectorAll('.catalog-tab-btn').forEach(btn => {
     catalogReelVideo.src = data.video;
     catalogReelVideo.play().catch(() => {});
 
-    // Switch main photo
+    // Switch main photo to crystal clear HD photo
     catalogMainImg.src = data.photos[0];
 
     // Rebuild thumbnails
@@ -2551,6 +2680,23 @@ function attachThumbClicks() {
   });
 }
 attachThumbClicks();
+
+// Founder Photo View Switcher (Voice Instruction 6)
+const founderImg = document.getElementById('founderImg');
+document.querySelectorAll('.founder-toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.founder-toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const targetSrc = btn.getAttribute('data-src');
+    if (founderImg && targetSrc) {
+      founderImg.style.opacity = '0.3';
+      setTimeout(() => {
+        founderImg.src = targetSrc;
+        founderImg.style.opacity = '1';
+      }, 150);
+    }
+  });
+});
 
 // Video Reel Audio & Fullscreen buttons
 const btnReelAudio = document.getElementById('btnReelAudio');
