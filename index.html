@@ -15,14 +15,15 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,400&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 
-<!-- GSAP + ScrollTrigger & Lenis Smooth Scroll -->
+<!-- Three.js + GSAP + ScrollTrigger & Lenis Smooth Scroll -->
+<script src="https://cdn.jsdelivr.net/npm/three@0.157.0/build/three.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/gsap.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/gsap@3.12.5/dist/ScrollTrigger.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/lenis@1.1.1/dist/lenis.min.js"></script>
 
 <style>
 /* ==========================================================================
-   HOPSHOP-INSPIRED LUXURY DESIGN SYSTEM
+   HOPSHOP-INSPIRED LUXURY DESIGN SYSTEM (AWWWARDS / UNSEEN STANDARD)
    50% Obsidian Black, 30% Electric Crimson, 20% Bone / Warm White
    ========================================================================== */
 *, *::before, *::after {
@@ -173,10 +174,10 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
     background: rgba(230, 0, 38, 0.12);
   }
   .cx-cursor-ring.is-card {
-    width: 86px; height: 86px;
+    width: 88px; height: 88px;
     background: rgba(230, 0, 38, 0.88);
     border-color: transparent;
-    box-shadow: 0 0 35px rgba(230, 0, 38, 0.6);
+    box-shadow: 0 0 35px rgba(230, 0, 38, 0.65);
   }
   .cx-cursor-ring.is-card .cx-cursor-label { display: block; }
 }
@@ -204,8 +205,8 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 .loader-emblem-wrap {
-  width: 88px;
-  height: 88px;
+  width: 90px;
+  height: 90px;
   position: relative;
   display: flex;
   align-items: center;
@@ -240,8 +241,8 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 .loader-logo-img {
-  width: 76px;
-  height: 76px;
+  width: 78px;
+  height: 78px;
   border-radius: 50%;
   object-fit: cover;
   border: 1.5px solid var(--red-border);
@@ -286,19 +287,19 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 /* ==========================================================================
-   NAVIGATION BAR
+   NAVIGATION BAR WITH LIVE CLOCK & GATE COUNTDOWN
    ========================================================================== */
 #navbar {
   position: fixed;
   top: 0; left: 0; right: 0;
   z-index: 1000;
-  padding: 18px clamp(20px, 4.5vw, 64px);
+  padding: 16px clamp(20px, 4vw, 56px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   backdrop-filter: blur(20px);
   -webkit-backdrop-filter: blur(20px);
-  background: rgba(7, 7, 9, 0.75);
+  background: rgba(7, 7, 9, 0.78);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
   transition: transform 0.4s var(--ease-hs);
 }
@@ -330,10 +331,41 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 
 .nav-title span { color: var(--red-primary); }
 
+/* Live Status Monospace Ticker */
+.nav-live-indicator {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--tx-dim);
+  border-left: 1px solid rgba(255, 255, 255, 0.1);
+  border-right: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0 16px;
+}
+
+@media (max-width: 1024px) {
+  .nav-live-indicator { display: none; }
+}
+
+.live-pulse-dot {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #22c55e;
+  box-shadow: 0 0 8px #22c55e;
+}
+
+.countdown-highlight {
+  color: var(--red-glow);
+  font-weight: 700;
+}
+
 .nav-links {
   display: flex;
   align-items: center;
-  gap: 32px;
+  gap: 28px;
 }
 
 .nav-link-item {
@@ -391,7 +423,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 /* ==========================================================================
-   PINNED DEPTH HERO STAGE (160vh Pinned Scroll Scene)
+   PINNED DEPTH HERO STAGE + THREE.JS NEBULA
    ========================================================================== */
 .hero-scene-wrap {
   position: relative;
@@ -413,6 +445,17 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   z-index: 1;
 }
 
+/* Three.js Particle WebGL Canvas */
+#webgl-nebula {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  pointer-events: none;
+  z-index: 1;
+  opacity: 0.65;
+}
+
 /* Background Optical Blur Reel */
 .hero-backdrop-video {
   position: absolute;
@@ -423,6 +466,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   filter: blur(28px) brightness(0.7) saturate(1.85);
   transform: scale(1.1);
   will-change: transform, filter, opacity;
+  z-index: 0;
 }
 
 .hero-video-tint {
@@ -431,6 +475,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   background: linear-gradient(180deg, rgba(7, 7, 9, 0.65) 0%, rgba(230, 0, 38, 0.38) 50%, rgba(7, 7, 9, 0.95) 100%);
   mix-blend-mode: multiply;
   pointer-events: none;
+  z-index: 2;
 }
 
 .hero-radial-shade {
@@ -438,6 +483,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   inset: 0;
   background: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.18) 0%, rgba(7, 7, 9, 0.82) 65%, #070709 100%);
   pointer-events: none;
+  z-index: 3;
 }
 
 /* Ambient Pulsing Aura */
@@ -449,6 +495,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   background: radial-gradient(circle, rgba(230, 0, 38, 0.35) 0%, rgba(230, 0, 38, 0.1) 45%, transparent 70%);
   filter: blur(55px);
   pointer-events: none;
+  z-index: 4;
   animation: auraBreathe 6s ease-in-out infinite alternate;
 }
 
@@ -627,7 +674,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 /* ==========================================================================
-   MAIN CONTENT WRAPPER (Slides Up Over Pinned Hero)
+   MAIN CONTENT WRAPPER
    ========================================================================== */
 #main-flow {
   position: relative;
@@ -637,7 +684,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   border-top: 1px solid var(--red-border);
 }
 
-/* Infinite Marquee Ticker */
+/* Infinite Marquee Ticker with Velocity Skew */
 .marquee-strip {
   padding: 22px 0;
   background: #09090d;
@@ -677,7 +724,6 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 
 /* ==========================================================================
    HOPSHOP CROWN JEWEL: PINNED MANIFESTO STEPPER (THE FORMULA)
-   Sticky 100vh stage across 260vh scroll distance
    ========================================================================== */
 .stepper-section-wrap {
   position: relative;
@@ -895,7 +941,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 }
 
 /* ==========================================================================
-   "WHAT'S ON" — HOPSHOP ASYMMETRIC FLOAT GRID
+   "WHAT'S ON" — HOPSHOP ASYMMETRIC FLOAT GRID WITH 3D TILT
    ========================================================================== */
 #whats-on-section {
   padding: 120px clamp(20px, 4.5vw, 64px) 80px;
@@ -964,14 +1010,30 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   background: var(--bg-surface);
   border: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: 0 24px 60px -20px rgba(0, 0, 0, 0.85);
-  transition: transform 0.4s var(--ease-hs), border-color 0.4s, box-shadow 0.4s;
+  transition: transform 0.4s var(--ease-spring), border-color 0.4s, box-shadow 0.4s;
   cursor: pointer;
+  transform-style: preserve-3d;
+  perspective: 1000px;
 }
 
 .hs-float-tile:hover {
-  transform: translateY(-8px) scale(1.02);
   border-color: var(--red-border);
   box-shadow: 0 35px 80px -15px rgba(230, 0, 38, 0.45);
+}
+
+/* Specular light glare overlay */
+.tile-specular-glare {
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.15) 0%, transparent 60%);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 10;
+  transition: opacity 0.3s;
+}
+
+.hs-float-tile:hover .tile-specular-glare {
+  opacity: 1;
 }
 
 /* Individual Cell Offsets (Hopshop Stagger) */
@@ -1008,7 +1070,7 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
   width: 100%;
   height: 100%;
   object-fit: cover;
-  transition: transform 0.7s var(--ease-hs), filter 0.5s;
+  transition: transform 0.7s var(--ease-hs);
 }
 
 .hs-float-tile:hover .float-poster-img {
@@ -1065,6 +1127,234 @@ button { font-family: inherit; border: none; background: none; color: inherit; }
 .float-tile-venue {
   font-size: 13px;
   color: var(--tx-dim);
+}
+
+/* ==========================================================================
+   INTERACTIVE HOLOGRAPHIC VIP MEMBER PASS GENERATOR (INVESTOR SHOWSTOPPER)
+   ========================================================================== */
+#vip-pass-section {
+  padding: 120px clamp(20px, 4.5vw, 64px);
+  max-width: 1360px;
+  margin: 0 auto;
+}
+
+.vip-pass-layout {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(40px, 6vw, 80px);
+  align-items: center;
+}
+
+@media (max-width: 960px) {
+  .vip-pass-layout {
+    grid-template-columns: 1fr;
+  }
+}
+
+.vip-lead-tag {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+  font-weight: 700;
+  margin-bottom: 8px;
+  display: block;
+}
+
+.vip-section-title {
+  font-family: var(--font-display);
+  font-size: clamp(34px, 4.8vw, 60px);
+  font-weight: 800;
+  text-transform: uppercase;
+  line-height: 1.05;
+  margin-bottom: 18px;
+}
+
+.vip-section-title span { color: var(--red-primary); }
+
+.vip-lead-desc {
+  font-size: 15px;
+  line-height: 1.7;
+  color: var(--tx-secondary);
+  margin-bottom: 30px;
+}
+
+.vip-pass-controls {
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  background: var(--bg-surface);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: var(--radius-md);
+  padding: 24px;
+}
+
+.vip-input-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.vip-input-label {
+  font-family: var(--font-mono);
+  font-size: 10px;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--tx-dim);
+  font-weight: 700;
+}
+
+.vip-text-field {
+  width: 100%;
+  padding: 12px 16px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  border-radius: var(--radius-sm);
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  transition: border-color 0.3s;
+}
+
+.vip-text-field:focus {
+  border-color: var(--red-primary);
+  box-shadow: 0 0 14px rgba(230, 0, 38, 0.35);
+}
+
+/* 3D Holographic NFC Card */
+.vip-card-stage {
+  perspective: 1200px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px 0;
+}
+
+.holographic-pass-card {
+  width: min(440px, 90vw);
+  height: 270px;
+  border-radius: 20px;
+  position: relative;
+  background: linear-gradient(135deg, #181822 0%, #0a0a0f 50%, #151520 100%);
+  border: 1.5px solid rgba(255, 255, 255, 0.15);
+  box-shadow: 0 30px 80px rgba(0, 0, 0, 0.9), 0 0 45px rgba(230, 0, 38, 0.25);
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.3s;
+  overflow: hidden;
+  padding: 24px 28px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+/* Iridescent Rainbow Foil Overlay */
+.card-foil-sheen {
+  position: absolute;
+  inset: -100%;
+  background: linear-gradient(115deg, 
+    transparent 0%, 
+    rgba(255, 0, 128, 0.12) 25%, 
+    rgba(0, 255, 255, 0.15) 50%, 
+    rgba(255, 215, 0, 0.15) 75%, 
+    transparent 100%
+  );
+  mix-blend-mode: color-dodge;
+  pointer-events: none;
+  transform: translateZ(1px);
+  transition: opacity 0.3s;
+}
+
+.card-top-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: relative;
+  z-index: 5;
+}
+
+.card-brand-logo {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.card-logo-img {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  border: 1px solid var(--red-glow);
+  object-fit: cover;
+}
+
+.card-brand-text {
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+}
+
+.card-nfc-symbol {
+  font-size: 18px;
+  opacity: 0.6;
+}
+
+.card-mid-row {
+  position: relative;
+  z-index: 5;
+}
+
+.card-member-name {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.2vw, 30px);
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: var(--tx-primary);
+  text-shadow: 0 0 15px rgba(255, 255, 255, 0.4);
+}
+
+.card-tier-badge {
+  display: inline-block;
+  margin-top: 6px;
+  padding: 3px 12px;
+  background: var(--red-dim);
+  border: 1px solid var(--red-border);
+  border-radius: var(--radius-full);
+  font-family: var(--font-mono);
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--red-glow);
+}
+
+.card-bottom-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-end;
+  position: relative;
+  z-index: 5;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  padding-top: 14px;
+}
+
+.card-meta-label {
+  font-family: var(--font-mono);
+  font-size: 8px;
+  letter-spacing: 1.5px;
+  text-transform: uppercase;
+  color: var(--tx-dim);
+}
+
+.card-meta-val {
+  font-family: var(--font-mono);
+  font-size: 11px;
+  font-weight: 700;
+  color: var(--tx-primary);
+  margin-top: 2px;
 }
 
 /* ==========================================================================
@@ -1908,7 +2198,7 @@ footer {
 }
 
 /* ==========================================================================
-   AMBIENT AUDIO SYNTHESIZER
+   AMBIENT AUDIO SYNTHESIZER TOGGLE
    ========================================================================== */
 .audio-synth-toggle {
   position: fixed;
@@ -1992,9 +2282,18 @@ footer {
     <div class="nav-title">Social<span>.</span>Euphoria</div>
   </a>
 
+  <!-- Live Status Monospace Ticker -->
+  <div class="nav-live-indicator">
+    <div class="live-pulse-dot"></div>
+    <span id="liveIstClock">21:50:00 IST · DOON VALLEY</span>
+    <span>✦</span>
+    <span>DOORS LOCK: <span class="countdown-highlight" id="gateLockCountdown">02:10:00</span></span>
+  </div>
+
   <nav class="nav-links">
     <a href="#formula-scene" class="nav-link-item">The Formula</a>
     <a href="#whats-on-section" class="nav-link-item">What's On</a>
+    <a href="#vip-pass-section" class="nav-link-item">VIP Pass</a>
     <a href="#catalog-section" class="nav-link-item">Event Archives</a>
     <a href="#founder-spotlight" class="nav-link-item">Big Daddy</a>
     <a href="#rules-section" class="nav-link-item">The Rules</a>
@@ -2004,10 +2303,13 @@ footer {
 </header>
 
 <!-- ==========================================================================
-     PINNED DEPTH HERO STAGE (160vh Pinned Scroll Scene)
+     PINNED DEPTH HERO STAGE + THREE.JS NEBULA
      ========================================================================== -->
 <div class="hero-scene-wrap" id="heroWrap">
   <section id="hero-stage">
+    <!-- Three.js Particle WebGL Canvas -->
+    <canvas id="webgl-nebula"></canvas>
+
     <!-- Optical Blur Background Video -->
     <video class="hero-backdrop-video" id="heroBgVideo" autoplay muted loop playsinline src="assets/videos/reel_sunset.mp4"></video>
     <div class="hero-video-tint"></div>
@@ -2055,8 +2357,8 @@ footer {
 <main id="main-flow">
 
   <!-- MARQUEE TICKER -->
-  <div class="marquee-strip">
-    <div class="marquee-rail">
+  <div class="marquee-strip" id="marqueeStrip">
+    <div class="marquee-rail" id="marqueeRail">
       <div class="marquee-unit">Sunset Soirées <span class="marquee-symbol">✦</span></div>
       <div class="marquee-unit">Vishram Resort Pool Takeovers <span class="marquee-symbol">✦</span></div>
       <div class="marquee-unit">H²OLI Festival 2024 <span class="marquee-symbol">✦</span></div>
@@ -2147,7 +2449,7 @@ footer {
   </div>
 
   <!-- ==========================================================================
-       "WHAT'S ON" — HOPSHOP ASYMMETRIC FLOAT GRID
+       "WHAT'S ON" — HOPSHOP ASYMMETRIC FLOAT GRID WITH 3D TILT
        ========================================================================== -->
   <section id="whats-on-section">
     <div class="whats-on-heading-box">
@@ -2158,10 +2460,11 @@ footer {
       <div class="whats-on-rule"></div>
     </div>
 
-    <!-- 12-Column Asymmetric Float Grid -->
+    <!-- 12-Column Asymmetric Float Grid with 3D Tilt -->
     <div class="hs-float-grid">
       <!-- Tile 1: Sunset Soiree -->
-      <div class="hs-float-tile cell-1" data-cursor="VIEW REEL" onclick="switchCatalogEvent('sunset')">
+      <div class="hs-float-tile cell-1 tilt-card" data-cursor="VIEW REEL" onclick="switchCatalogEvent('sunset')">
+        <div class="tile-specular-glare"></div>
         <div class="float-poster-wrap">
           <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirées Vol. III" class="float-poster-img" loading="lazy">
           <span class="float-status-pill">Signature Series</span>
@@ -2174,7 +2477,8 @@ footer {
       </div>
 
       <!-- Tile 2: H2OLI Festival -->
-      <div class="hs-float-tile cell-2" data-cursor="VIEW REEL" onclick="switchCatalogEvent('h2oli')">
+      <div class="hs-float-tile cell-2 tilt-card" data-cursor="VIEW REEL" onclick="switchCatalogEvent('h2oli')">
+        <div class="tile-specular-glare"></div>
         <div class="float-poster-wrap">
           <img src="assets/images/h2oli_festival.jpg" alt="H2OLI Festival" class="float-poster-img" loading="lazy">
           <span class="float-status-pill gold">Annual Festival</span>
@@ -2187,7 +2491,8 @@ footer {
       </div>
 
       <!-- Tile 3: After Dark -->
-      <div class="hs-float-tile cell-3" data-cursor="VIEW REEL" onclick="switchCatalogEvent('afterdark')">
+      <div class="hs-float-tile cell-3 tilt-card" data-cursor="VIEW REEL" onclick="switchCatalogEvent('afterdark')">
+        <div class="tile-specular-glare"></div>
         <div class="float-poster-wrap">
           <img src="assets/images/after_dark.jpg" alt="After Dark Carnival" class="float-poster-img" loading="lazy">
           <span class="float-status-pill">Night Carnival</span>
@@ -2200,7 +2505,8 @@ footer {
       </div>
 
       <!-- Tile 4: The White Lotus -->
-      <div class="hs-float-tile cell-4" data-cursor="VIEW REEL" onclick="switchCatalogEvent('whitelotus')">
+      <div class="hs-float-tile cell-4 tilt-card" data-cursor="VIEW REEL" onclick="switchCatalogEvent('whitelotus')">
+        <div class="tile-specular-glare"></div>
         <div class="float-poster-wrap">
           <img src="assets/images/white_lotus.jpg" alt="The White Lotus" class="float-poster-img" loading="lazy">
           <span class="float-status-pill">Ultra Luxury</span>
@@ -2213,7 +2519,8 @@ footer {
       </div>
 
       <!-- Tile 5: Project X Edition -->
-      <div class="hs-float-tile cell-5" data-cursor="VIEW REEL" onclick="switchCatalogEvent('sunset')">
+      <div class="hs-float-tile cell-5 tilt-card" data-cursor="VIEW REEL" onclick="switchCatalogEvent('sunset')">
+        <div class="tile-specular-glare"></div>
         <div class="float-poster-wrap">
           <img src="assets/images/gallery_1.jpg" alt="Project X Edition" class="float-poster-img" loading="lazy">
           <span class="float-status-pill gold">Pure Chaos</span>
@@ -2222,6 +2529,77 @@ footer {
           <div class="float-tile-tag">High-Energy Rave</div>
           <div class="float-tile-name">Project X: Dehradun Edition</div>
           <div class="float-tile-venue">Hidden Luxury Estate · 100% Verified Profiles</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       INTERACTIVE HOLOGRAPHIC VIP MEMBER PASS GENERATOR (INVESTOR SHOWSTOPPER)
+       ========================================================================== -->
+  <section id="vip-pass-section">
+    <div class="vip-pass-layout">
+      <!-- Left Column: Narrative & Real-time Customizer -->
+      <div>
+        <span class="vip-lead-tag">Cult Membership Portal</span>
+        <h2 class="vip-section-title">Claim Your <span>VIP NFC Pass</span></h2>
+        <p class="vip-lead-desc">
+          Social Euphoria issues limited digital credentials per season. Tap your profile below to preview your live holographic member pass.
+        </p>
+
+        <div class="vip-pass-controls">
+          <div class="vip-input-wrap">
+            <label class="vip-input-label">Member Full Name</label>
+            <input type="text" class="vip-text-field" id="passNameInput" placeholder="e.g. Kabir Sharma" value="Kabir Sharma">
+          </div>
+
+          <div class="vip-input-wrap">
+            <label class="vip-input-label">Membership Tier</label>
+            <select class="vip-text-field" id="passTierSelect" style="background:#14141a;">
+              <option value="FOUNDING PATRON">Founding Patron (All-Access)</option>
+              <option value="CURATED GUEST">Curated Guest (Verified)</option>
+              <option value="BACKSTAGE ACCESS">Backstage & Artist Guest</option>
+            </select>
+          </div>
+
+          <button class="btn-hero-prime" id="btnIssuePass" style="width:100%; margin-top:8px;">
+            Issue Digital Pass ✦
+          </button>
+        </div>
+      </div>
+
+      <!-- Right Column: Interactive 3D Holographic Card -->
+      <div class="vip-card-stage" id="cardStage">
+        <div class="holographic-pass-card" id="holographicCard">
+          <div class="card-foil-sheen" id="cardFoil"></div>
+          
+          <div class="card-top-row">
+            <div class="card-brand-logo">
+              <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Badge" class="card-logo-img">
+              <span class="card-brand-text">Social.Euphoria</span>
+            </div>
+            <div class="card-nfc-symbol">✦ 🛈</div>
+          </div>
+
+          <div class="card-mid-row">
+            <div class="card-member-name" id="cardMemberNameDisplay">KABIR SHARMA</div>
+            <span class="card-tier-badge" id="cardTierDisplay">FOUNDING PATRON</span>
+          </div>
+
+          <div class="card-bottom-row">
+            <div>
+              <div class="card-meta-label">Pass Credential ID</div>
+              <div class="card-meta-val" id="cardIdDisplay">SE-9402-VIP</div>
+            </div>
+            <div>
+              <div class="card-meta-label">Sanctuary Status</div>
+              <div class="card-meta-val" style="color:#22c55e;">VERIFIED ✓</div>
+            </div>
+            <div>
+              <div class="card-meta-label">Roving City</div>
+              <div class="card-meta-val">DEHRADUN</div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -2320,7 +2698,8 @@ footer {
        FOUNDER: BIG DADDY ABHAY RAWAT (Single HD Portrait Only)
        ========================================================================== -->
   <section id="founder-spotlight">
-    <div class="founder-editorial-card">
+    <div class="founder-editorial-card tilt-card">
+      <div class="tile-specular-glare"></div>
       <div class="founder-frame">
         <img src="assets/images/abhay_rawat_card.jpg" alt="Abhay Rawat - Big Daddy of Social Euphoria" class="founder-portrait" loading="lazy">
         <div class="founder-tag-chip">
@@ -2451,7 +2830,7 @@ footer {
     <form id="rsvpForm" onsubmit="event.preventDefault(); handleRsvpSubmit();">
       <div class="field-group">
         <label>Your Full Name</label>
-        <input type="text" class="form-input" required placeholder="e.g. Kabir Sharma">
+        <input type="text" class="form-input" id="rsvpNameField" required placeholder="e.g. Kabir Sharma">
       </div>
       <div class="field-group">
         <label>Instagram Handle (Required for verification)</label>
@@ -2463,7 +2842,7 @@ footer {
       </div>
       <div class="field-group">
         <label>Preferred Experience</label>
-        <select class="form-input" style="background:#16161f;">
+        <select class="form-input" id="rsvpExpField" style="background:#16161f;">
           <option>Sunset Soirée (Poolside Deep House)</option>
           <option>H²OLI Festival (Pool & Foam Carnival)</option>
           <option>After Dark Neon Rave</option>
@@ -2509,13 +2888,157 @@ gsap.ticker.add((time) => {
 gsap.ticker.lagSmoothing(0);
 lenis.stop(); // Temporarily halt during preloader
 
-// 2. INTERACTIVE MOUSE CURSOR
+// Smooth Anchor Navigation via Lenis
+document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+  anchor.addEventListener('click', e => {
+    const targetId = anchor.getAttribute('href');
+    if (targetId && targetId !== '#') {
+      const targetEl = document.querySelector(targetId);
+      if (targetEl) {
+        e.preventDefault();
+        lenis.scrollTo(targetEl, { offset: -40, duration: 1.2 });
+      }
+    }
+  });
+});
+
+// 2. LIVE IST CLOCK & PERMANENT 21:00 GATE LOCK COUNTDOWN
+function updateLiveClocks() {
+  const now = new Date();
+  
+  // Format IST
+  const istTimeStr = now.toLocaleTimeString('en-GB', { timeZone: 'Asia/Kolkata', hour12: false });
+  const clockEl = document.getElementById('liveIstClock');
+  if (clockEl) clockEl.textContent = `${istTimeStr} IST · DOON VALLEY`;
+
+  // Countdown to 21:00 (9:00 PM) Gate Lock
+  const lockTarget = new Date();
+  lockTarget.setHours(21, 0, 0, 0);
+  if (now > lockTarget) {
+    lockTarget.setDate(lockTarget.getDate() + 1);
+  }
+  const diffMs = lockTarget - now;
+  const h = String(Math.floor(diffMs / 3600000)).padStart(2, '0');
+  const m = String(Math.floor((diffMs % 3600000) / 60000)).padStart(2, '0');
+  const s = String(Math.floor((diffMs % 60000) / 1000)).padStart(2, '0');
+  const countEl = document.getElementById('gateLockCountdown');
+  if (countEl) countEl.textContent = `${h}:${m}:${s}`;
+}
+setInterval(updateLiveClocks, 1000);
+updateLiveClocks();
+
+// 3. THREE.JS PARTICLE NEBULA (AWWWARDS WEBGL STANDARD)
+const nebulaCanvas = document.getElementById('webgl-nebula');
+if (nebulaCanvas) {
+  try {
+    const renderer = new THREE.WebGLRenderer({ canvas: nebulaCanvas, alpha: true, antialias: true });
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 1, 1000);
+    camera.position.z = 400;
+
+    const count = 1200;
+    const geometry = new THREE.BufferGeometry();
+    const positions = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const cRed = new THREE.Color(0xe60026);
+    const cGold = new THREE.Color(0xf4d95b);
+
+    for (let i = 0; i < count; i++) {
+      positions[i * 3] = (Math.random() - 0.5) * 1200;
+      positions[i * 3 + 1] = (Math.random() - 0.5) * 900;
+      positions[i * 3 + 2] = (Math.random() - 0.5) * 600;
+
+      const chosen = Math.random() > 0.8 ? cGold : cRed;
+      colors[i * 3] = chosen.r;
+      colors[i * 3 + 1] = chosen.g;
+      colors[i * 3 + 2] = chosen.b;
+    }
+
+    geometry.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+    geometry.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    // Particle texture
+    const pCanvas = document.createElement('canvas');
+    pCanvas.width = 32; pCanvas.height = 32;
+    const pCtx = pCanvas.getContext('2d');
+    const grad = pCtx.createRadialGradient(16, 16, 0, 16, 16, 16);
+    grad.addColorStop(0, 'rgba(255, 255, 255, 1)');
+    grad.addColorStop(0.3, 'rgba(230, 0, 38, 0.7)');
+    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
+    pCtx.fillStyle = grad;
+    pCtx.beginPath();
+    pCtx.arc(16, 16, 16, 0, Math.PI * 2);
+    pCtx.fill();
+
+    const pTexture = new THREE.CanvasTexture(pCanvas);
+    const material = new THREE.PointsMaterial({
+      size: 4,
+      map: pTexture,
+      transparent: true,
+      vertexColors: true,
+      blending: THREE.AdditiveBlending,
+      depthWrite: false
+    });
+
+    const particles = new THREE.Points(geometry, material);
+    scene.add(particles);
+
+    let mouseX = 0, mouseY = 0;
+    window.addEventListener('mousemove', e => {
+      mouseX = (e.clientX - window.innerWidth / 2) * 0.05;
+      mouseY = (e.clientY - window.innerHeight / 2) * 0.05;
+    });
+
+    function animateNebula() {
+      requestAnimationFrame(animateNebula);
+      particles.rotation.y += 0.0008;
+      particles.rotation.x += 0.0004;
+
+      camera.position.x += (mouseX - camera.position.x) * 0.04;
+      camera.position.y += (-mouseY - camera.position.y) * 0.04;
+
+      renderer.render(scene, camera);
+    }
+    animateNebula();
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+  } catch (err) {}
+}
+
+// 4. INTERACTIVE MOUSE CURSOR & SOUND HAPTIC SYNTHESIZER
 const cursorDot = document.getElementById('cursorDot');
 const cursorRing = document.getElementById('cursorRing');
 const cursorLabel = document.getElementById('cursorLabel');
 let mX = window.innerWidth / 2, mY = window.innerHeight / 2;
 let dX = mX, dY = mY;
 let rX = mX, rY = mY;
+
+// Web Audio Haptic Click
+let hapticCtx = null;
+function playHapticTick(freq = 600, duration = 0.015) {
+  try {
+    if (!hapticCtx) hapticCtx = new (window.AudioContext || window.webkitAudioContext)();
+    if (hapticCtx.state === 'suspended') hapticCtx.resume();
+    const osc = hapticCtx.createOscillator();
+    const gain = hapticCtx.createGain();
+    osc.type = 'sine';
+    osc.frequency.setValueAtTime(freq, hapticCtx.currentTime);
+    gain.gain.setValueAtTime(0.015, hapticCtx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, hapticCtx.currentTime + duration);
+    osc.connect(gain);
+    gain.connect(hapticCtx.destination);
+    osc.start();
+    osc.stop(hapticCtx.currentTime + duration);
+  } catch (e) {}
+}
 
 if (window.innerWidth > 900) {
   window.addEventListener('mousemove', e => {
@@ -2537,7 +3060,10 @@ if (window.innerWidth > 900) {
 
   // Attach hover targets
   document.querySelectorAll('a, button, select, input, .cat-thumb').forEach(el => {
-    el.addEventListener('mouseenter', () => cursorRing.classList.add('is-hovering'));
+    el.addEventListener('mouseenter', () => {
+      cursorRing.classList.add('is-hovering');
+      playHapticTick(750, 0.012);
+    });
     el.addEventListener('mouseleave', () => cursorRing.classList.remove('is-hovering'));
   });
 
@@ -2546,6 +3072,7 @@ if (window.innerWidth > 900) {
       cursorRing.classList.add('is-card');
       const customText = card.getAttribute('data-cursor') || 'VIEW';
       cursorLabel.textContent = customText;
+      playHapticTick(500, 0.02);
     });
     card.addEventListener('mouseleave', () => {
       cursorRing.classList.remove('is-card');
@@ -2553,7 +3080,90 @@ if (window.innerWidth > 900) {
   });
 }
 
-// 3. CINEMATIC PRELOADER (00 -> 100%)
+// 5. 3D CARD TILT & SPECULAR SHINE EFFECT
+document.querySelectorAll('.tilt-card').forEach(card => {
+  const glare = card.querySelector('.tile-specular-glare');
+  card.addEventListener('mousemove', e => {
+    const rect = card.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const centerX = rect.width / 2;
+    const centerY = rect.height / 2;
+    const rotateX = ((y - centerY) / centerY) * -7;
+    const rotateY = ((x - centerX) / centerX) * 7;
+
+    card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+    if (glare) {
+      glare.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(255, 255, 255, 0.18) 0%, transparent 60%)`;
+    }
+  });
+
+  card.addEventListener('mouseleave', () => {
+    card.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)';
+  });
+});
+
+// 6. 3D HOLOGRAPHIC VIP PASS CARD GENERATOR
+const cardStage = document.getElementById('cardStage');
+const holographicCard = document.getElementById('holographicCard');
+const cardFoil = document.getElementById('cardFoil');
+const passNameInput = document.getElementById('passNameInput');
+const passTierSelect = document.getElementById('passTierSelect');
+const cardMemberNameDisplay = document.getElementById('cardMemberNameDisplay');
+const cardTierDisplay = document.getElementById('cardTierDisplay');
+const btnIssuePass = document.getElementById('btnIssuePass');
+
+if (cardStage && holographicCard) {
+  cardStage.addEventListener('mousemove', e => {
+    const rect = holographicCard.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const cX = rect.width / 2;
+    const cY = rect.height / 2;
+    const rotX = ((y - cY) / cY) * -12;
+    const rotY = ((x - cX) / cX) * 12;
+
+    holographicCard.style.transform = `rotateX(${rotX}deg) rotateY(${rotY}deg) translateZ(10px)`;
+    if (cardFoil) {
+      cardFoil.style.transform = `translate(${x * 0.4}px, ${y * 0.4}px) rotate(${rotY * 2}deg)`;
+    }
+  });
+
+  cardStage.addEventListener('mouseleave', () => {
+    holographicCard.style.transform = 'rotateX(0deg) rotateY(0deg) translateZ(0)';
+  });
+
+  if (passNameInput) {
+    passNameInput.addEventListener('input', () => {
+      cardMemberNameDisplay.textContent = passNameInput.value.trim().toUpperCase() || 'KABIR SHARMA';
+    });
+  }
+
+  if (passTierSelect) {
+    passTierSelect.addEventListener('change', () => {
+      cardTierDisplay.textContent = passTierSelect.value;
+    });
+  }
+
+  if (btnIssuePass) {
+    btnIssuePass.addEventListener('click', () => {
+      playHapticTick(900, 0.05);
+      holographicCard.style.boxShadow = '0 0 60px rgba(244, 217, 91, 0.8), 0 0 100px rgba(230, 0, 38, 0.6)';
+      btnIssuePass.textContent = 'Digital Pass Issued ✓';
+      btnIssuePass.style.background = '#22c55e';
+      setTimeout(() => {
+        const modal = document.getElementById('rsvp-modal');
+        const nameField = document.getElementById('rsvpNameField');
+        if (nameField && passNameInput) nameField.value = passNameInput.value;
+        if (modal) modal.classList.add('open');
+        btnIssuePass.textContent = 'Issue Digital Pass ✦';
+        btnIssuePass.style.background = 'var(--red-primary)';
+      }, 700);
+    });
+  }
+}
+
+// 7. CINEMATIC PRELOADER (00 -> 100%)
 const loader = document.getElementById('loader');
 const loaderDigit = document.getElementById('loaderDigit');
 const loaderRing = document.getElementById('loaderRingCircle');
@@ -2562,23 +3172,26 @@ const ringCircumference = 283;
 
 function startPreloader() {
   const stepInterval = setInterval(() => {
-    progressVal += Math.floor(Math.random() * 4) + 2;
+    progressVal += Math.floor(Math.random() * 6) + 4;
     if (progressVal >= 100) {
       progressVal = 100;
       clearInterval(stepInterval);
       loaderDigit.textContent = '100';
       loaderRing.style.strokeDashoffset = '0';
-      setTimeout(exitPreloader, 320);
+      setTimeout(exitPreloader, 200);
       return;
     }
     loaderDigit.textContent = progressVal;
     const offset = ringCircumference - (progressVal / 100) * ringCircumference;
     loaderRing.style.strokeDashoffset = offset;
-  }, 25);
+  }, 20);
 }
 
 function exitPreloader() {
   loader.classList.add('loaded');
+  setTimeout(() => {
+    loader.style.display = 'none';
+  }, 950);
   lenis.start();
 
   // Hero Intro Timeline
@@ -2597,21 +3210,13 @@ function exitPreloader() {
   );
 }
 
-window.addEventListener('load', () => setTimeout(startPreloader, 100));
+if (document.readyState === 'complete' || document.readyState === 'interactive') {
+  setTimeout(startPreloader, 50);
+} else {
+  document.addEventListener('DOMContentLoaded', () => setTimeout(startPreloader, 50));
+}
 
-// Smooth Anchor Navigation via Lenis
-document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-  anchor.addEventListener('click', e => {
-    const targetId = anchor.getAttribute('href');
-    if (targetId && targetId !== '#') {
-      const targetEl = document.querySelector(targetId);
-      if (targetEl) {
-        e.preventDefault();
-        lenis.scrollTo(targetEl, { offset: -40, duration: 1.2 });
-      }
-    }
-  });
-});
+// 8. NAVBAR AUTO-HIDE ON SCROLL
 const navbar = document.getElementById('navbar');
 let lastScrollY = 0;
 window.addEventListener('scroll', () => {
@@ -2624,7 +3229,7 @@ window.addEventListener('scroll', () => {
   lastScrollY = currentY;
 });
 
-// 5. PINNED HERO SCROLL PARALLAX (Hopshop Style)
+// 9. PINNED HERO SCROLL PARALLAX (Hopshop Style)
 const heroContentBlock = document.getElementById('heroContentBlock');
 const heroBgVideo = document.getElementById('heroBgVideo');
 const heroAura = document.getElementById('heroAura');
@@ -2649,7 +3254,7 @@ window.addEventListener('scroll', () => {
   }
 });
 
-// 6. HOPSHOP CROWN JEWEL: PINNED MANIFESTO STEPPER (THE FORMULA)
+// 10. HOPSHOP CROWN JEWEL: PINNED MANIFESTO STEPPER (THE FORMULA)
 ScrollTrigger.create({
   trigger: '#formula-scene',
   start: 'top top',
@@ -2684,7 +3289,7 @@ ScrollTrigger.create({
   }
 });
 
-// 7. WHAT'S ON HEADING WORD REVEAL
+// 11. WHAT'S ON HEADING WORD REVEAL
 ScrollTrigger.create({
   trigger: '#whats-on-section',
   start: 'top 80%',
@@ -2704,7 +3309,7 @@ ScrollTrigger.create({
   }
 });
 
-// 8. EVENT MEDIA CATALOG DATA & IN-SITE REEL SWITCHER
+// 12. EVENT MEDIA CATALOG DATA & IN-SITE REEL SWITCHER
 const catalogEvents = {
   sunset: {
     title: 'Sunset Soirée Vol. III',
@@ -2838,6 +3443,7 @@ function bindThumbEvents() {
       document.querySelectorAll('.cat-thumb').forEach(t => t.classList.remove('active'));
       th.classList.add('active');
       catMainDisplayImg.src = th.getAttribute('data-img');
+      playHapticTick(650, 0.015);
     });
   });
 }
@@ -2862,7 +3468,7 @@ btnReelFull.addEventListener('click', () => {
   else if (catReelVideo.webkitRequestFullscreen) catReelVideo.webkitRequestFullscreen();
 });
 
-// 9. RSVP MODAL
+// 13. RSVP APPLICATION MODAL
 const rsvpModal = document.getElementById('rsvp-modal');
 const openModal = () => rsvpModal.classList.add('open');
 const closeModal = () => rsvpModal.classList.remove('open');
@@ -2891,7 +3497,7 @@ window.handleRsvpSubmit = function() {
   }, 850);
 };
 
-// 10. AUDIO AMBIENCE SYNTHESIZER
+// 14. AUDIO AMBIENCE SYNTHESIZER
 const audioToggle = document.getElementById('audioToggle');
 let audioCtx = null;
 let synthOsc = null;
