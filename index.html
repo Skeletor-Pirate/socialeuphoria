@@ -2242,6 +2242,786 @@ footer {
   0%, 100% { height: 5px; }
   50% { height: 22px; }
 }
+
+  /* ==========================================================================
+     FUNTECH & UNSEEN.CO & HOPSHOP EXTENSIONS
+     ========================================================================== */
+  
+  /* 1. SONIC ATMOSPHERE / VIBE MATRIX */
+  .vibe-matrix-bar {
+    margin-top: 24px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    background: rgba(14, 15, 20, 0.72);
+    backdrop-filter: blur(24px);
+    -webkit-backdrop-filter: blur(24px);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 40px;
+    padding: 8px 18px 12px;
+    box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    max-width: 860px;
+    width: 95%;
+    position: relative;
+    z-index: 10;
+  }
+
+  .vibe-matrix-label {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    letter-spacing: 2.5px;
+    text-transform: uppercase;
+    color: var(--tx-secondary);
+  }
+
+  .vibe-matrix-label strong {
+    color: var(--red-glow);
+  }
+
+  .vibe-pulse-indicator {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--red-glow);
+    box-shadow: 0 0 10px var(--red-glow);
+    animation: pulseDot 1.4s infinite ease-in-out;
+  }
+
+  .vibe-pills-row {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .vibe-pill {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+    padding: 7px 16px;
+    border-radius: 20px;
+    background: rgba(255, 255, 255, 0.04);
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    color: var(--tx-muted);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  .vibe-pill:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--tx-primary);
+    border-color: rgba(255, 255, 255, 0.2);
+    transform: translateY(-2px);
+  }
+
+  .vibe-pill.active {
+    background: var(--red-glow);
+    color: #fff;
+    border-color: var(--red-border);
+    box-shadow: 0 0 24px rgba(230, 0, 38, 0.65);
+    transform: scale(1.04);
+  }
+
+  .vibe-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+  }
+
+  /* 2. FUNTECH DRAGGABLE PHYSICS STICKERS */
+  .sticker-layer {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    z-index: 28;
+    overflow: hidden;
+  }
+
+  .physics-sticker {
+    position: absolute;
+    pointer-events: auto;
+    cursor: grab;
+    user-select: none;
+    touch-action: none;
+    font-family: var(--font-display);
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 1.5px;
+    padding: 8px 18px;
+    border-radius: 8px;
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.7), 0 0 15px rgba(230, 0, 38, 0.3);
+    transition: box-shadow 0.2s ease;
+    will-change: transform;
+    font-size: clamp(10px, 1.2vw, 13px);
+    z-index: 30;
+  }
+
+  .physics-sticker:active {
+    cursor: grabbing;
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.95), 0 0 35px rgba(230, 0, 38, 0.9);
+  }
+
+  .sticker-crimson {
+    background: #e60026;
+    color: #fff;
+    border: 1.5px solid rgba(255, 255, 255, 0.35);
+  }
+
+  .sticker-yellow {
+    background: #f4d95b;
+    color: #0b0c0e;
+    border: 1.5px solid rgba(0, 0, 0, 0.2);
+  }
+
+  .sticker-gold {
+    background: linear-gradient(135deg, #d4af37, #f3e5ab, #aa771c);
+    color: #0b0c0e;
+    border: 1.5px solid #fff;
+  }
+
+  .sticker-cyan {
+    background: #00f2fe;
+    color: #070709;
+    border: 1.5px solid rgba(255, 255, 255, 0.4);
+  }
+
+  .sticker-dark {
+    background: #14141a;
+    color: #ff3b30;
+    border: 1.5px solid #ff3b30;
+  }
+
+  /* 3. UNSEEN WORD-BY-WORD SCROLL ILLUMINATION */
+  .unseen-manifesto-stage {
+    padding: clamp(100px, 16vh, 200px) clamp(24px, 6vw, 80px);
+    background: radial-gradient(circle at 50% 50%, rgba(230, 0, 38, 0.1) 0%, transparent 70%), #070709;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  }
+
+  .unseen-manifesto-inner {
+    max-width: 1120px;
+    text-align: center;
+  }
+
+  .manifesto-eyebrow {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 4.5px;
+    color: var(--red-glow);
+    text-transform: uppercase;
+    margin-bottom: 24px;
+    font-weight: 700;
+  }
+
+  .word-reveal-paragraph {
+    font-family: var(--font-display);
+    font-size: clamp(28px, 4.6vw, 62px);
+    font-weight: 800;
+    line-height: 1.25;
+    letter-spacing: -1px;
+    color: var(--tx-primary);
+    text-transform: uppercase;
+  }
+
+  .word-reveal-paragraph span.word-token {
+    display: inline-block;
+    opacity: 0.14;
+    margin-right: 0.28em;
+    transition: opacity 0.35s ease, color 0.35s ease, text-shadow 0.35s ease;
+  }
+
+  .word-reveal-paragraph span.word-token.is-lit {
+    opacity: 1;
+    color: #ffffff;
+    text-shadow: 0 0 25px rgba(255, 255, 255, 0.4);
+  }
+
+  .word-reveal-paragraph span.word-token.is-accent {
+    color: var(--red-glow) !important;
+    text-shadow: 0 0 35px rgba(230, 0, 38, 0.9) !important;
+  }
+
+  .manifesto-footnote {
+    margin-top: 36px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2.5px;
+    color: var(--tx-muted);
+    text-transform: uppercase;
+  }
+
+  /* 4. AWWWARDS DRAGGABLE BEFORE / AFTER LENS */
+  .divide-section {
+    padding: clamp(80px, 12vh, 160px) clamp(24px, 5vw, 64px);
+    background: #070709;
+  }
+
+  .divide-container {
+    max-width: 1200px;
+    margin: 0 auto;
+  }
+
+  .divide-header {
+    text-align: center;
+    margin-bottom: 45px;
+  }
+
+  .divide-main-title {
+    font-family: var(--font-display);
+    font-size: clamp(38px, 5.5vw, 76px);
+    font-weight: 800;
+    letter-spacing: -1.5px;
+    text-transform: uppercase;
+    color: var(--tx-primary);
+    margin: 10px 0 16px;
+  }
+
+  .divide-main-title span {
+    color: var(--red-glow);
+  }
+
+  .divide-desc {
+    font-family: var(--font-sans);
+    font-size: 16px;
+    color: var(--tx-secondary);
+    max-width: 620px;
+    margin: 0 auto;
+    line-height: 1.6;
+  }
+
+  .compare-wrapper {
+    position: relative;
+    height: clamp(420px, 58vh, 600px);
+    border-radius: 28px;
+    overflow: hidden;
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85);
+    user-select: none;
+    touch-action: none;
+    cursor: ew-resize;
+  }
+
+  .compare-base-layer {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .compare-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .compare-img.conventional {
+    filter: grayscale(85%) contrast(1.15) brightness(0.65) blur(1.5px);
+  }
+
+  .compare-clip-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 50%;
+    height: 100%;
+    overflow: hidden;
+    border-right: 2px solid var(--red-glow);
+    box-shadow: 0 0 35px rgba(230, 0, 38, 0.7);
+    will-change: width;
+  }
+
+  .compare-clip-inner {
+    position: relative;
+    height: 100%;
+    background: #030304;
+  }
+
+  .compare-overlay-content {
+    position: absolute;
+    bottom: 0;
+    padding: clamp(24px, 4vw, 36px);
+    max-width: 480px;
+    z-index: 2;
+    background: linear-gradient(to top, rgba(3,3,4,0.94) 0%, rgba(3,3,4,0.45) 75%, transparent 100%);
+    width: 100%;
+  }
+
+  .compare-overlay-content.right {
+    right: 0;
+    text-align: right;
+  }
+
+  .compare-overlay-content.right .compare-specs {
+    align-items: flex-end;
+  }
+
+  .compare-overlay-content.left {
+    left: 0;
+    text-align: left;
+  }
+
+  .compare-badge {
+    display: inline-block;
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    margin-bottom: 12px;
+  }
+
+  .compare-badge.gold {
+    background: var(--gold-accent);
+    color: #070709;
+  }
+
+  .compare-badge.red {
+    background: var(--red-glow);
+    color: #fff;
+  }
+
+  .compare-title {
+    font-family: var(--font-display);
+    font-size: clamp(22px, 2.8vw, 32px);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--tx-primary);
+    margin-bottom: 14px;
+    text-transform: uppercase;
+  }
+
+  .compare-specs {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.85);
+  }
+
+  .compare-specs.conventional {
+    color: rgba(255, 120, 120, 0.85);
+  }
+
+  .compare-knob {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    height: 100%;
+    transform: translateX(-50%);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 10;
+    pointer-events: none;
+    will-change: left;
+  }
+
+  .knob-line {
+    flex: 1;
+    width: 2px;
+    background: var(--red-glow);
+    box-shadow: 0 0 12px var(--red-glow);
+  }
+
+  .knob-handle {
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    background: #e60026;
+    border: 2px solid #ffffff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 0 35px rgba(230, 0, 38, 0.95), 0 8px 24px rgba(0, 0, 0, 0.8);
+    color: #fff;
+    transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1), background 0.2s ease;
+  }
+
+  .compare-wrapper:active .knob-handle {
+    transform: scale(1.18);
+    background: #f4d95b;
+    color: #070709;
+  }
+
+  .knob-icon {
+    width: 22px;
+    height: 22px;
+  }
+
+  .knob-readout {
+    position: absolute;
+    bottom: 24px;
+    background: rgba(14, 15, 20, 0.92);
+    backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 700;
+    color: var(--tx-primary);
+    letter-spacing: 1px;
+  }
+
+  /* 5. TWO-SIDED 3D HOLOGRAPHIC VIP PASS */
+  .card-flipper-box {
+    width: 100%;
+    max-width: 480px;
+    height: 290px;
+    position: relative;
+    transform-style: preserve-3d;
+    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    will-change: transform;
+    perspective: 1200px;
+  }
+
+  .card-flipper-box.is-flipped {
+    transform: rotateY(180deg);
+  }
+
+  .card-face {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 24px;
+    backface-visibility: hidden;
+    -webkit-backface-visibility: hidden;
+    overflow: hidden;
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.8), 0 0 45px rgba(230, 0, 38, 0.4);
+  }
+
+  .card-face.card-front {
+    background: linear-gradient(135deg, #161821 0%, #0d0e12 100%);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 28px;
+    z-index: 2;
+    transform: rotateY(0deg);
+  }
+
+  .card-face.card-back {
+    background: linear-gradient(135deg, #0e0f14 0%, #171820 100%);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    transform: rotateY(180deg);
+    display: flex;
+    flex-direction: column;
+    padding: 22px 26px;
+    justify-content: space-between;
+  }
+
+  .card-mag-strip {
+    margin: -22px -26px 14px -26px;
+    height: 44px;
+    background: linear-gradient(90deg, #050507 0%, #22232c 50%, #050507 100%);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .card-back-grid {
+    display: grid;
+    grid-template-columns: 82px 1fr;
+    gap: 16px;
+    align-items: center;
+  }
+
+  .qr-code-box {
+    width: 82px;
+    height: 82px;
+    background: #ffffff;
+    padding: 6px;
+    border-radius: 8px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.25);
+  }
+
+  .qr-code-box svg {
+    width: 100%;
+    height: 100%;
+  }
+
+  .card-signature-area {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  .signature-label {
+    font-family: var(--font-mono);
+    font-size: 8px;
+    color: var(--tx-muted);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+  }
+
+  .signature-strip {
+    height: 30px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px dashed rgba(255, 255, 255, 0.25);
+    border-radius: 4px;
+    display: flex;
+    align-items: center;
+    padding: 0 10px;
+    font-family: 'Cinzel', serif;
+    font-size: 14px;
+    font-style: italic;
+    color: var(--gold-accent);
+    letter-spacing: 2px;
+  }
+
+  .card-security-hologram-stamp {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 6px 12px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, rgba(212,175,55,0.15), rgba(230,0,38,0.15));
+    border: 1px solid rgba(212, 175, 55, 0.3);
+  }
+
+  .card-security-hologram-stamp span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 700;
+    color: var(--gold-accent);
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+  }
+
+  .card-terms-micro {
+    font-family: var(--font-mono);
+    font-size: 7.5px;
+    color: var(--tx-muted);
+    line-height: 1.4;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .vip-actions-row {
+    display: flex;
+    gap: 12px;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .btn-flip-pass {
+    padding: 12px 18px;
+    border-radius: 40px;
+    background: rgba(255, 255, 255, 0.06);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    color: var(--tx-primary);
+    font-family: var(--font-display);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 1.5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    white-space: nowrap;
+  }
+
+  .btn-flip-pass:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: var(--red-glow);
+    color: #fff;
+    transform: translateY(-2px);
+    box-shadow: 0 0 20px rgba(230, 0, 38, 0.4);
+  }
+
+  /* 6. PINNED HORIZONTAL MOMENTUM GALLERY (UNSEEN.CO SIGNATURE) */
+  .horizontal-vault-stage {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    background: #090a0d;
+    padding: clamp(80px, 12vh, 140px) 0;
+  }
+
+  .vault-header-wrap {
+    padding: 0 clamp(24px, 5vw, 64px);
+    margin-bottom: 40px;
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+  }
+
+  .vault-title {
+    font-family: var(--font-display);
+    font-size: clamp(36px, 5vw, 70px);
+    font-weight: 800;
+    text-transform: uppercase;
+    color: var(--tx-primary);
+    line-height: 1;
+  }
+
+  .vault-title span {
+    color: var(--red-glow);
+  }
+
+  .vault-drag-hint {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    letter-spacing: 2px;
+    color: var(--tx-muted);
+    text-transform: uppercase;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .vault-drag-hint::after {
+    content: '→';
+    font-size: 14px;
+    color: var(--red-glow);
+  }
+
+  .vault-track-container {
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .vault-track {
+    display: flex;
+    gap: 32px;
+    padding: 20px clamp(24px, 5vw, 64px);
+    width: max-content;
+    will-change: transform;
+  }
+
+  .vault-card {
+    width: clamp(320px, 28vw, 440px);
+    height: clamp(420px, 50vh, 560px);
+    border-radius: 24px;
+    overflow: hidden;
+    position: relative;
+    flex-shrink: 0;
+    background: #121318;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    box-shadow: 0 25px 60px rgba(0, 0, 0, 0.75);
+    transition: transform 0.4s var(--ease-hs), border-color 0.4s ease, box-shadow 0.4s ease;
+    cursor: pointer;
+  }
+
+  .vault-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    border-color: rgba(230, 0, 38, 0.6);
+    box-shadow: 0 35px 80px rgba(0, 0, 0, 0.9), 0 0 35px rgba(230, 0, 38, 0.4);
+  }
+
+  .vault-card-img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1), filter 0.5s ease;
+    filter: brightness(0.85) contrast(1.05);
+  }
+
+  .vault-card:hover .vault-card-img {
+    transform: scale(1.08);
+    filter: brightness(1) contrast(1.1);
+  }
+
+  .vault-card-overlay {
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(to top, rgba(7,7,9,0.92) 0%, rgba(7,7,9,0.2) 50%, transparent 100%);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+    padding: 28px;
+  }
+
+  .vault-card-time {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--gold-accent);
+    letter-spacing: 2px;
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .vault-card-title {
+    font-family: var(--font-display);
+    font-size: 22px;
+    font-weight: 800;
+    color: var(--tx-primary);
+    margin-bottom: 6px;
+    text-transform: uppercase;
+  }
+
+  .vault-card-loc {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    color: var(--tx-secondary);
+  }
+
+  @media (max-width: 768px) {
+    .compare-overlay-content {
+      padding: 16px;
+      max-width: 88%;
+    }
+    .compare-title {
+      font-size: 15px;
+      margin-bottom: 6px;
+    }
+    .compare-specs {
+      display: none;
+    }
+    .compare-wrapper {
+      height: 380px;
+    }
+    .physics-sticker[data-sticker="2"],
+    .physics-sticker[data-sticker="4"],
+    .physics-sticker[data-sticker="5"] {
+      display: none !important;
+    }
+    .physics-sticker[data-sticker="1"] {
+      top: 13%;
+      left: 3%;
+      transform: scale(0.78) rotate(-6deg) !important;
+    }
+    .physics-sticker[data-sticker="3"] {
+      bottom: 8%;
+      left: 3%;
+      transform: scale(0.78) rotate(-4deg) !important;
+    }
+    .vibe-matrix-bar {
+      padding: 6px 12px 10px;
+      border-radius: 24px;
+    }
+    .vibe-pill {
+      padding: 5px 12px;
+      font-size: 9.5px;
+    }
+    .unseen-manifesto-stage {
+      padding: 80px 20px;
+    }
+    .word-reveal-paragraph {
+      font-size: 24px;
+    }
+  }
 </style>
 </head>
 <body>
@@ -2292,9 +3072,11 @@ footer {
 
   <nav class="nav-links">
     <a href="#formula-scene" class="nav-link-item">The Formula</a>
+    <a href="#experience-divide" class="nav-link-item">The Divide</a>
     <a href="#whats-on-section" class="nav-link-item">What's On</a>
     <a href="#vip-pass-section" class="nav-link-item">VIP Pass</a>
-    <a href="#catalog-section" class="nav-link-item">Event Archives</a>
+    <a href="#catalog-section" class="nav-link-item">Catalog</a>
+    <a href="#horizontal-vault" class="nav-link-item">Night Vault</a>
     <a href="#founder-spotlight" class="nav-link-item">Big Daddy</a>
     <a href="#rules-section" class="nav-link-item">The Rules</a>
   </nav>
@@ -2340,6 +3122,51 @@ footer {
       <div class="hero-btn-group">
         <button class="btn-hero-prime" id="btnHeroJoin">Get On The List</button>
         <a href="#catalog-section" class="btn-hero-outline">Explore Recaps</a>
+      </div>
+
+      <!-- Interactive Sonic Mood Tuner (HopShop / Unseen.co) -->
+      <div class="vibe-matrix-bar" id="vibeMatrixBar">
+        <div class="vibe-matrix-label">
+          <div class="vibe-pulse-indicator"></div>
+          <span>SONIC ATMOSPHERE: <strong id="vibeCurrentName">SUNSET SOIRÉE</strong> (<span id="vibeFrequency">432 Hz</span>)</span>
+        </div>
+        <div class="vibe-pills-row">
+          <button class="vibe-pill active" data-vibe="sunset" data-name="SUNSET SOIRÉE" data-freq="432 Hz" data-color="#ff3b30,#d4af37" data-video="assets/videos/reel_sunset.mp4">
+            <span class="vibe-dot" style="background:#ff9f0a;"></span>
+            <span>01 SUNSET SUNDOWNER</span>
+          </button>
+          <button class="vibe-pill" data-vibe="h2oli" data-name="H²OLI FOAM RAVE" data-freq="528 Hz" data-color="#00f2fe,#ff007f" data-video="assets/videos/reel_h2oli.mp4">
+            <span class="vibe-dot" style="background:#00f2fe;"></span>
+            <span>02 H²OLI FOAM RAVE</span>
+          </button>
+          <button class="vibe-pill" data-vibe="afterdark" data-name="AFTER DARK SIN CITY" data-freq="110 Hz" data-color="#e60026,#6b0011" data-video="assets/videos/reel_afterdark.mp4">
+            <span class="vibe-dot" style="background:#e60026;"></span>
+            <span>03 AFTER DARK SIN CITY</span>
+          </button>
+          <button class="vibe-pill" data-vibe="whitelotus" data-name="WHITE LOTUS LUXURY" data-freq="639 Hz" data-color="#f4d95b,#ffffff" data-video="assets/videos/reel_sunset.mp4">
+            <span class="vibe-dot" style="background:#f4d95b;"></span>
+            <span>04 WHITE LOTUS LUXURY</span>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- FunTech Draggable Physics Stickers Playground -->
+    <div class="sticker-layer" id="stickerLayer">
+      <div class="physics-sticker sticker-crimson" style="top:18%; left:8%; transform:rotate(-8deg);" data-sticker="1">
+        ● SIN CITY TAKEOVER
+      </div>
+      <div class="physics-sticker sticker-yellow" style="top:24%; right:9%; transform:rotate(9deg);" data-sticker="2">
+        ⚡ 138+ BPM ONLY
+      </div>
+      <div class="physics-sticker sticker-gold" style="bottom:22%; left:7%; transform:rotate(-5deg);" data-sticker="3">
+        ✦ DOON SANCTUARY
+      </div>
+      <div class="physics-sticker sticker-cyan" style="bottom:26%; right:8%; transform:rotate(7deg);" data-sticker="4">
+        🍸 FOAM &amp; FLAMES
+      </div>
+      <div class="physics-sticker sticker-dark" style="bottom:12%; right:22%; transform:rotate(-12deg);" data-sticker="5">
+        ⛔ GATES LOCK 9:00 PM
       </div>
     </div>
 
@@ -2447,6 +3274,78 @@ footer {
       </div>
     </div>
   </div>
+
+  <!-- ==========================================================================
+       UNSEEN.CO SIGNATURE: WORD-BY-WORD SCROLL ILLUMINATION MANIFESTO
+       ========================================================================== -->
+  <section id="manifesto-scroll-section" class="unseen-manifesto-stage">
+    <div class="unseen-manifesto-inner">
+      <div class="manifesto-eyebrow">✦ THE SANCTUARY PRINCIPLE ✦</div>
+      <p class="word-reveal-paragraph" id="wordRevealTarget">
+        We do not compete with ordinary nightclubs. We sanctify the night across secret Doon Valley mountain estates. Verified crowd curation. Handcrafted audio curves. Zero compromise. You are either inside the universe or outside.
+      </p>
+      <div class="manifesto-footnote">DEHRADUN · EST. 2024 · PERMANENT GATE LOCK 21:00 SHARP</div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       AWWWARDS LUXURY STANDARD: INTERACTIVE DRAGGABLE BEFORE / AFTER LENS
+       ========================================================================== -->
+  <section id="experience-divide" class="divide-section">
+    <div class="divide-container">
+      <div class="divide-header">
+        <span class="catalog-heading-tag">EXPERIENCE CONTRAST</span>
+        <h2 class="divide-main-title">THE NIGHTLIFE <span>DIVIDE</span></h2>
+        <p class="divide-desc">
+          Drag the interactive lens below to compare the ordinary Doon club routine with the Social Euphoria sanctuary standard.
+        </p>
+      </div>
+
+      <div class="compare-wrapper" id="compareContainer" data-cursor="DRAG">
+        <!-- Underneath Base Layer: Social Euphoria Sanctuary -->
+        <div class="compare-base-layer">
+          <img src="assets/images/sunset_soiree.jpg" alt="Social Euphoria Sanctuary" class="compare-img">
+          <div class="compare-overlay-content right">
+            <span class="compare-badge gold">✦ SOCIAL EUPHORIA ESTATE TAKEOVER</span>
+            <h3 class="compare-title">Mountain Sanctuary &amp; Curated Revelers</h3>
+            <ul class="compare-specs">
+              <li>✓ Strict 150-guest vetted capacity</li>
+              <li>✓ Mountain poolside &amp; estate takeovers</li>
+              <li>✓ Curated bolly-tech &amp; underground sonic curve</li>
+              <li>✓ Gates lock at 21:00 sharp</li>
+            </ul>
+          </div>
+        </div>
+
+        <!-- Clipped Top Layer: Conventional Nightclub -->
+        <div class="compare-clip-layer" id="compareClip">
+          <div class="compare-clip-inner" id="compareClipInner">
+            <img src="assets/images/afterdark_real_4.jpg" alt="Conventional Nightclub" class="compare-img conventional">
+            <div class="compare-overlay-content left">
+              <span class="compare-badge red">✕ CONVENTIONAL NIGHTCLUB ROUTINE</span>
+              <h3 class="compare-title">Chaotic Cramming &amp; Stale Playlists</h3>
+              <ul class="compare-specs conventional">
+                <li>✕ Overcrowded basement rooms</li>
+                <li>✕ Unvetted random walk-ins</li>
+                <li>✕ Predictable commercial Top-40 loops</li>
+                <li>✕ Zero crowd cohesion</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <!-- Draggable Golden/Crimson Knob -->
+        <div class="compare-knob" id="compareKnob">
+          <div class="knob-line"></div>
+          <div class="knob-handle">
+            <svg viewBox="0 0 24 24" class="knob-icon"><path d="M8 9l-4 3 4 3m8-6l4 3-4 3" stroke="currentColor" stroke-width="2.5" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </div>
+          <div class="knob-line"></div>
+          <span class="knob-readout" id="knobReadout">50% SPLIT</span>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- ==========================================================================
        "WHAT'S ON" — HOPSHOP ASYMMETRIC FLOAT GRID WITH 3D TILT
@@ -2562,44 +3461,105 @@ footer {
             </select>
           </div>
 
-          <button class="btn-hero-prime" id="btnIssuePass" style="width:100%; margin-top:8px;">
-            Issue Digital Pass ✦
-          </button>
+          <div class="vip-actions-row">
+            <button class="btn-hero-prime" id="btnIssuePass" style="flex:1;">
+              Issue Digital Pass ✦
+            </button>
+            <button class="btn-flip-pass" id="btnFlipPass" data-cursor="FLIP">
+              Flip Pass ↺
+            </button>
+          </div>
         </div>
       </div>
 
-      <!-- Right Column: Interactive 3D Holographic Card -->
-      <div class="vip-card-stage" id="cardStage">
-        <div class="holographic-pass-card" id="holographicCard">
-          <div class="card-foil-sheen" id="cardFoil"></div>
+      <!-- Right Column: Interactive 3D Two-Sided Holographic Card -->
+      <div class="vip-card-stage" id="cardStage" data-cursor="3D ORBIT">
+        <div class="card-flipper-box" id="holoCardFlipper">
           
-          <div class="card-top-row">
-            <div class="card-brand-logo">
-              <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Badge" class="card-logo-img">
-              <span class="card-brand-text">Social.Euphoria</span>
+          <!-- Front Face -->
+          <div class="card-face card-front holographic-pass-card" id="holographicCard">
+            <div class="card-foil-sheen" id="cardFoil"></div>
+            
+            <div class="card-top-row">
+              <div class="card-brand-logo">
+                <img src="assets/images/social_euphoria_logo.png" alt="Social Euphoria Badge" class="card-logo-img">
+                <span class="card-brand-text">Social.Euphoria</span>
+              </div>
+              <div class="card-nfc-symbol">✦ 🛈</div>
             </div>
-            <div class="card-nfc-symbol">✦ 🛈</div>
+
+            <div class="card-mid-row">
+              <div class="card-member-name" id="cardMemberNameDisplay">KABIR SHARMA</div>
+              <span class="card-tier-badge" id="cardTierDisplay">FOUNDING PATRON</span>
+            </div>
+
+            <div class="card-bottom-row">
+              <div>
+                <div class="card-meta-label">Pass Credential ID</div>
+                <div class="card-meta-val" id="cardIdDisplay">SE-9402-VIP</div>
+              </div>
+              <div>
+                <div class="card-meta-label">Sanctuary Status</div>
+                <div class="card-meta-val" style="color:#22c55e;">VERIFIED ✓</div>
+              </div>
+              <div>
+                <div class="card-meta-label">Roving City</div>
+                <div class="card-meta-val">DEHRADUN</div>
+              </div>
+            </div>
           </div>
 
-          <div class="card-mid-row">
-            <div class="card-member-name" id="cardMemberNameDisplay">KABIR SHARMA</div>
-            <span class="card-tier-badge" id="cardTierDisplay">FOUNDING PATRON</span>
+          <!-- Back Face -->
+          <div class="card-face card-back" id="holographicCardBack">
+            <div class="card-mag-strip"></div>
+            
+            <div class="card-back-grid">
+              <div class="qr-code-box">
+                <svg viewBox="0 0 100 100" fill="#070709">
+                  <!-- Tactical QR Matrix SVG Pattern -->
+                  <rect width="100" height="100" fill="#ffffff"/>
+                  <rect x="8" y="8" width="28" height="28" fill="#070709"/>
+                  <rect x="14" y="14" width="16" height="16" fill="#ffffff"/>
+                  <rect x="18" y="18" width="8" height="8" fill="#070709"/>
+                  
+                  <rect x="64" y="8" width="28" height="28" fill="#070709"/>
+                  <rect x="70" y="14" width="16" height="16" fill="#ffffff"/>
+                  <rect x="74" y="18" width="8" height="8" fill="#070709"/>
+                  
+                  <rect x="8" y="64" width="28" height="28" fill="#070709"/>
+                  <rect x="14" y="70" width="16" height="16" fill="#ffffff"/>
+                  <rect x="18" y="74" width="8" height="8" fill="#070709"/>
+
+                  <rect x="42" y="12" width="6" height="6"/>
+                  <rect x="50" y="20" width="6" height="6"/>
+                  <rect x="42" y="32" width="8" height="8"/>
+                  <rect x="16" y="44" width="6" height="6"/>
+                  <rect x="28" y="48" width="6" height="6"/>
+                  <rect x="44" y="48" width="12" height="12"/>
+                  <rect x="62" y="44" width="8" height="8"/>
+                  <rect x="78" y="48" width="6" height="6"/>
+                  <rect x="84" y="62" width="6" height="6"/>
+                  <rect x="72" y="74" width="12" height="8"/>
+                  <rect x="44" y="72" width="8" height="12"/>
+                  <rect x="58" y="84" width="6" height="6"/>
+                </svg>
+              </div>
+
+              <div class="card-signature-area">
+                <span class="signature-label">Member Signature &amp; Cryptographic Hash</span>
+                <div class="signature-strip" id="signatureStripDisplay">Kabir Sharma</div>
+                <div class="card-security-hologram-stamp">
+                  <span>✦ GENUINE ROVING PASS</span>
+                  <span style="color:#ffffff;">#SE-8820-D9</span>
+                </div>
+              </div>
+            </div>
+
+            <div class="card-terms-micro">
+              NON-TRANSFERABLE ROVING PASS · STRICT 150 GUEST CAP · ADMIT ONE VERIFIED HOLDER ONLY · GATES LOCK PERMANENTLY AT 21:00 IST · PROPERTY OF SOCIAL EUPHORIA DEHRADUN
+            </div>
           </div>
 
-          <div class="card-bottom-row">
-            <div>
-              <div class="card-meta-label">Pass Credential ID</div>
-              <div class="card-meta-val" id="cardIdDisplay">SE-9402-VIP</div>
-            </div>
-            <div>
-              <div class="card-meta-label">Sanctuary Status</div>
-              <div class="card-meta-val" style="color:#22c55e;">VERIFIED ✓</div>
-            </div>
-            <div>
-              <div class="card-meta-label">Roving City</div>
-              <div class="card-meta-val">DEHRADUN</div>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -2690,6 +3650,85 @@ footer {
             </div>
           </div>
         </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ==========================================================================
+       UNSEEN.CO SIGNATURE: PINNED HORIZONTAL MOMENTUM VAULT
+       ========================================================================== -->
+  <section id="horizontal-vault" class="horizontal-vault-stage">
+    <div class="vault-header-wrap">
+      <div>
+        <span class="catalog-heading-tag">AUTHENTIC FOOTAGE</span>
+        <h2 class="vault-title">NIGHT ARCHIVES <span>&amp; LIVE VAULT</span></h2>
+      </div>
+      <div class="vault-drag-hint">SCROLL HORIZONTALLY TO EXPLORE</div>
+    </div>
+
+    <div class="vault-track-container" id="vaultTrackContainer">
+      <div class="vault-track" id="vaultTrack">
+        
+        <!-- Frame 1 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/cameraroll_1.jpg" alt="Mountain Pool Takeover" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">01:42 AM · LE MÉRIDIEN</span>
+            <h3 class="vault-card-title">MOUNTAIN POOL TAKEOVER</h3>
+            <span class="vault-card-loc">Sundowner Bolly-Tech Session</span>
+          </div>
+        </div>
+
+        <!-- Frame 2 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/cameraroll_2.jpg" alt="The Cult in Motion" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">11:15 PM · STAGE ARENA</span>
+            <h3 class="vault-card-title">THE CULT IN MOTION</h3>
+            <span class="vault-card-loc">High Aesthetic Laser Sync</span>
+          </div>
+        </div>
+
+        <!-- Frame 3 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/gallery_1.jpg" alt="Project X Chronicles" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">02:50 AM · SECRET ESTATE</span>
+            <h3 class="vault-card-title">PROJECT X CHRONICLES</h3>
+            <span class="vault-card-loc">100% Vetted Invites Only</span>
+          </div>
+        </div>
+
+        <!-- Frame 4 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/cameraroll_3.jpg" alt="Foam & Flames Rave" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">03:10 AM · VISHRAM RESORT</span>
+            <h3 class="vault-card-title">FOAM &amp; FLAMES RAVE</h3>
+            <span class="vault-card-loc">H²OLI Festival Special</span>
+          </div>
+        </div>
+
+        <!-- Frame 5 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/cameraroll_4.jpg" alt="The Afterglow" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">04:00 AM · DAWN RAVE</span>
+            <h3 class="vault-card-title">THE AFTERGLOW</h3>
+            <span class="vault-card-loc">Sin City Dehradun Edition</span>
+          </div>
+        </div>
+
+        <!-- Frame 6 -->
+        <div class="vault-card tilt-card" data-cursor="VIEW ARCHIVE">
+          <img src="assets/images/gallery_2.jpg" alt="White Lotus Sanctuary" class="vault-card-img" loading="lazy">
+          <div class="vault-card-overlay">
+            <span class="vault-card-time">12:30 AM · PRIVATE ROOFTOP</span>
+            <h3 class="vault-card-title">WHITE LOTUS SANCTUARY</h3>
+            <span class="vault-card-loc">Champagne &amp; Deep House</span>
+          </div>
+        </div>
+
       </div>
     </div>
   </section>
@@ -3537,6 +4576,312 @@ audioToggle.addEventListener('click', () => {
     isAudioActive = false;
   }
 });
+
+// 15. FUNTECH & UNSEEN.CO & HOPSHOP INTERACTIVE ENGINES
+
+// A. SONIC ATMOSPHERE / VIBE SWITCHER
+function initSonicAtmosphere() {
+  const pills = document.querySelectorAll('.vibe-pill');
+  const nameEl = document.getElementById('vibeCurrentName');
+  const freqEl = document.getElementById('vibeFrequency');
+  const heroBgVideo = document.getElementById('heroBgVideo');
+  const heroAura = document.getElementById('heroAura');
+
+  const vibeChords = {
+    sunset: 261.63,     // C4
+    h2oli: 329.63,      // E4
+    afterdark: 110.00,  // A2 deep
+    whitelotus: 392.00  // G4
+  };
+
+  const vibeAuras = {
+    sunset: 'radial-gradient(circle at 50% 45%, rgba(255, 59, 48, 0.45) 0%, rgba(212, 175, 55, 0.25) 45%, transparent 75%)',
+    h2oli: 'radial-gradient(circle at 50% 45%, rgba(0, 242, 254, 0.45) 0%, rgba(255, 0, 127, 0.25) 45%, transparent 75%)',
+    afterdark: 'radial-gradient(circle at 50% 45%, rgba(230, 0, 38, 0.55) 0%, rgba(107, 0, 17, 0.35) 45%, transparent 75%)',
+    whitelotus: 'radial-gradient(circle at 50% 45%, rgba(244, 217, 91, 0.45) 0%, rgba(255, 255, 255, 0.2) 45%, transparent 75%)'
+  };
+
+  function playVibeChord(baseFreq) {
+    try {
+      const ctx = new (window.AudioContext || window.webkitAudioContext)();
+      const freqs = [baseFreq, baseFreq * 1.25, baseFreq * 1.5];
+      freqs.forEach(f => {
+        const osc = ctx.createOscillator();
+        const gain = ctx.createGain();
+        osc.type = 'sine';
+        osc.frequency.setValueAtTime(f, ctx.currentTime);
+        gain.gain.setValueAtTime(0.018, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.6);
+        osc.connect(gain);
+        gain.connect(ctx.destination);
+        osc.start();
+        osc.stop(ctx.currentTime + 0.65);
+      });
+    } catch(e) {}
+  }
+
+  pills.forEach(pill => {
+    pill.addEventListener('click', () => {
+      pills.forEach(p => p.classList.remove('active'));
+      pill.classList.add('active');
+
+      const vibe = pill.getAttribute('data-vibe');
+      const name = pill.getAttribute('data-name');
+      const freq = pill.getAttribute('data-freq');
+      const videoSrc = pill.getAttribute('data-video');
+
+      if (nameEl) nameEl.textContent = name;
+      if (freqEl) freqEl.textContent = freq;
+
+      if (heroBgVideo && videoSrc) {
+        heroBgVideo.src = videoSrc;
+        heroBgVideo.play().catch(() => {});
+      }
+
+      if (heroAura && vibeAuras[vibe]) {
+        heroAura.style.background = vibeAuras[vibe];
+      }
+
+      playVibeChord(vibeChords[vibe] || 261.63);
+      playHapticTick(800, 0.02);
+    });
+  });
+}
+initSonicAtmosphere();
+
+// B. FUNTECH DRAGGABLE PHYSICS STICKERS
+function initPhysicsStickers() {
+  const stickers = document.querySelectorAll('.physics-sticker');
+  const container = document.getElementById('heroWrap');
+  if (!container || !stickers.length) return;
+
+  stickers.forEach(sticker => {
+    let isDragging = false;
+    let startX = 0, startY = 0;
+    let currX = 0, currY = 0;
+    let vx = 0, vy = 0;
+    let lastTime = 0;
+    let rot = parseFloat(sticker.style.transform.replace(/[^0-9.-]/g, '')) || 0;
+    let animFrame = null;
+
+    sticker.addEventListener('pointerdown', e => {
+      isDragging = true;
+      startX = e.clientX - currX;
+      startY = e.clientY - currY;
+      lastTime = performance.now();
+      vx = 0;
+      vy = 0;
+      sticker.setPointerCapture(e.pointerId);
+      sticker.style.zIndex = '50';
+      playHapticTick(750, 0.015);
+      if (animFrame) cancelAnimationFrame(animFrame);
+    });
+
+    sticker.addEventListener('pointermove', e => {
+      if (!isDragging) return;
+      const now = performance.now();
+      const dt = Math.max(1, now - lastTime);
+      const newX = e.clientX - startX;
+      const newY = e.clientY - startY;
+
+      vx = (newX - currX) / dt * 14;
+      vy = (newY - currY) / dt * 14;
+      currX = newX;
+      currY = newY;
+      lastTime = now;
+
+      sticker.style.transform = `translate3d(${currX}px, ${currY}px, 0) rotate(${rot + vx * 0.8}deg)`;
+    });
+
+    const onPointerEnd = e => {
+      if (!isDragging) return;
+      isDragging = false;
+      try { sticker.releasePointerCapture(e.pointerId); } catch(err) {}
+      sticker.style.zIndex = '30';
+      playHapticTick(480, 0.02);
+
+      // Inertia & bounce animation
+      function stepMomentum() {
+        if (Math.abs(vx) < 0.1 && Math.abs(vy) < 0.1) return;
+        vx *= 0.92;
+        vy *= 0.92;
+        currX += vx;
+        currY += vy;
+
+        // Soft bounce within reasonable container area
+        const bounds = container.getBoundingClientRect();
+        const sRect = sticker.getBoundingClientRect();
+        if (sRect.left < bounds.left || sRect.right > bounds.right) {
+          vx = -vx * 0.55;
+          currX += vx * 2;
+        }
+        if (sRect.top < bounds.top || sRect.bottom > bounds.bottom) {
+          vy = -vy * 0.55;
+          currY += vy * 2;
+        }
+
+        sticker.style.transform = `translate3d(${currX}px, ${currY}px, 0) rotate(${rot}deg)`;
+        animFrame = requestAnimationFrame(stepMomentum);
+      }
+      animFrame = requestAnimationFrame(stepMomentum);
+    };
+
+    sticker.addEventListener('pointerup', onPointerEnd);
+    sticker.addEventListener('pointercancel', onPointerEnd);
+  });
+}
+initPhysicsStickers();
+
+// C. UNSEEN WORD-BY-WORD SCROLL ILLUMINATION
+function initWordRevealManifesto() {
+  const target = document.getElementById('wordRevealTarget');
+  const section = document.getElementById('manifesto-scroll-section');
+  if (!target || !section) return;
+
+  const rawText = target.innerText.trim();
+  const words = rawText.split(/\s+/);
+  const accentWords = new Set(['sanctify', 'sanctuary', 'universe', 'compromise.', 'curation.']);
+
+  target.innerHTML = words.map(w => {
+    const clean = w.toLowerCase().replace(/[^a-z]/g, '');
+    const isAcc = accentWords.has(clean) || accentWords.has(w.toLowerCase());
+    return `<span class="word-token ${isAcc ? 'is-accent' : ''}">${w}</span>`;
+  }).join(' ');
+
+  const tokens = target.querySelectorAll('.word-token');
+
+  ScrollTrigger.create({
+    trigger: section,
+    start: 'top 80%',
+    end: 'bottom 40%',
+    scrub: 0.6,
+    onUpdate: self => {
+      const activeIdx = Math.floor(self.progress * tokens.length);
+      tokens.forEach((tok, i) => {
+        tok.classList.toggle('is-lit', i <= activeIdx);
+      });
+    }
+  });
+}
+initWordRevealManifesto();
+
+// D. AWWWARDS DRAGGABLE BEFORE / AFTER LENS
+function initExperienceDivide() {
+  const container = document.getElementById('compareContainer');
+  const clip = document.getElementById('compareClip');
+  const clipInner = document.getElementById('compareClipInner');
+  const knob = document.getElementById('compareKnob');
+  const readout = document.getElementById('knobReadout');
+  if (!container || !clip || !clipInner || !knob) return;
+
+  function syncWidth() {
+    clipInner.style.width = container.offsetWidth + 'px';
+  }
+  window.addEventListener('resize', syncWidth);
+  syncWidth();
+
+  let isSliding = false;
+  let lastTickPct = 50;
+
+  function updateSlider(clientX) {
+    const rect = container.getBoundingClientRect();
+    const offsetX = clientX - rect.left;
+    const pct = Math.max(5, Math.min(95, (offsetX / rect.width) * 100));
+
+    clip.style.width = `${pct}%`;
+    knob.style.left = `${pct}%`;
+    if (readout) readout.textContent = `${Math.round(pct)}% SPLIT`;
+
+    if (Math.abs(pct - lastTickPct) > 4) {
+      playHapticTick(700, 0.012);
+      lastTickPct = pct;
+    }
+  }
+
+  container.addEventListener('pointerdown', e => {
+    isSliding = true;
+    container.setPointerCapture(e.pointerId);
+    updateSlider(e.clientX);
+    playHapticTick(850, 0.02);
+  });
+
+  container.addEventListener('pointermove', e => {
+    if (!isSliding) return;
+    updateSlider(e.clientX);
+  });
+
+  const stopSlide = e => {
+    if (!isSliding) return;
+    isSliding = false;
+    try { container.releasePointerCapture(e.pointerId); } catch(err) {}
+  };
+  container.addEventListener('pointerup', stopSlide);
+  container.addEventListener('pointercancel', stopSlide);
+}
+initExperienceDivide();
+
+// E. TWO-SIDED 3D VIP PASS FLIPPER & SIGNATURE SYNC
+function initCardFlipper() {
+  const flipper = document.getElementById('holoCardFlipper');
+  const btnFlip = document.getElementById('btnFlipPass');
+  const nameInput = document.getElementById('passNameInput');
+  const signatureDisplay = document.getElementById('signatureStripDisplay');
+
+  if (btnFlip && flipper) {
+    btnFlip.addEventListener('click', () => {
+      flipper.classList.toggle('is-flipped');
+      playHapticTick(520, 0.035);
+      btnFlip.textContent = flipper.classList.contains('is-flipped') ? 'Front View ↺' : 'Flip Pass ↺';
+    });
+  }
+
+  if (nameInput && signatureDisplay) {
+    nameInput.addEventListener('input', () => {
+      signatureDisplay.textContent = nameInput.value.trim() || 'Kabir Sharma';
+    });
+  }
+}
+initCardFlipper();
+
+// F. UNSEEN.CO PINNED HORIZONTAL MOMENTUM GALLERY
+function initHorizontalVault() {
+  const track = document.getElementById('vaultTrack');
+  const section = document.getElementById('horizontal-vault');
+  if (!track || !section) return;
+
+  const getScrollDist = () => -(track.scrollWidth - window.innerWidth + 80);
+
+  gsap.to(track, {
+    x: getScrollDist,
+    ease: 'none',
+    scrollTrigger: {
+      trigger: section,
+      start: 'top top',
+      end: () => '+=' + (track.scrollWidth - window.innerWidth + 120),
+      pin: true,
+      scrub: 0.85,
+      invalidateOnRefresh: true,
+    }
+  });
+}
+initHorizontalVault();
+
+// G. MAGNETIC BUTTON ATTRACTION
+function initMagneticButtons() {
+  const targets = document.querySelectorAll('.btn-hero-prime, .nav-cta-btn, .btn-flip-pass, #audioToggle');
+  targets.forEach(btn => {
+    btn.addEventListener('mousemove', e => {
+      const rect = btn.getBoundingClientRect();
+      const x = e.clientX - rect.left - rect.width / 2;
+      const y = e.clientY - rect.top - rect.height / 2;
+      btn.style.transform = `translate(${x * 0.28}px, ${y * 0.28}px)`;
+    });
+    btn.addEventListener('mouseleave', () => {
+      btn.style.transform = 'translate(0, 0)';
+    });
+  });
+}
+initMagneticButtons();
 
 })();
 </script>
