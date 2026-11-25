@@ -360,6 +360,12 @@
       transition: filter 0.15s ease-out;
     }
 
+    /* Keyboard Focus Ring */
+    :focus-visible {
+      outline: 2.5px solid var(--hs-brick);
+      outline-offset: 2px;
+    }
+
     /* Reduced Motion Guardrail */
     @media (prefers-reduced-motion: reduce) {
       .hs-marquee-track, .step-wave-line, .laser-scanner, .orbit-arc, .vinyl-spin {
@@ -1201,47 +1207,177 @@
 
 
     <!-- ========================================================================= -->
-    <!-- 6. "CHECK YOUR STATUS" — LIVE GUEST LOOKUP (HOPSHOP STATUS PORTAL)       -->
+    <!-- 5b. GATE & VALLEY PROTOCOL — PRE-NIGHT DOON BRIEF                         -->
+    <!-- ========================================================================= -->
+    <section id="protocol" class="relative z-20 py-20 sm:py-24 px-4 sm:px-8 border-t-2 border-hs-ink bg-[#1A1410] text-[#EDE4D0]">
+      <div class="max-w-7xl mx-auto">
+        <div class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-12 border-b border-white/15 pb-6">
+          <div>
+            <span class="font-mono text-xs uppercase tracking-[0.24em] font-bold text-hs-butter block mb-2">
+              // PRE-NIGHT BRIEFING
+            </span>
+            <h2 class="font-chunky text-4xl sm:text-6xl uppercase tracking-tight leading-none text-white">
+              GATE &amp; VALLEY <span class="text-hs-brick">PROTOCOL</span>
+            </h2>
+          </div>
+          <p class="font-mono text-xs text-white/70 max-w-md uppercase tracking-wider leading-relaxed">
+            DEHRADUN · MUSSOORIE ROAD · DOON VALLEY. READ BEFORE REQUESTING AN INVITE.
+          </p>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          <div class="p-6 rounded-panel bg-[#241210] border border-hs-butter/30 space-y-3">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold">
+              <span>RULE 01</span>
+              <i data-lucide="clock" class="w-4 h-4 text-hs-brick"></i>
+            </div>
+            <h3 class="font-chunky text-2xl uppercase text-white">21:00 GATE LOCK</h3>
+            <p class="font-body text-xs text-white/75 leading-relaxed">
+              Doors seal at 21:00 IST sharp. No late-arrival exceptions, even with an approved pass, to keep the room locked in before peak energy.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-panel bg-[#241210] border border-white/15 space-y-3">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold">
+              <span>RULE 02</span>
+              <i data-lucide="map-pin" class="w-4 h-4 text-hs-lagoon"></i>
+            </div>
+            <h3 class="font-chunky text-2xl uppercase text-white">PIN DROP T-4H</h3>
+            <p class="font-body text-xs text-white/75 leading-relaxed">
+              Exact Himalayan estate or bunker coordinates unlock inside your Dossier and WhatsApp 4 hours prior to doors. Zero public location leaks.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-panel bg-[#241210] border border-white/15 space-y-3">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold">
+              <span>RULE 03</span>
+              <i data-lucide="eye-off" class="w-4 h-4 text-hs-butter"></i>
+            </div>
+            <h3 class="font-chunky text-2xl uppercase text-white">NO PHONE FLASH</h3>
+            <p class="font-body text-xs text-white/75 leading-relaxed">
+              Phone lenses are sticker-sealed at Gate 01. Our in-house 35mm film crew documents the night and drops the Vault 48 hours later.
+            </p>
+          </div>
+
+          <div class="p-6 rounded-panel bg-[#241210] border border-white/15 space-y-3">
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold">
+              <span>RULE 04</span>
+              <i data-lucide="mountain" class="w-4 h-4 text-hs-dusk"></i>
+            </div>
+            <h3 class="font-chunky text-2xl uppercase text-white">VALLEY TRANSIT</h3>
+            <p class="font-body text-xs text-white/75 leading-relaxed">
+              Mussoorie Road hairpins drop 4–6°C after midnight. Bring an outer layer; valet &amp; shuttles run continuously from Rajpur Road.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+
+    <!-- ========================================================================= -->
+    <!-- 6. "CHECK YOUR STATUS" — LIVE DOSSIER & PASSBOOK PORTAL                   -->
     <!-- ========================================================================= -->
     <section id="status" class="relative z-20 py-24 sm:py-32 px-4 sm:px-8 border-t-2 border-hs-ink bg-[#DACDB1] text-center">
       
       <div class="max-w-2xl mx-auto">
         
         <span class="font-mono text-xs uppercase tracking-[0.24em] font-bold text-hs-brick block mb-2">
-          // GUEST VERIFICATION
+          // GUEST VERIFICATION &amp; PASSBOOK
         </span>
         <h2 class="font-chunky text-5xl sm:text-7xl uppercase tracking-tight text-hs-ink leading-tight mb-4">
           CHECK YOUR <span class="text-hs-brick">STATUS</span>
         </h2>
-        <p class="font-body text-sm sm:text-base text-hs-textSoft font-medium mb-10">
-          Enter the email or phone number you registered with to retrieve your invitation status and digital QR dossier pass.
+        <p class="font-body text-sm sm:text-base text-hs-textSoft font-medium mb-6">
+          Enter your registered email, phone, or dossier code (`SE-2026-...`) to inspect batch approval progress or unlock your QR Gate Pass.
         </p>
 
-        <!-- Deep Wine / Terracotta Card Container (HopShop Status Card) -->
+        <!-- Quick-Fill Demo Chips -->
+        <div class="flex flex-wrap items-center justify-center gap-2 mb-8 font-mono text-[10px] font-bold uppercase tracking-wider">
+          <button type="button" onclick="fillStatusDemo('aryan@doon.in')" class="px-3 py-1.5 rounded-pill border border-hs-ink/40 bg-[#FFFDF7] hover:bg-hs-ink hover:text-hs-butter transition-colors cursor-pointer">
+            TEST APPROVED: aryan@doon.in
+          </button>
+          <button type="button" onclick="fillStatusDemo('waitlist@doon.in')" class="px-3 py-1.5 rounded-pill border border-hs-ink/40 bg-[#FFFDF7] hover:bg-hs-brick hover:text-white transition-colors cursor-pointer">
+            TEST QUEUED: waitlist@doon.in
+          </button>
+        </div>
+
+        <!-- Deep Wine / Terracotta Card Container -->
         <div class="bg-hs-oxblood text-white p-8 sm:p-10 rounded-panel border-2 border-hs-ink shadow-2xl text-left relative overflow-hidden">
           
           <form id="statusLookupForm" onsubmit="handleStatusLookup(event)" class="space-y-5">
             <div>
-              <label class="block font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold mb-2">
-                YOUR EMAIL OR PHONE
+              <label for="statusQueryInput" class="block font-mono text-[10px] uppercase tracking-widest text-hs-butter font-bold mb-2">
+                EMAIL, PHONE, OR DOSSIER CODE
               </label>
-              <input type="text" id="statusQueryInput" required placeholder="name@domain.com or +91 98765 43210" class="w-full px-4 py-3.5 rounded-lg bg-[#241210] border border-white/20 text-white placeholder-white/30 font-mono text-xs sm:text-sm focus:outline-none focus:border-hs-butter transition-colors">
+              <input type="text" id="statusQueryInput" required placeholder="aryan@doon.in or SE-2026-..." class="w-full px-4 py-3.5 rounded-lg bg-[#241210] border border-white/20 text-white placeholder-white/30 font-mono text-xs sm:text-sm focus:outline-none focus:border-hs-butter transition-colors">
             </div>
 
-            <button type="submit" class="w-full py-4 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-2 shadow-md">
-              <span>Check status</span>
+            <button type="submit" class="w-full py-4 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-all flex items-center justify-center gap-2 shadow-md cursor-pointer">
+              <span>Inspect Dossier Status</span>
               <i data-lucide="arrow-right" class="w-4 h-4"></i>
             </button>
           </form>
 
-          <!-- Live Status Result with Animated Laser Scanner -->
+          <!-- Queued / Pre-Approval State (Clearly Distinct from Issued Pass) -->
+          <div id="statusQueuedBox" class="hidden mt-8 pt-8 border-t border-white/15">
+            <div class="p-6 rounded-xl bg-[#241210] border border-white/20 space-y-4">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+                <span id="queuedDossierCode" class="font-mono text-[10px] uppercase tracking-wider text-hs-butter font-bold">
+                  DOSSIER // SE-2026-WAIT
+                </span>
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill font-mono text-[9px] font-bold bg-hs-terracotta text-white uppercase tracking-wider">
+                  PRE-APPROVAL // IN BATCH QUEUE
+                </span>
+              </div>
+              <div class="grid grid-cols-2 gap-4 font-mono text-xs">
+                <div>
+                  <span class="text-white/50 block text-[9px] uppercase">APPLICANT</span>
+                  <span id="queuedGuestName" class="font-bold text-white">GUEST</span>
+                </div>
+                <div>
+                  <span class="text-white/50 block text-[9px] uppercase">EDITION</span>
+                  <span id="queuedEditionName" class="font-bold text-hs-butter">Sin City Nocturne</span>
+                </div>
+              </div>
+              <!-- 3-Stage Batch Review Bar -->
+              <div class="space-y-2 pt-2">
+                <div class="flex justify-between font-mono text-[9px] uppercase tracking-wider text-white/70">
+                  <span class="text-hs-butter">01 RECEIVED</span>
+                  <span class="text-hs-butter">02 COMMITTEE VETTING</span>
+                  <span class="opacity-40">03 PASS ISSUED</span>
+                </div>
+                <div class="h-1.5 w-full rounded-full bg-white/10 overflow-hidden">
+                  <div class="h-full w-2/3 bg-hs-terracotta rounded-full"></div>
+                </div>
+              </div>
+              <p class="font-body text-xs text-white/75 leading-relaxed">
+                Your application is under batch review by the door committee. QR passes &amp; exact estate pins are only issued after approval.
+              </p>
+              <button type="button" onclick="simulateApproveCurrentQueued()" class="w-full py-2.5 rounded-lg border border-hs-butter/50 hover:bg-hs-butter hover:text-hs-ink text-hs-butter font-mono text-[10px] uppercase tracking-widest font-bold transition-colors cursor-pointer">
+                [ DEMO: SIMULATE COMMITTEE APPROVAL → ]
+              </button>
+            </div>
+          </div>
+
+          <!-- Not Found State -->
+          <div id="statusNotFoundBox" class="hidden mt-8 pt-8 border-t border-white/15">
+            <div class="p-5 rounded-xl bg-[#241210] border border-hs-brick/60 font-mono text-xs space-y-2">
+              <p class="text-hs-butter font-bold uppercase">NO MATCHING DOSSIER FOUND</p>
+              <p class="text-white/75 font-body">Submit an invite request first or try the demo keys above (`aryan@doon.in` or `waitlist@doon.in`).</p>
+              <button type="button" onclick="openInviteModal()" class="mt-2 inline-flex items-center gap-1.5 text-hs-butter hover:underline font-bold uppercase text-[11px] cursor-pointer">
+                Request Invite Now →
+              </button>
+            </div>
+          </div>
+
+          <!-- Approved Pass Result with Animated Laser Scanner -->
           <div id="statusResultBox" class="hidden mt-8 pt-8 border-t border-white/15">
             <div class="holo-foil p-6 rounded-xl bg-hs-night border border-hs-butter/30 space-y-4">
-              <div class="flex items-center justify-between border-b border-white/10 pb-3">
-                <span class="font-mono text-[10px] uppercase tracking-wider text-hs-butter font-bold">
+              <div class="flex flex-wrap items-center justify-between gap-2 border-b border-white/10 pb-3">
+                <span id="resDossierCode" class="font-mono text-[10px] uppercase tracking-wider text-hs-butter font-bold">
                   DOSSIER // SE-2026-9842X
                 </span>
-                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill font-mono text-[9px] font-bold bg-hs-brick text-white uppercase tracking-wider">
+                <span class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-pill font-mono text-[9px] font-bold bg-hs-lagoon text-white uppercase tracking-wider">
                   <span class="w-1.5 h-1.5 rounded-full bg-white animate-ping"></span>
                   APPROVED · PASS ISSUED
                 </span>
@@ -1249,11 +1385,11 @@
               <div class="grid grid-cols-2 gap-4 font-mono text-xs">
                 <div>
                   <span class="text-white/50 block text-[9px] uppercase">GUEST</span>
-                  <span id="resGuestName" class="font-bold text-white">Aryan Sharma</span>
+                  <span id="resGuestName" class="font-bold text-white">ARYAN SHARMA</span>
                 </div>
                 <div>
-                  <span class="text-white/50 block text-[9px] uppercase">CITY & GATE</span>
-                  <span class="font-bold text-hs-butter">Dehradun · Gate 01</span>
+                  <span class="text-white/50 block text-[9px] uppercase">EDITION &amp; GATE</span>
+                  <span id="resEditionGate" class="font-bold text-hs-butter">Sin City · Gate 01</span>
                 </div>
               </div>
               
@@ -1303,37 +1439,45 @@
         </div>
       </div>
 
+      <!-- Vault Roll Filter Pills -->
+      <div class="flex flex-wrap items-center gap-2 mb-6 font-mono text-[10px] font-bold uppercase tracking-wider">
+        <button onclick="filterVaultRolls('all', this)" class="vault-filter-btn px-3.5 py-1.5 rounded-pill border-2 border-hs-ink bg-hs-ink text-[#EDE4D0] transition-colors cursor-pointer">ALL ROLLS (06)</button>
+        <button onclick="filterVaultRolls('night', this)" class="vault-filter-btn px-3.5 py-1.5 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-brick hover:text-white transition-colors cursor-pointer">NIGHT // BUNKER</button>
+        <button onclick="filterVaultRolls('day', this)" class="vault-filter-btn px-3.5 py-1.5 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-lagoon hover:text-white transition-colors cursor-pointer">DAY // SUNSET &amp; H²OLI</button>
+        <button onclick="filterVaultRolls('flash', this)" class="vault-filter-btn px-3.5 py-1.5 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-butter transition-colors cursor-pointer">35MM FLASH</button>
+      </div>
+
       <!-- 35mm Filmstrip Contact Sheet (Horizontal Scrub on Desktop, 2-Col Grid on Mobile) -->
       <div class="relative rounded-panel border-2 border-hs-ink bg-[#141211] p-4 sm:p-6 shadow-[8px_8px_0px_#1A1410] overflow-hidden">
         <div class="film-sprockets w-full mb-4 bg-[#EDE4D0]/90 rounded-sm"></div>
 
         <div id="vault-film-track" class="grid grid-cols-2 md:flex md:flex-nowrap gap-4 sm:gap-6 will-change-transform">
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/cameraroll_1.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="night" data-caption="EXP 01A // ROLL #01 · DOON VALLEY" onclick="openLightboxByIndex(0)">
             <img src="assets/images/cameraroll_1.jpg" alt="Vault 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 01A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #01 // DOON</span>
           </div>
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/afterdark_real_3.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="night" data-caption="EXP 02A // ROLL #02 · SIN CITY BUNKER" onclick="openLightboxByIndex(1)">
             <img src="assets/images/afterdark_real_3.jpg" alt="Vault 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 02A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #02 // BUNKER</span>
           </div>
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/sunset_real_3.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="day" data-caption="EXP 03A // ROLL #03 · SUNSET SOIRÉES" onclick="openLightboxByIndex(2)">
             <img src="assets/images/sunset_real_3.jpg" alt="Vault 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 03A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #03 // SUNSET</span>
           </div>
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/h2oli_real_3.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="day" data-caption="EXP 04A // ROLL #04 · H²OLI POOL RAVE" onclick="openLightboxByIndex(3)">
             <img src="assets/images/h2oli_real_3.jpg" alt="Vault 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 04A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #04 // H²OLI</span>
           </div>
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/cameraroll_3.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="flash" data-caption="EXP 05A // ROLL #05 · 35MM FLASH" onclick="openLightboxByIndex(4)">
             <img src="assets/images/cameraroll_3.jpg" alt="Vault 5" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 05A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #05 // FLASH</span>
           </div>
-          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/gallery_1.jpg')">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" data-roll="flash" data-caption="EXP 06A // ROLL #06 · 138 BPM TUNNEL" onclick="openLightboxByIndex(5)">
             <img src="assets/images/gallery_1.jpg" alt="Vault 6" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
             <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 06A</span>
             <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #06 // 138 BPM</span>
@@ -1367,6 +1511,9 @@
             </span>
             <button id="zero-g-btn" onclick="toggleZeroGravity()" class="magnetic-btn inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-pill bg-hs-butter hover:bg-hs-ink hover:text-white text-hs-ink border-2 border-hs-ink font-mono text-[11px] font-bold uppercase tracking-wider shadow-sm cursor-pointer">
               <span id="zero-g-label">ZERO-G: OFF</span>
+            </button>
+            <button onclick="resetPhysicsPlayground()" class="magnetic-btn inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-pill bg-[#FFFDF7] hover:bg-hs-ink hover:text-white text-hs-ink border-2 border-hs-ink font-mono text-[11px] font-bold uppercase tracking-wider shadow-sm cursor-pointer">
+              <span>RESET</span>
             </button>
             <button onclick="spawnMorePhysicsPasses()" class="magnetic-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-pill bg-hs-brick hover:bg-hs-ink text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-md cursor-pointer">
               <span>DROP MORE PASSES</span>
@@ -1437,16 +1584,21 @@
 
 
   <!-- ========================================================================= -->
-  <!-- 9. HOPSHOP EVENT DETAIL MODAL (REPRODUCING hopshop.app/e/...)              -->
+  <!-- 9. EDITION DETAIL MODAL (DYNAMIC THEME + LINEUP + PRE-SELECT INVITE)      -->
   <!-- ========================================================================= -->
-  <div id="eventDetailModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 sm:p-8 overflow-y-auto">
+  <div id="eventDetailModal" role="dialog" aria-modal="true" aria-labelledby="modalEventTitle" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 sm:p-8 overflow-y-auto" onclick="if(event.target===this)closeEventDetail()">
     
-    <div class="relative w-full max-w-4xl bg-hs-terracotta text-white rounded-card border-2 border-hs-ink shadow-2xl overflow-hidden my-auto p-6 sm:p-10 transform scale-95 transition-transform duration-300">
+    <div id="eventDetailCard" class="relative w-full max-w-4xl bg-hs-terracotta text-white rounded-card border-2 border-hs-ink shadow-2xl overflow-hidden my-auto p-6 sm:p-10 transition-colors duration-300">
       
       <!-- Back Button -->
-      <button onclick="closeEventDetail()" class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white mb-6">
-        <span>[ ← BACK ]</span>
-      </button>
+      <div class="flex items-center justify-between mb-6">
+        <button onclick="closeEventDetail()" class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-white/85 hover:text-white cursor-pointer">
+          <span>[ ← BACK ]</span>
+        </button>
+        <span id="modalEventStateBadge" class="px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-widest bg-hs-ink text-hs-butter">
+          UPCOMING // OPEN
+        </span>
+      </div>
 
       <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
         
@@ -1457,7 +1609,7 @@
         </div>
 
         <!-- Details on Right -->
-        <div class="space-y-6">
+        <div class="space-y-5">
           <div>
             <span id="modalEventTag" class="px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-black/60 text-hs-butter inline-block mb-3">
               PAST EDITION
@@ -1467,29 +1619,37 @@
             </h2>
           </div>
 
-          <div class="space-y-4 font-mono text-xs sm:text-sm">
-            <div class="flex items-start gap-3 text-white/90">
+          <div class="space-y-3 font-mono text-xs sm:text-sm bg-black/25 p-4 rounded-xl border border-white/15">
+            <div class="flex items-start gap-3 text-white/95">
               <i data-lucide="calendar" class="w-4 h-4 text-hs-butter flex-shrink-0 mt-0.5"></i>
               <span id="modalEventDate">Saturday 18 November · 5:00 PM IST</span>
             </div>
-            <div class="flex items-start gap-3 text-white/90">
+            <div class="flex items-start gap-3 text-white/95">
               <i data-lucide="map-pin" class="w-4 h-4 text-hs-butter flex-shrink-0 mt-0.5"></i>
               <span id="modalEventVenue">Himalayan Villa, Mussoorie Road, Dehradun</span>
             </div>
-            <div class="flex items-start gap-3 text-white/90">
+            <div class="flex items-start gap-3 text-white/95">
               <i data-lucide="volume-2" class="w-4 h-4 text-hs-butter flex-shrink-0 mt-0.5"></i>
               <span id="modalEventSound">Afro-House · Melodic Techno · Funktion-One System</span>
             </div>
+            <div class="flex items-start gap-3 text-white/95">
+              <i data-lucide="shirt" class="w-4 h-4 text-hs-butter flex-shrink-0 mt-0.5"></i>
+              <span id="modalEventDress">Dress Code: Earth Tones &amp; Minimal</span>
+            </div>
+            <div class="flex items-start gap-3 text-white/95">
+              <i data-lucide="lock" class="w-4 h-4 text-hs-butter flex-shrink-0 mt-0.5"></i>
+              <span id="modalEventGate">Gate Rule: 21:00 IST Lock · No Flash</span>
+            </div>
           </div>
 
-          <p id="modalEventDesc" class="font-body text-xs sm:text-sm text-white/90 leading-relaxed">
+          <p id="modalEventDesc" class="font-body text-xs sm:text-sm text-white/95 leading-relaxed">
             Strict gate lock 21:00 IST sharp. No digital tickets issued at door. Only approved invitations with verifiable holographic QR codes are admitted.
           </p>
 
-          <!-- Action Button -->
-          <div class="pt-4 border-t border-white/20">
-            <button onclick="closeEventDetail(); openInviteModal();" class="w-full py-4 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-all shadow-lg flex items-center justify-center gap-2">
-              <span>Request Invite for Dehradun</span>
+          <!-- Action Button (Pre-selects current edition) -->
+          <div class="pt-3 border-t border-white/20">
+            <button id="modalInviteBtn" onclick="requestInviteForCurrentEdition()" class="w-full py-4 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-all shadow-lg flex items-center justify-center gap-2 cursor-pointer">
+              <span id="modalInviteBtnText">Request Invite for This Edition</span>
               <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
             </button>
           </div>
@@ -1506,8 +1666,8 @@
   <!-- ========================================================================= -->
   <!-- 10. REQUEST INVITE / GUEST REGISTRATION MODAL                            -->
   <!-- ========================================================================= -->
-  <div id="inviteModal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
-    <div class="relative w-full max-w-lg bg-[#FFFDF7] text-hs-ink rounded-card border-2 border-hs-ink shadow-2xl p-6 sm:p-8 my-auto transform scale-95 transition-transform duration-300">
+  <div id="inviteModal" role="dialog" aria-modal="true" aria-label="Request Guest Pass" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6 overflow-y-auto" onclick="if(event.target===this)closeInviteModal()">
+    <div class="relative w-full max-w-lg bg-[#FFFDF7] text-hs-ink rounded-card border-2 border-hs-ink shadow-2xl p-6 sm:p-8 my-auto transition-transform duration-300">
       
       <div class="flex items-center justify-between pb-4 border-b border-hs-ink/15 mb-6">
         <div>
@@ -1518,35 +1678,43 @@
             REQUEST GUEST PASS
           </h3>
         </div>
-        <button onclick="closeInviteModal()" class="w-8 h-8 rounded-full border border-hs-ink/20 flex items-center justify-center text-hs-ink hover:bg-hs-brick hover:text-white transition-colors">
+        <button onclick="closeInviteModal()" aria-label="Close invite modal" class="w-8 h-8 rounded-full border border-hs-ink/20 flex items-center justify-center text-hs-ink hover:bg-hs-brick hover:text-white transition-colors cursor-pointer">
           ✕
         </button>
       </div>
 
-      <form id="inviteRequestForm" onsubmit="handleInviteSubmit(event)" class="space-y-4">
-        <div>
-          <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
-            FULL LEGAL NAME
-          </label>
-          <input type="text" id="guestName" required placeholder="Aryan Sharma" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
+      <form id="inviteRequestForm" onsubmit="handleInviteSubmit(event)" class="space-y-3.5">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+          <div>
+            <label for="guestName" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+              FULL LEGAL NAME
+            </label>
+            <input type="text" id="guestName" required placeholder="Aryan Sharma" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
+          </div>
+          <div>
+            <label for="guestInsta" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+              INSTAGRAM (@)
+            </label>
+            <input type="text" id="guestInsta" required placeholder="@aryansharma" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
+          </div>
         </div>
 
         <div>
-          <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
-            INSTAGRAM HANDLE (@)
+          <label for="guestEmail" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+            EMAIL ADDRESS
           </label>
-          <input type="text" id="guestInsta" required placeholder="@aryansharma" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
+          <input type="email" id="guestEmail" required placeholder="aryan@doon.in" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
         </div>
 
         <div class="grid grid-cols-2 gap-3">
           <div>
-            <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+            <label for="guestPhone" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
               PHONE (WHATSAPP)
             </label>
             <input type="tel" id="guestPhone" required placeholder="+91 98765 43210" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
           </div>
           <div>
-            <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+            <label for="guestCity" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
               TARGET CITY
             </label>
             <select id="guestCity" class="w-full px-3 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
@@ -1558,55 +1726,54 @@
         </div>
 
         <div>
-          <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+          <label for="guestEdition" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
             DESIRED EDITION
           </label>
           <select id="guestEdition" class="w-full px-3 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
             <option value="Sin City Nocturne">Sin City Nocturne · 13 Dec</option>
             <option value="The White Lotus Gala">The White Lotus Gala · 31 Dec NYE</option>
             <option value="Project X Himalayan Lock-In">Project X Himalayan Lock-In · 24 Jan</option>
-            <option value="Sunset Soirées Vol. IV">Sunset Soirées Vol. IV · Spring</option>
+            <option value="H²OLI Color Rave">H²OLI Color Rave · March Equinox</option>
+            <option value="Sunset Soirées Vol. IV">Sunset Soirées Vol. IV · Waitlist</option>
           </select>
         </div>
 
         <div>
-          <label class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
+          <label for="guestPlusOne" class="block font-mono text-[10px] uppercase tracking-widest font-bold text-hs-textDim mb-1">
             WHO ARE YOU BRINGING?
           </label>
-          <input type="text" id="guestPlusOne" placeholder="Solo or +1 name & social handle" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
+          <input type="text" id="guestPlusOne" placeholder="Solo or +1 name &amp; social handle" class="w-full px-3.5 py-2.5 rounded-lg border border-hs-ink/20 bg-hs-linen/40 font-mono text-xs text-hs-ink focus:outline-none focus:border-hs-brick">
         </div>
 
-        <button type="submit" class="w-full py-4 rounded-lg bg-hs-brick hover:bg-hs-ink text-white font-mono text-xs uppercase tracking-widest font-bold transition-all shadow-md mt-4">
-          Submit for Committee Review →
+        <button type="submit" class="w-full py-4 rounded-lg bg-hs-brick hover:bg-hs-ink text-white font-mono text-xs uppercase tracking-widest font-bold transition-all shadow-md mt-2 cursor-pointer">
+          Submit Dossier for Committee Review →
         </button>
       </form>
 
-      <!-- Instant Pass Generation View -->
+      <!-- Queued Dossier Confirmation View (Distinct from Approved Gate Pass) -->
       <div id="passSuccessView" class="hidden text-center space-y-4 pt-2">
-        <div class="w-12 h-12 rounded-full bg-hs-lagoon text-white flex items-center justify-center mx-auto text-xl">
-          ✓
+        <div class="w-12 h-12 rounded-full bg-hs-terracotta text-white flex items-center justify-center mx-auto text-xl font-bold">
+          ⏳
         </div>
         <h4 class="font-chunky text-2xl uppercase tracking-tight text-hs-ink">
-          APPLICATION ENCRYPTED
+          DOSSIER LOGGED // IN BATCH QUEUE
         </h4>
         <p class="font-body text-xs text-hs-textSoft max-w-sm mx-auto">
-          Your dossier has been routed to Abhay Rawat & door committee. Your preliminary pass has been rendered below.
+          Your application is saved locally for committee vetting. Track your dossier code below in the Passbook Portal—QR entry passes unlock once approved.
         </p>
 
         <div class="p-4 bg-hs-coal text-white rounded-xl border border-white/20 text-left font-mono text-xs space-y-2">
           <div class="flex justify-between border-b border-white/10 pb-2">
-            <span class="text-hs-butter font-bold">SE-2026-ENCRYPTED</span>
-            <span class="text-hs-brick font-bold">STATUS: QUEUED</span>
+            <span id="issuedDossierCode" class="text-hs-butter font-bold">SE-2026-00000</span>
+            <span class="text-hs-terracotta font-bold">STATUS: QUEUED</span>
           </div>
-          <p><span class="text-white/50">NAME:</span> <span id="issuedName" class="text-white font-bold"></span></p>
+          <p><span class="text-white/50">APPLICANT:</span> <span id="issuedName" class="text-white font-bold"></span></p>
           <p><span class="text-white/50">EDITION:</span> <span id="issuedEdition" class="text-hs-butter"></span></p>
-          <div class="pt-2 flex justify-center">
-            <canvas id="issuedQrCanvas" width="96" height="96" class="w-24 h-24 bg-white p-1 rounded"></canvas>
-          </div>
+          <p class="text-[10px] text-white/60 pt-1">01 RECEIVED ✓ → 02 COMMITTEE VETTING ⏳ → 03 QR PASS</p>
         </div>
 
-        <button onclick="downloadPassPng()" class="w-full py-3 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-colors">
-          Download Pass (PNG) for IG Stories
+        <button type="button" onclick="jumpToSubmittedDossier()" class="w-full py-3.5 rounded-lg bg-hs-butter hover:bg-white text-hs-ink font-mono text-xs uppercase tracking-widest font-bold transition-colors cursor-pointer">
+          Inspect in Status Portal →
         </button>
       </div>
 
@@ -1615,10 +1782,32 @@
 
 
   <!-- ========================================================================= -->
-  <!-- 11. LIGHTBOX MODAL                                                        -->
+  <!-- 11. 35MM VAULT LIGHTBOX MODAL (KEYBOARD + SWIPE + FILM METADATA)          -->
   <!-- ========================================================================= -->
-  <div id="lightboxModal" class="fixed inset-0 z-[120] bg-black/95 hidden items-center justify-center p-4 cursor-pointer" onclick="closeLightbox()">
-    <img id="lightboxImg" src="" alt="Lightbox" class="max-w-full max-h-[90vh] object-contain rounded-image border-2 border-white/20 shadow-2xl">
+  <div id="lightboxModal" role="dialog" aria-modal="true" aria-label="35mm Vault Lightbox" class="fixed inset-0 z-[120] bg-black/95 hidden flex-col items-center justify-center p-4 sm:p-8" onclick="if(event.target===this)closeLightbox()">
+    <button onclick="closeLightbox()" aria-label="Close lightbox" class="absolute top-4 right-4 sm:top-6 sm:right-6 w-10 h-10 rounded-full border border-white/25 bg-black/60 text-white hover:bg-hs-brick font-mono text-sm flex items-center justify-center transition-colors cursor-pointer z-10">
+      ✕
+    </button>
+
+    <div class="relative flex items-center justify-center w-full max-w-5xl">
+      <button onclick="stepLightbox(-1)" aria-label="Previous photo" class="hidden sm:flex w-11 h-11 rounded-full border border-white/25 bg-black/60 text-white hover:bg-hs-brick font-mono text-lg items-center justify-center mr-4 transition-colors cursor-pointer flex-shrink-0">
+        ←
+      </button>
+      <img id="lightboxImg" src="" alt="35mm Vault Frame" class="max-w-full max-h-[78vh] object-contain rounded-image border-2 border-white/20 shadow-2xl select-none">
+      <button onclick="stepLightbox(1)" aria-label="Next photo" class="hidden sm:flex w-11 h-11 rounded-full border border-white/25 bg-black/60 text-white hover:bg-hs-brick font-mono text-lg items-center justify-center ml-4 transition-colors cursor-pointer flex-shrink-0">
+        →
+      </button>
+    </div>
+
+    <div class="mt-4 flex items-center gap-4 font-mono text-[11px] uppercase tracking-widest text-white/80 bg-[#141211] px-4 py-2 rounded-pill border border-white/15">
+      <span id="lightboxCaption" class="text-hs-butter font-bold">EXP 01A // ROLL #01</span>
+      <span class="opacity-40">|</span>
+      <span class="hidden sm:inline">← / → TO NAVIGATE · ESC TO CLOSE</span>
+      <div class="flex sm:hidden gap-3">
+        <button onclick="stepLightbox(-1)" class="text-hs-butter font-bold">← PREV</button>
+        <button onclick="stepLightbox(1)" class="text-hs-butter font-bold">NEXT →</button>
+      </div>
+    </div>
   </div>
 
 
@@ -2100,79 +2289,128 @@
     }
 
 
-    // 11. Event Data for HopShop-style modal overlay
+    // 11. Rich Edition Database with State, Dress Code, Gate Rules & Theme Accent
     const eventDatabase = {
       sunset: {
         title: "Sunset Soirées Vol. III",
         tag: "ARCHIVED EDITION",
+        stateBadge: "ARCHIVED // VAULTED",
+        themeClass: "bg-[#6E3B2C]",
+        selectValue: "Sunset Soirées Vol. IV",
+        ctaText: "Join Vol. IV Waitlist",
         poster: "assets/images/sunset_soiree.jpg",
         date: "Saturday 18 November · 5:00 PM IST",
         venue: "Himalayan Villa, Mussoorie Road, Dehradun",
         sound: "Afro-House · Melodic Techno · Funktion-One System",
+        dress: "Dress Code: Warm Earth Tones & Linen",
+        gate: "Gate Rule: Sunset Doors 17:00 · Vol. IV Waitlist Open",
         desc: "Golden-hour deep house on an open-air mountain terrace overlooking the Doon Valley. 400 handpicked guests, artisan spritzes, and sunset acoustic curves."
       },
       sincity: {
         title: "Sin City Nocturne",
         tag: "INVITE-ONLY // 21:00 GATE LOCK",
+        stateBadge: "UPCOMING // BATCH 02 OPEN",
+        themeClass: "bg-[#A3281C]",
+        selectValue: "Sin City Nocturne",
+        ctaText: "Request Invite for Sin City Nocturne",
         poster: "assets/images/after_dark.jpg",
         date: "Saturday 13 December · 9:00 PM IST",
         venue: "Secret Industrial Bunker, Mussoorie Foothills",
         sound: "138 BPM Peak-Time Techno · Acid · Industrial Strobe Cage",
+        dress: "Dress Code: Void Black / Industrial Minimal",
+        gate: "Gate Rule: 21:00 IST Strict Lock · No Phone Flash",
         desc: "Raw industrial bunker rave. Absolute gate lock 21:00 IST sharp. Heavy haze machines, Funktion-One acoustics, and uncompromising dark energy."
       },
       h2oli: {
         title: "H²OLI Color Rave",
         tag: "ANNUAL EQUINOX TRADITION",
+        stateBadge: "SEASONAL // EARLY ACCESS",
+        themeClass: "bg-[#2C6B65]",
+        selectValue: "H²OLI Color Rave",
+        ctaText: "Request Early Access for H²OLI",
         poster: "assets/images/h2oli_festival.jpg",
         date: "Spring Equinox · 11:00 AM IST",
         venue: "Private Himalayan Poolside Estate, Dehradun",
         sound: "Heavy Basslines · Live Dhol Fusion · Organic Color Cannons",
+        dress: "Dress Code: Poolside White & Sunwear",
+        gate: "Gate Rule: Doors 11:00 IST · Organic Gulal Only",
         desc: "Dehradun’s legendary mountain pool party with organic Gulal powder cannons, live Punjabi dhols, and continuous basslines across the water."
       },
       whitelotus: {
         title: "The White Lotus Gala",
         tag: "ALL-WHITE MASQUERADE",
+        stateBadge: "NYE // HIGH DEMAND WAITLIST",
+        themeClass: "bg-[#3A4F66]",
+        selectValue: "The White Lotus Gala",
+        ctaText: "Request Invite for The White Lotus Gala",
         poster: "assets/images/white_lotus.jpg",
         date: "Tuesday 31 December · NYE 8:00 PM IST",
         venue: "Private Himalayan Cliffside Resort, Dehradun",
         sound: "Melodic Techno · Deep Afro · Orchestral Synths",
+        dress: "Dress Code: Strictly All-White Formal / Masquerade",
+        gate: "Gate Rule: 21:00 Lock · Cabana Wristband Verified",
         desc: "High-voltage masquerade ball on the cliffs. Champagne cascades, melodic afro-house, and private villa cabana suites under the stars."
       },
       projectx: {
         title: "Project X Himalayan Lock-In",
         tag: "SECRET RETREAT // 138 BPM",
+        stateBadge: "UPCOMING // INVITE ONLY",
+        themeClass: "bg-[#3A0A0A]",
+        selectValue: "Project X Himalayan Lock-In",
+        ctaText: "Request Invite for Project X Lock-In",
         poster: "assets/images/gallery_1.jpg",
         date: "Friday 24 January · 10:00 PM IST",
         venue: "Undisclosed Mountain Bunker, Mussoorie Road",
         sound: "Raw Techno · Fast Acid · Void Acoustics",
+        dress: "Dress Code: Dark Mountain Layering",
+        gate: "Gate Rule: Pin Drop T-4H · Zero Cell Service",
         desc: "Deep mountain bunker session. Zero cell service, total sensory immersion, and 8 hours of uninterrupted underground sound."
       },
       curator: {
         title: "The Doon Protocol (Curated by Abhay Rawat)",
         tag: "ARCHITECT'S NOTE",
+        stateBadge: "MANIFESTO // EST. 2024",
+        themeClass: "bg-[#1A1410]",
+        selectValue: "Sin City Nocturne",
+        ctaText: "Apply for Next Curated Night",
         poster: "assets/images/abhay_rawat_card.jpg",
         date: "Curated Daily in Dehradun · Established 2024",
         venue: "Social Euphoria HQ, Dehradun, Uttarakhand",
         sound: "Strict Door Policy · Zero Phone Flashes on Floor",
+        dress: "Ethos: Presence Over Clout",
+        gate: "Gate Rule: Vetted Entry · 21:00 Lock",
         desc: "Curating hell to have fun. Built to counter cookie-cutter commercial clubbing with genuine Himalayan underground intimacy, world-class acoustics, and trusted crowds."
       }
     };
 
+    let activeEditionKey = 'sincity';
+
     function openEventDetail(key) {
       const data = eventDatabase[key];
       if (!data) return;
+      activeEditionKey = key;
+
+      const card = document.getElementById('eventDetailCard');
+      if (card) {
+        card.className = `relative w-full max-w-4xl ${data.themeClass} text-white rounded-card border-2 border-hs-ink shadow-2xl overflow-hidden my-auto p-6 sm:p-10 transition-colors duration-300`;
+      }
 
       document.getElementById('modalEventTitle').textContent = data.title;
       document.getElementById('modalEventTag').textContent = data.tag;
+      document.getElementById('modalEventStateBadge').textContent = data.stateBadge;
       document.getElementById('modalEventPoster').src = data.poster;
       document.getElementById('modalEventDate').textContent = data.date;
       document.getElementById('modalEventVenue').textContent = data.venue;
       document.getElementById('modalEventSound').textContent = data.sound;
+      document.getElementById('modalEventDress').textContent = data.dress;
+      document.getElementById('modalEventGate').textContent = data.gate;
       document.getElementById('modalEventDesc').textContent = data.desc;
+      document.getElementById('modalInviteBtnText').textContent = data.ctaText;
 
       const modal = document.getElementById('eventDetailModal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+      playTactileSfx('thud');
     }
 
     function closeEventDetail() {
@@ -2181,15 +2419,20 @@
       modal.classList.remove('flex');
     }
 
+    function requestInviteForCurrentEdition() {
+      const data = eventDatabase[activeEditionKey];
+      closeEventDetail();
+      openInviteModal(data ? data.selectValue : null);
+    }
+
     // 12. Procedural QR Code Drawer
     function drawProceduralQR(canvas, text) {
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
-      const size = 25; // 25x25 matrix
+      const size = 25;
       const cellSize = canvas.width / size;
       ctx.fillStyle = '#FFFFFF';
       ctx.fillRect(0, 0, canvas.width, canvas.height);
-      ctx.fillStyle = '#1A1410';
 
       function drawFinder(startX, startY) {
         ctx.fillStyle = '#1A1410';
@@ -2203,6 +2446,7 @@
       drawFinder(size - 7, 0);
       drawFinder(0, size - 7);
 
+      ctx.fillStyle = '#1A1410';
       for (let i = 8; i < size - 8; i++) {
         if (i % 2 === 0) {
           ctx.fillRect(i * cellSize, 6 * cellSize, cellSize, cellSize);
@@ -2226,11 +2470,62 @@
       }
     }
 
-    // 13. Invite Modal Logic
-    function openInviteModal() {
+    // 13. Client-Side Dossier Store (localStorage Persistence + Demo Records)
+    const DOSSIER_STORE_KEY = 'se_dossiers_v1';
+    const DEFAULT_DOSSIERS = [
+      {
+        code: 'SE-2026-9842X',
+        name: 'ARYAN SHARMA',
+        email: 'aryan@doon.in',
+        phone: '+91 98765 43210',
+        city: 'Dehradun',
+        edition: 'Sin City Nocturne',
+        status: 'APPROVED'
+      },
+      {
+        code: 'SE-2026-WAIT7',
+        name: 'KABIR MEHTA',
+        email: 'waitlist@doon.in',
+        phone: '+91 99999 11111',
+        city: 'Dehradun',
+        edition: 'The White Lotus Gala',
+        status: 'QUEUED'
+      }
+    ];
+
+    function loadDossiers() {
+      try {
+        const raw = localStorage.getItem(DOSSIER_STORE_KEY);
+        if (!raw) {
+          localStorage.setItem(DOSSIER_STORE_KEY, JSON.stringify(DEFAULT_DOSSIERS));
+          return [...DEFAULT_DOSSIERS];
+        }
+        const parsed = JSON.parse(raw);
+        return Array.isArray(parsed) ? parsed : [...DEFAULT_DOSSIERS];
+      } catch (e) {
+        return [...DEFAULT_DOSSIERS];
+      }
+    }
+
+    function saveDossiers(list) {
+      try {
+        localStorage.setItem(DOSSIER_STORE_KEY, JSON.stringify(list));
+      } catch (e) {}
+    }
+
+    let lastSubmittedCode = '';
+    let activePassRecord = DEFAULT_DOSSIERS[0];
+    let activeQueuedCode = '';
+
+    function openInviteModal(preselectEdition) {
       const modal = document.getElementById('inviteModal');
+      if (preselectEdition) {
+        const sel = document.getElementById('guestEdition');
+        if (sel) sel.value = preselectEdition;
+      }
       modal.classList.remove('hidden');
       modal.classList.add('flex');
+      playTactileSfx('click');
     }
 
     function closeInviteModal() {
@@ -2243,39 +2538,113 @@
 
     function handleInviteSubmit(e) {
       e.preventDefault();
-      const name = document.getElementById('guestName').value;
+      const name = document.getElementById('guestName').value.trim();
+      const email = document.getElementById('guestEmail').value.trim().toLowerCase();
+      const phone = document.getElementById('guestPhone').value.trim();
+      const city = document.getElementById('guestCity').value;
       const edition = document.getElementById('guestEdition').value;
-      
-      document.getElementById('issuedName').textContent = name;
-      document.getElementById('issuedEdition').textContent = edition;
+      const code = 'SE-2026-' + Math.random().toString(36).substring(2, 7).toUpperCase();
 
-      const canvas = document.getElementById('issuedQrCanvas');
-      drawProceduralQR(canvas, `SE-INVITE-2026-${name.toUpperCase()}-${Date.now()}`);
+      const record = {
+        code,
+        name: name.toUpperCase(),
+        email,
+        phone,
+        city,
+        edition,
+        status: 'QUEUED'
+      };
+
+      const list = loadDossiers();
+      list.unshift(record);
+      saveDossiers(list);
+      lastSubmittedCode = code;
+
+      document.getElementById('issuedDossierCode').textContent = code;
+      document.getElementById('issuedName').textContent = record.name;
+      document.getElementById('issuedEdition').textContent = `${edition} · ${city}`;
 
       document.getElementById('inviteRequestForm').classList.add('hidden');
       document.getElementById('passSuccessView').classList.remove('hidden');
+      playTactileSfx('thud');
     }
 
-    // 14. Status Lookup Logic
-    function handleStatusLookup(e) {
-      e.preventDefault();
-      const query = document.getElementById('statusQueryInput').value.trim();
+    function jumpToSubmittedDossier() {
+      closeInviteModal();
+      const input = document.getElementById('statusQueryInput');
+      if (input && lastSubmittedCode) {
+        input.value = lastSubmittedCode;
+        lookupAndRenderDossier(lastSubmittedCode);
+      }
+      document.getElementById('status')?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    }
+
+    // 14. Status Lookup & Passbook Logic
+    function fillStatusDemo(val) {
+      const input = document.getElementById('statusQueryInput');
+      if (input) input.value = val;
+      lookupAndRenderDossier(val);
+    }
+
+    function lookupAndRenderDossier(rawQuery) {
+      const q = rawQuery.trim().toLowerCase();
       const resultBox = document.getElementById('statusResultBox');
-      
-      resultBox.classList.remove('hidden');
-      if (query.includes('@')) {
-        document.getElementById('resGuestName').textContent = query.split('@')[0].toUpperCase();
-      } else {
-        document.getElementById('resGuestName').textContent = 'VERIFIED GUEST';
+      const queuedBox = document.getElementById('statusQueuedBox');
+      const notFoundBox = document.getElementById('statusNotFoundBox');
+
+      resultBox.classList.add('hidden');
+      queuedBox.classList.add('hidden');
+      notFoundBox.classList.add('hidden');
+
+      const list = loadDossiers();
+      const match = list.find((d) =>
+        d.email.toLowerCase() === q ||
+        d.phone.replace(/\s+/g, '') === q.replace(/\s+/g, '') ||
+        d.code.toLowerCase() === q
+      );
+
+      if (!match) {
+        notFoundBox.classList.remove('hidden');
+        return;
       }
 
-      const canvas = document.getElementById('statusQrCanvas');
-      drawProceduralQR(canvas, `SE-PASS-VERIFIED-${query}`);
+      if (match.status === 'APPROVED') {
+        activePassRecord = match;
+        document.getElementById('resDossierCode').textContent = `DOSSIER // ${match.code}`;
+        document.getElementById('resGuestName').textContent = match.name;
+        document.getElementById('resEditionGate').textContent = `${match.edition} · ${match.city} Gate 01`;
+        drawProceduralQR(document.getElementById('statusQrCanvas'), `${match.code}-${match.name}`);
+        resultBox.classList.remove('hidden');
+        playTactileSfx('thud');
+      } else {
+        activeQueuedCode = match.code;
+        document.getElementById('queuedDossierCode').textContent = `DOSSIER // ${match.code}`;
+        document.getElementById('queuedGuestName').textContent = match.name;
+        document.getElementById('queuedEditionName').textContent = match.edition;
+        queuedBox.classList.remove('hidden');
+        playTactileSfx('click');
+      }
     }
 
-    // 15. Download Pass PNG (1080x1920 Instagram Story Pass)
+    function handleStatusLookup(e) {
+      e.preventDefault();
+      lookupAndRenderDossier(document.getElementById('statusQueryInput').value);
+    }
+
+    function simulateApproveCurrentQueued() {
+      if (!activeQueuedCode) return;
+      const list = loadDossiers();
+      const idx = list.findIndex((d) => d.code === activeQueuedCode);
+      if (idx !== -1) {
+        list[idx].status = 'APPROVED';
+        saveDossiers(list);
+        lookupAndRenderDossier(activeQueuedCode);
+      }
+    }
+
+    // 15. Download Dynamic Pass PNG (1080x1920 Instagram Story Pass)
     function downloadPassPng() {
-      const name = document.getElementById('issuedName').textContent || document.getElementById('resGuestName').textContent || 'Aryan Sharma';
+      const rec = activePassRecord || DEFAULT_DOSSIERS[0];
       const canvas = document.createElement('canvas');
       canvas.width = 1080;
       canvas.height = 1920;
@@ -2300,31 +2669,31 @@
       ctx.fillRect(110, 190, 860, 1520);
 
       ctx.fillStyle = '#A3281C';
-      ctx.font = 'bold 36px "JetBrains Mono", monospace';
+      ctx.font = 'bold 34px "JetBrains Mono", monospace';
       ctx.fillText('/// SOCIAL EUPHORIA DEHRADUN', 160, 290);
 
       ctx.fillStyle = '#1A1410';
-      ctx.font = '900 110px "Anton", sans-serif';
+      ctx.font = '900 108px "Anton", sans-serif';
       ctx.fillText('VIP DOSSIER', 160, 420);
 
       ctx.fillStyle = '#5E9C95';
-      ctx.font = 'bold 30px "JetBrains Mono", monospace';
-      ctx.fillText('STATUS: VERIFIED // GATE 01 LOCK 21:00', 160, 500);
+      ctx.font = 'bold 28px "JetBrains Mono", monospace';
+      ctx.fillText('STATUS: APPROVED // GATE 01 LOCK 21:00', 160, 500);
 
       ctx.fillStyle = '#1A1410';
       ctx.font = 'bold 34px "Space Grotesk", sans-serif';
-      ctx.fillText('GUEST: ' + name.toUpperCase(), 160, 680);
-      ctx.fillText('EDITION: SUNSET SOIRÉES VOL. III', 160, 760);
-      ctx.fillText('LOCATION: DEHRADUN HIMALAYAN ESTATE', 160, 840);
+      ctx.fillText('GUEST: ' + rec.name.toUpperCase(), 160, 680);
+      ctx.fillText('EDITION: ' + rec.edition.toUpperCase(), 160, 760);
+      ctx.fillText('CITY: ' + rec.city.toUpperCase() + ' HIMALAYAN ESTATE', 160, 840);
       ctx.fillText('SOUND: 138 BPM ACOUSTIC MATRIX', 160, 920);
 
       ctx.fillStyle = '#F4D95B';
       ctx.fillRect(160, 1000, 760, 440);
 
       ctx.fillStyle = '#1A1410';
-      ctx.font = '900 48px "Anton", sans-serif';
+      ctx.font = '900 46px "Anton", sans-serif';
       ctx.textAlign = 'center';
-      ctx.fillText('GATE PASS // SE-2026-9842X', 540, 1070);
+      ctx.fillText('GATE PASS // ' + rec.code, 540, 1070);
 
       ctx.font = 'bold 24px "JetBrains Mono", monospace';
       ctx.fillText('STRICT CURFEW · NO PHONES ON DANCEFLOOR', 540, 1120);
@@ -2333,20 +2702,22 @@
       const qrTemp = document.createElement('canvas');
       qrTemp.width = 180;
       qrTemp.height = 180;
-      drawProceduralQR(qrTemp, 'SE-2026-PASS-' + name.toUpperCase());
+      drawProceduralQR(qrTemp, `${rec.code}-${rec.name}`);
       ctx.drawImage(qrTemp, 450, 1190, 180, 180);
 
       ctx.fillStyle = '#A3281C';
-      ctx.font = 'bold 30px "JetBrains Mono", monospace';
+      ctx.font = 'bold 28px "JetBrains Mono", monospace';
       ctx.fillText('DM US ON INSTAGRAM: @SOCIALEUPHORIAA', 540, 1550);
 
       const link = document.createElement('a');
-      link.download = `Social_Euphoria_Pass_${name.replace(/\s+/g, '_')}.png`;
+      link.download = `Social_Euphoria_Pass_${rec.code}.png`;
       link.href = canvas.toDataURL('image/png');
       link.click();
     }
 
-    // 16. Lightbox with 35mm Shutter Flash
+    // 16. 35mm Vault Roll Filter & Keyboard/Swipe Lightbox
+    let currentLightboxIdx = 0;
+
     function triggerShutterFlash() {
       const flash = document.getElementById('se-shutter-flash');
       if (!flash) return;
@@ -2356,18 +2727,77 @@
       playTactileSfx('shutter');
     }
 
-    function openLightbox(src) {
+    function getVaultFrames() {
+      return Array.from(document.querySelectorAll('.vault-frame'));
+    }
+
+    function openLightboxByIndex(idx) {
+      const frames = getVaultFrames();
+      if (!frames.length) return;
+      currentLightboxIdx = (idx + frames.length) % frames.length;
+      const frame = frames[currentLightboxIdx];
+      const img = frame.querySelector('img');
+      if (!img) return;
       triggerShutterFlash();
-      document.getElementById('lightboxImg').src = src;
+      document.getElementById('lightboxImg').src = img.src;
+      document.getElementById('lightboxCaption').textContent = frame.getAttribute('data-caption') || `FRAME #${currentLightboxIdx + 1}`;
       const modal = document.getElementById('lightboxModal');
       modal.classList.remove('hidden');
       modal.classList.add('flex');
     }
+
+    function stepLightbox(delta) {
+      openLightboxByIndex(currentLightboxIdx + delta);
+    }
+
     function closeLightbox() {
       const modal = document.getElementById('lightboxModal');
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
+
+    function filterVaultRolls(roll, btnEl) {
+      playTactileSfx('click');
+      document.querySelectorAll('.vault-filter-btn').forEach((b) => {
+        b.classList.remove('bg-hs-ink', 'text-[#EDE4D0]');
+        b.classList.add('bg-[#FFFDF7]', 'text-hs-ink');
+      });
+      if (btnEl) {
+        btnEl.classList.add('bg-hs-ink', 'text-[#EDE4D0]');
+        btnEl.classList.remove('bg-[#FFFDF7]', 'text-hs-ink');
+      }
+      getVaultFrames().forEach((frame) => {
+        const match = roll === 'all' || frame.getAttribute('data-roll') === roll;
+        frame.style.display = match ? '' : 'none';
+      });
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    }
+
+    // Global Keyboard & Touch Swipe Support for Modals & Lightbox
+    document.addEventListener('keydown', (e) => {
+      const lb = document.getElementById('lightboxModal');
+      const lbOpen = lb && !lb.classList.contains('hidden');
+      if (e.key === 'Escape') {
+        closeLightbox();
+        closeEventDetail();
+        closeInviteModal();
+      } else if (lbOpen && e.key === 'ArrowRight') {
+        stepLightbox(1);
+      } else if (lbOpen && e.key === 'ArrowLeft') {
+        stepLightbox(-1);
+      }
+    });
+
+    (function initLightboxSwipe() {
+      const lb = document.getElementById('lightboxModal');
+      if (!lb) return;
+      let startX = 0;
+      lb.addEventListener('touchstart', (e) => { startX = e.touches[0].clientX; }, { passive: true });
+      lb.addEventListener('touchend', (e) => {
+        const diff = e.changedTouches[0].clientX - startX;
+        if (Math.abs(diff) > 45) stepLightbox(diff < 0 ? 1 : -1);
+      }, { passive: true });
+    })();
 
     // =========================================================================
     // 17. AMBIENT TOPOGRAPHICAL SOUNDWAVE CANVAS (SCROLL + CURSOR REACTIVE)
@@ -2738,6 +3168,15 @@
       spawnMorePhysicsPasses = () => {
         playTactileSfx('thud');
         dropBatch(5);
+      };
+
+      window.resetPhysicsPlayground = () => {
+        while (dynamicBodies.length) {
+          Composite.remove(engine.world, dynamicBodies.pop());
+        }
+        if (isZeroG) window.toggleZeroGravity();
+        dropBatch(10);
+        playTactileSfx('click');
       };
 
       // Mouse / Touch Interaction without hijacking page scroll
