@@ -63,6 +63,9 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <script src="https://unpkg.com/lenis@1.1.18/dist/lenis.min.js"></script>
 
+  <!-- Matter.js 2D Rigid-Body Physics -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -207,12 +210,121 @@
     @keyframes dashMove {
       to { stroke-dashoffset: -200; }
     }
+
+    /* 3D Specular Glare Overlay on Poster Cards */
+    .card-glare {
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.35s ease;
+      background: radial-gradient(circle 220px at var(--glare-x, 50%) var(--glare-y, 50%), rgba(255, 253, 247, 0.38), rgba(244, 217, 91, 0.12) 40%, transparent 72%);
+      mix-blend-mode: overlay;
+      z-index: 15;
+    }
+    .hs-float-tile:hover .card-glare {
+      opacity: 1;
+    }
+
+    /* Holographic Metallic Foil Sheen on Pass Cards */
+    .holo-foil {
+      position: relative;
+      overflow: hidden;
+    }
+    .holo-foil::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      opacity: var(--holo-op, 0.25);
+      background: linear-gradient(125deg, transparent 20%, rgba(244, 217, 91, 0.28) 38%, rgba(163, 40, 28, 0.22) 50%, rgba(94, 156, 149, 0.25) 62%, transparent 80%);
+      background-size: 200% 200%;
+      background-position: var(--holo-x, 50%) var(--holo-y, 50%);
+      mix-blend-mode: screen;
+      transition: opacity 0.25s ease;
+    }
+
+    /* Kinetic Marquee Strip */
+    @keyframes hsTicker {
+      0% { transform: translate3d(0, 0, 0); }
+      100% { transform: translate3d(-50%, 0, 0); }
+    }
+    .hs-marquee-track {
+      display: flex;
+      width: max-content;
+      animation: hsTicker 26s linear infinite;
+      will-change: transform;
+    }
+    .hs-marquee-wrap:hover .hs-marquee-track {
+      animation-play-state: paused;
+    }
+
+    /* 35mm Camera Shutter Flash Overlay */
+    @keyframes shutterFlashAnim {
+      0% { opacity: 0.92; }
+      100% { opacity: 0; }
+    }
+    .shutter-flash-active {
+      animation: shutterFlashAnim 0.42s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    /* Bass Drop Strobe & Micro-Shake */
+    @keyframes bassShake {
+      0%, 100% { transform: translate3d(0, 0, 0); }
+      15% { transform: translate3d(-3px, 2px, 0) scale(1.004); }
+      30% { transform: translate3d(3px, -2px, 0) scale(1.006); }
+      45% { transform: translate3d(-2px, -2px, 0); }
+      60% { transform: translate3d(2px, 2px, 0); }
+      75% { transform: translate3d(-1px, 1px, 0); }
+    }
+    .bass-drop-active {
+      animation: bassShake 0.45s cubic-bezier(0.36, 0.07, 0.19, 0.97) 2;
+    }
+
+    /* Magnetic Button Smooth Transition */
+    .magnetic-btn {
+      transition: transform 0.22s cubic-bezier(0.22, 1, 0.36, 1), background-color 0.2s ease, box-shadow 0.2s ease;
+      will-change: transform;
+    }
+
+    /* Reduced Motion Guardrail */
+    @media (prefers-reduced-motion: reduce) {
+      .hs-marquee-track, .step-wave-line, .laser-scanner, .orbit-arc {
+        animation: none !important;
+      }
+      .bass-drop-active {
+        animation: none !important;
+      }
+    }
   </style>
 </head>
 <body class="antialiased min-h-screen flex flex-col justify-between relative selection:bg-hs-brick selection:text-white">
 
   <!-- Grain Layer -->
   <div class="hs-grain"></div>
+
+  <!-- Reactive Topographical Soundwave Canvas (Reacts to Pointer + Scroll Velocity + Bass Pulse) -->
+  <canvas id="se-ambient-canvas" aria-hidden="true" class="fixed inset-0 pointer-events-none z-[1] opacity-60"></canvas>
+
+  <!-- 35mm Camera Shutter Flash Overlay -->
+  <div id="se-shutter-flash" aria-hidden="true" class="fixed inset-0 pointer-events-none z-[1100] bg-[#FFFDF7] opacity-0"></div>
+
+  <!-- Floating Teenage-Engineering Style "CLUB SOUND DECK" (Bottom-Left HUD) -->
+  <aside id="se-sound-deck" aria-label="Audio and Frequency Deck" class="fixed bottom-4 left-4 z-[90] flex items-center gap-2.5 px-3 py-2 rounded-xl bg-[#EDE4D0]/95 backdrop-blur-md border-2 border-hs-ink shadow-[4px_4px_0px_#1A1410] transition-all duration-300 select-none">
+    <!-- Live 20-bar FFT Visualizer Canvas -->
+    <canvas id="deck-fft-canvas" width="76" height="22" class="block flex-shrink-0 rounded bg-[#1A1410] p-0.5"></canvas>
+
+    <!-- Audio Toggle Button -->
+    <button id="deck-audio-btn" onclick="toggleSoundDeckAudio()" class="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-hs-ink text-[#EDE4D0] hover:bg-hs-brick font-mono text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer">
+      <span id="deck-audio-dot" class="w-1.5 h-1.5 rounded-full bg-hs-butter"></span>
+      <span id="deck-audio-label">SOUND OFF</span>
+    </button>
+
+    <!-- Bass Drop / Strobe Pulse Trigger -->
+    <button id="deck-pulse-btn" onclick="triggerBassDropPulse()" title="Trigger 138 BPM Bass Pulse" class="hidden sm:inline-flex items-center gap-1 px-2.5 py-1 rounded-md bg-hs-butter hover:bg-hs-brick hover:text-white text-hs-ink border border-hs-ink font-mono text-[10px] font-bold uppercase tracking-wider transition-colors cursor-pointer">
+      <span>138 PULSE</span>
+    </button>
+  </aside>
 
   <!-- ========================================================================= -->
   <!-- 0. EXACT HOPSHOP SIGNATURE PRELOADER (CAPSULE VECTOR + RAF LERP LOOP)    -->
@@ -724,6 +836,38 @@
 
 
     <!-- ========================================================================= -->
+    <!-- 3b. KINETIC MARQUEE TICKER STRIP (SCROLL-VELOCITY REACTIVE)               -->
+    <!-- ========================================================================= -->
+    <div class="hs-marquee-wrap relative z-20 w-full overflow-hidden border-t-2 border-b-2 border-hs-ink bg-hs-brick text-[#FFFDF7] py-3.5 select-none">
+      <div id="se-marquee-track" class="hs-marquee-track font-chunky text-xl sm:text-2xl uppercase tracking-wider flex items-center gap-8">
+        <span>DEHRADUN UNDERGROUND</span>
+        <span class="text-hs-butter">///</span>
+        <span>138 BPM ACOUSTIC MATRIX</span>
+        <span class="text-hs-butter">///</span>
+        <span>21:00 GATE LOCK</span>
+        <span class="text-hs-butter">///</span>
+        <span>INVITE-ONLY HIMALAYAN ESTATES</span>
+        <span class="text-hs-butter">///</span>
+        <span>ABHAY RAWAT CURATION</span>
+        <span class="text-hs-butter">///</span>
+        <span>35MM FLASH ARCHIVE</span>
+        <span class="text-hs-butter">///</span>
+        <span>DEHRADUN UNDERGROUND</span>
+        <span class="text-hs-butter">///</span>
+        <span>138 BPM ACOUSTIC MATRIX</span>
+        <span class="text-hs-butter">///</span>
+        <span>21:00 GATE LOCK</span>
+        <span class="text-hs-butter">///</span>
+        <span>INVITE-ONLY HIMALAYAN ESTATES</span>
+        <span class="text-hs-butter">///</span>
+        <span>ABHAY RAWAT CURATION</span>
+        <span class="text-hs-butter">///</span>
+        <span>35MM FLASH ARCHIVE</span>
+        <span class="text-hs-butter">///</span>
+      </div>
+    </div>
+
+    <!-- ========================================================================= -->
     <!-- 4. "HOW IT WORKS" — 5-STEP VINTAGE TICKET BLOCKS (HOPSHOP PROCESS FLOW)   -->
     <!-- ========================================================================= -->
     <section id="how-it-works" class="relative z-20 py-28 px-4 sm:px-8 border-t-2 border-b-2 border-hs-ink bg-[#E8E1D2] overflow-hidden">
@@ -995,7 +1139,7 @@
 
           <!-- Live Status Result with Animated Laser Scanner -->
           <div id="statusResultBox" class="hidden mt-8 pt-8 border-t border-white/15">
-            <div class="p-6 rounded-xl bg-hs-night border border-hs-butter/30 space-y-4">
+            <div class="holo-foil p-6 rounded-xl bg-hs-night border border-hs-butter/30 space-y-4">
               <div class="flex items-center justify-between border-b border-white/10 pb-3">
                 <span class="font-mono text-[10px] uppercase tracking-wider text-hs-butter font-bold">
                   DOSSIER // SE-2026-9842X
@@ -1082,6 +1226,44 @@
         </div>
       </div>
 
+    </section>
+
+    <!-- ========================================================================= -->
+    <!-- 7b. MATTER.JS 2D PHYSICS PLAYGROUND — "BACKSTAGE PASS DROP"               -->
+    <!-- ========================================================================= -->
+    <section id="physics-playground" class="relative z-20 py-20 px-4 sm:px-8 max-w-7xl mx-auto">
+      <div class="bg-[#EDE4D0] border-2 border-hs-ink rounded-card shadow-[8px_8px_0px_#1A1410] overflow-hidden">
+        
+        <!-- Header Bar -->
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 px-6 py-5 border-b-2 border-hs-ink bg-[#FFFDF7]">
+          <div>
+            <span class="font-mono text-[10px] uppercase tracking-[0.24em] font-bold text-hs-brick block mb-1">
+              // INTERACTIVE RIGID-BODY SANCTUARY
+            </span>
+            <h2 class="font-chunky text-3xl sm:text-5xl uppercase tracking-tight text-hs-ink leading-none">
+              BACKSTAGE PASS DROP
+            </h2>
+          </div>
+          <div class="flex items-center gap-3">
+            <span class="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-hs-textDim">
+              GRAB, DRAG &amp; TOSS ARTIFACTS
+            </span>
+            <button onclick="spawnMorePhysicsPasses()" class="magnetic-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-pill bg-hs-brick hover:bg-hs-ink text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-md cursor-pointer">
+              <span>DROP MORE PASSES</span>
+              <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
+            </button>
+          </div>
+        </div>
+
+        <!-- Matter.js Interactive Canvas Container -->
+        <div id="matter-stage" class="relative w-full h-[360px] sm:h-[420px] bg-[#DACDB1]/60 overflow-hidden cursor-grab active:cursor-grabbing" style="background-image: radial-gradient(rgba(26, 20, 16, 0.14) 1.2px, transparent 1.2px); background-size: 20px 20px;">
+          <canvas id="matter-canvas" class="block w-full h-full"></canvas>
+          <div class="pointer-events-none absolute bottom-3 left-4 font-mono text-[9px] uppercase tracking-[0.2em] text-hs-textDim font-bold">
+            PHYSICS: 60FPS RIGID BODY // DEHRADUN VAULT ARTIFACTS
+          </div>
+        </div>
+
+      </div>
     </section>
 
   </main>
@@ -2025,8 +2207,18 @@
       link.click();
     }
 
-    // 16. Lightbox
+    // 16. Lightbox with 35mm Shutter Flash
+    function triggerShutterFlash() {
+      const flash = document.getElementById('se-shutter-flash');
+      if (!flash) return;
+      flash.classList.remove('shutter-flash-active');
+      void flash.offsetWidth;
+      flash.classList.add('shutter-flash-active');
+      playTactileSfx('shutter');
+    }
+
     function openLightbox(src) {
+      triggerShutterFlash();
       document.getElementById('lightboxImg').src = src;
       const modal = document.getElementById('lightboxModal');
       modal.classList.remove('hidden');
@@ -2037,6 +2229,431 @@
       modal.classList.add('hidden');
       modal.classList.remove('flex');
     }
+
+    // =========================================================================
+    // 17. AMBIENT TOPOGRAPHICAL SOUNDWAVE CANVAS (SCROLL + CURSOR REACTIVE)
+    // =========================================================================
+    const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    let seScrollVelocity = 0;
+    let bassPulseEnergy = 0;
+
+    if (typeof lenis !== 'undefined' && lenis) {
+      lenis.on('scroll', (e) => {
+        seScrollVelocity = e.velocity || 0;
+      });
+    }
+
+    (function initAmbientWaveCanvas() {
+      const canvas = document.getElementById('se-ambient-canvas');
+      if (!canvas || prefersReducedMotion) return;
+      const ctx = canvas.getContext('2d');
+      let w = 0, h = 0, t = 0;
+
+      function resize() {
+        const dpr = Math.min(window.devicePixelRatio || 1, 2);
+        w = window.innerWidth;
+        h = window.innerHeight;
+        canvas.width = w * dpr;
+        canvas.height = h * dpr;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      }
+      resize();
+      window.addEventListener('resize', resize, { passive: true });
+
+      function draw() {
+        if (!document.hidden) {
+          ctx.clearRect(0, 0, w, h);
+          t += 0.016 + Math.min(Math.abs(seScrollVelocity) * 0.0025, 0.08);
+          bassPulseEnergy *= 0.92;
+          seScrollVelocity *= 0.9;
+
+          const lines = 6;
+          for (let i = 0; i < lines; i++) {
+            ctx.beginPath();
+            const baseY = (h / (lines + 1)) * (i + 1);
+            const isAccent = i === 2 || i === 4;
+            ctx.strokeStyle = isAccent ? 'rgba(163, 40, 28, 0.12)' : 'rgba(26, 20, 16, 0.08)';
+            ctx.lineWidth = isAccent ? 1.4 : 1;
+
+            for (let x = 0; x <= w; x += 28) {
+              const nx = x / w;
+              const mouseInfluence = Math.exp(-Math.pow((nx - (targetMouseX * 0.5 + 0.5)) * 3.5, 2)) * (targetMouseY * 22);
+              const wave = Math.sin(nx * 5 + t + i * 0.9) * (10 + Math.abs(seScrollVelocity) * 1.4 + bassPulseEnergy * 28);
+              const y = baseY + wave + mouseInfluence;
+              if (x === 0) ctx.moveTo(x, y);
+              else ctx.lineTo(x, y);
+            }
+            ctx.stroke();
+          }
+        }
+        requestAnimationFrame(draw);
+      }
+      requestAnimationFrame(draw);
+    })();
+
+    // =========================================================================
+    // 18. CLUB SOUND DECK: WEB AUDIO SYNTH + LIVE 138 BPM FFT VISUALIZER
+    // =========================================================================
+    let audioCtx = null;
+    let isAudioActive = false;
+    let beatTimer = null;
+
+    function playTactileSfx(type) {
+      if (!isAudioActive || !audioCtx) return;
+      try {
+        const now = audioCtx.currentTime;
+        if (type === 'click') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'triangle';
+          osc.frequency.setValueAtTime(920, now);
+          osc.frequency.exponentialRampToValueAtTime(180, now + 0.035);
+          gain.gain.setValueAtTime(0.06, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.035);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.04);
+        } else if (type === 'thud') {
+          const osc = audioCtx.createOscillator();
+          const gain = audioCtx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(110, now);
+          osc.frequency.exponentialRampToValueAtTime(42, now + 0.22);
+          gain.gain.setValueAtTime(0.24, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+          osc.connect(gain);
+          gain.connect(audioCtx.destination);
+          osc.start(now);
+          osc.stop(now + 0.25);
+        } else if (type === 'shutter') {
+          const bufferSize = audioCtx.sampleRate * 0.05;
+          const buffer = audioCtx.createBuffer(1, bufferSize, audioCtx.sampleRate);
+          const data = buffer.getChannelData(0);
+          for (let i = 0; i < bufferSize; i++) data[i] = (Math.random() * 2 - 1) * Math.exp(-i / (bufferSize * 0.3));
+          const noise = audioCtx.createBufferSource();
+          noise.buffer = buffer;
+          const gain = audioCtx.createGain();
+          gain.gain.setValueAtTime(0.12, now);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+          noise.connect(gain);
+          gain.connect(audioCtx.destination);
+          noise.start(now);
+        }
+      } catch (err) {}
+    }
+
+    function triggerKickStep() {
+      if (!isAudioActive || !audioCtx) return;
+      const now = audioCtx.currentTime;
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(118, now);
+      osc.frequency.exponentialRampToValueAtTime(44, now + 0.14);
+      gain.gain.setValueAtTime(0.18, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.18);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.19);
+      bassPulseEnergy = Math.max(bassPulseEnergy, 0.45);
+    }
+
+    function toggleSoundDeckAudio() {
+      const btn = document.getElementById('deck-audio-btn');
+      const label = document.getElementById('deck-audio-label');
+      const dot = document.getElementById('deck-audio-dot');
+      if (!isAudioActive) {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) audioCtx = new AudioContextClass();
+        }
+        if (audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+        isAudioActive = true;
+        if (label) label.textContent = '138 BPM ON';
+        if (btn) {
+          btn.classList.remove('bg-hs-ink');
+          btn.classList.add('bg-hs-brick');
+        }
+        if (dot) dot.classList.add('animate-ping');
+        triggerKickStep();
+        beatTimer = setInterval(triggerKickStep, 434.78);
+      } else {
+        isAudioActive = false;
+        if (beatTimer) clearInterval(beatTimer);
+        if (label) label.textContent = 'SOUND OFF';
+        if (btn) {
+          btn.classList.add('bg-hs-ink');
+          btn.classList.remove('bg-hs-brick');
+        }
+        if (dot) dot.classList.remove('animate-ping');
+      }
+    }
+
+    function triggerBassDropPulse() {
+      bassPulseEnergy = 1.0;
+      const mainEl = document.querySelector('main');
+      if (mainEl && !prefersReducedMotion) {
+        mainEl.classList.remove('bass-drop-active');
+        void mainEl.offsetWidth;
+        mainEl.classList.add('bass-drop-active');
+      }
+      if (isAudioActive) playTactileSfx('thud');
+    }
+
+    // Live 20-bar FFT Canvas Visualizer (138 BPM simulated envelope + audio boost)
+    (function initFftVisualizer() {
+      const canvas = document.getElementById('deck-fft-canvas');
+      if (!canvas) return;
+      const ctx = canvas.getContext('2d');
+      const bars = 18;
+      const heights = new Array(bars).fill(4);
+      let phase = 0;
+
+      function renderFft() {
+        if (!document.hidden) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          phase += isAudioActive ? 0.24 : 0.12;
+          const beatEnv = Math.pow(Math.abs(Math.sin(phase)), 3) * (isAudioActive ? 1.0 : 0.55) + bassPulseEnergy * 0.7;
+
+          for (let i = 0; i < bars; i++) {
+            const targetH = 3 + Math.abs(Math.sin(phase * 0.7 + i * 0.55)) * 14 * (0.45 + beatEnv * 0.8);
+            heights[i] += (Math.min(targetH, 18) - heights[i]) * 0.3;
+            const x = 2 + i * 4;
+            const h = heights[i];
+            ctx.fillStyle = i < 5 ? '#A3281C' : (i % 3 === 0 ? '#F4D95B' : '#EDE4D0');
+            ctx.fillRect(x, canvas.height - 2 - h, 2.5, h);
+          }
+        }
+        requestAnimationFrame(renderFft);
+      }
+      requestAnimationFrame(renderFft);
+    })();
+
+    // =========================================================================
+    // 19. 3D SPECULAR GLARE, HOLOGRAPHIC FOIL & SCROLL-VELOCITY SKEW
+    // =========================================================================
+    document.querySelectorAll('.hs-float-tile').forEach((card) => {
+      if (!card.querySelector('.card-glare')) {
+        const glare = document.createElement('div');
+        glare.className = 'card-glare';
+        card.style.position = 'relative';
+        card.appendChild(glare);
+      }
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const px = ((e.clientX - rect.left) / rect.width) * 100;
+        const py = ((e.clientY - rect.top) / rect.height) * 100;
+        card.style.setProperty('--glare-x', `${px}%`);
+        card.style.setProperty('--glare-y', `${py}%`);
+      });
+    });
+
+    document.addEventListener('pointermove', (e) => {
+      document.querySelectorAll('.holo-foil').forEach((foil) => {
+        const rect = foil.getBoundingClientRect();
+        if (e.clientX >= rect.left && e.clientX <= rect.right && e.clientY >= rect.top && e.clientY <= rect.bottom) {
+          const hx = ((e.clientX - rect.left) / rect.width) * 100;
+          const hy = ((e.clientY - rect.top) / rect.height) * 100;
+          foil.style.setProperty('--holo-x', `${hx}%`);
+          foil.style.setProperty('--holo-y', `${hy}%`);
+          foil.style.setProperty('--holo-op', '0.55');
+        } else {
+          foil.style.setProperty('--holo-op', '0.2');
+        }
+      });
+    }, { passive: true });
+
+    // =========================================================================
+    // 20. CYBER-EDITORIAL TEXT SCRAMBLE DECODE & MAGNETIC BUTTONS
+    // =========================================================================
+    const scrambleChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789/#*';
+    document.querySelectorAll('.nav-item, .magnetic-btn').forEach((el) => {
+      const span = el.querySelector('span') || (el.childNodes[0]?.nodeType === 3 ? el : null);
+      if (!span) return;
+      const original = span.textContent.trim();
+      el.addEventListener('pointerenter', () => {
+        playTactileSfx('click');
+        if (prefersReducedMotion) return;
+        let frame = 0;
+        const totalFrames = 10;
+        const interval = setInterval(() => {
+          frame++;
+          span.textContent = original.split('').map((ch, idx) => {
+            if (ch === ' ') return ' ';
+            if (frame / totalFrames > idx / original.length) return ch;
+            return scrambleChars[Math.floor(Math.random() * scrambleChars.length)];
+          }).join('');
+          if (frame >= totalFrames) {
+            clearInterval(interval);
+            span.textContent = original;
+          }
+        }, 22);
+      });
+    });
+
+    // =========================================================================
+    // 21. MATTER.JS 2D RIGID-BODY PHYSICS PLAYGROUND ("BACKSTAGE PASS DROP")
+    // =========================================================================
+    let spawnMorePhysicsPasses = function() {};
+    (function initMatterPlayground() {
+      if (typeof Matter === 'undefined') return;
+      const stage = document.getElementById('matter-stage');
+      const canvas = document.getElementById('matter-canvas');
+      if (!stage || !canvas) return;
+
+      const { Engine, Render, Runner, Bodies, Composite, Mouse, MouseConstraint, Events, Query } = Matter;
+      const engine = Engine.create({ gravity: { x: 0, y: 1.05 } });
+      let width = stage.clientWidth;
+      let height = stage.clientHeight;
+      canvas.width = width;
+      canvas.height = height;
+
+      const ctx = canvas.getContext('2d');
+      const artifacts = [
+        { label: 'VIP WRISTBAND', bg: '#A3281C', fg: '#FFFDF7', w: 158, h: 42, kind: 'pill' },
+        { label: '21:00 LOCK', bg: '#F4D95B', fg: '#1A1410', w: 132, h: 44, kind: 'tag' },
+        { label: '138 BPM', bg: '#1A1410', fg: '#F4D95B', r: 36, kind: 'vinyl' },
+        { label: 'DEHRADUN // DOON', bg: '#FFFDF7', fg: '#1A1410', w: 174, h: 46, kind: 'plate' },
+        { label: 'ABHAY RAWAT', bg: '#3A0A0A', fg: '#F4D95B', w: 148, h: 42, kind: 'tag' },
+        { label: 'SE-2026 PASS', bg: '#5E9C95', fg: '#FFFDF7', w: 146, h: 42, kind: 'pill' },
+        { label: '35MM VAULT', bg: '#141211', fg: '#FFFDF7', w: 134, h: 42, kind: 'plate' },
+        { label: 'ALL-WHITE GALA', bg: '#FFFDF7', fg: '#A3281C', w: 162, h: 40, kind: 'pill' },
+        { label: 'SIN CITY', bg: '#A3281C', fg: '#F4D95B', r: 32, kind: 'vinyl' },
+        { label: 'GATE 01', bg: '#5F7FA0', fg: '#FFFDF7', w: 118, h: 40, kind: 'tag' }
+      ];
+
+      let walls = [];
+      function createWalls() {
+        if (walls.length) Composite.remove(engine.world, walls);
+        const t = 60;
+        walls = [
+          Bodies.rectangle(width / 2, height + t / 2, width + 100, t, { isStatic: true }),
+          Bodies.rectangle(-t / 2, height / 2, t, height * 2, { isStatic: true }),
+          Bodies.rectangle(width + t / 2, height / 2, t, height * 2, { isStatic: true })
+        ];
+        Composite.add(engine.world, walls);
+      }
+      createWalls();
+
+      const dynamicBodies = [];
+      function dropBatch(count) {
+        for (let i = 0; i < count; i++) {
+          const spec = artifacts[Math.floor(Math.random() * artifacts.length)];
+          const x = 80 + Math.random() * Math.max(width - 160, 120);
+          const y = -50 - i * 45;
+          let body;
+          if (spec.kind === 'vinyl') {
+            body = Bodies.circle(x, y, spec.r, { restitution: 0.68, friction: 0.3, density: 0.002 });
+          } else {
+            body = Bodies.rectangle(x, y, spec.w, spec.h, {
+              chamfer: { radius: spec.kind === 'pill' ? 18 : 6 },
+              restitution: 0.55,
+              friction: 0.35,
+              angle: (Math.random() - 0.5) * 0.5
+            });
+          }
+          body.seSpec = spec;
+          dynamicBodies.push(body);
+          Composite.add(engine.world, body);
+        }
+        // Keep max 26 bodies for 60fps
+        while (dynamicBodies.length > 26) {
+          const old = dynamicBodies.shift();
+          Composite.remove(engine.world, old);
+        }
+      }
+      spawnMorePhysicsPasses = () => {
+        playTactileSfx('thud');
+        dropBatch(5);
+      };
+
+      // Mouse / Touch Interaction without hijacking page scroll
+      const mouse = Mouse.create(canvas);
+      const mouseConstraint = MouseConstraint.create(engine, {
+        mouse,
+        constraint: { stiffness: 0.2, render: { visible: false } }
+      });
+      Composite.add(engine.world, mouseConstraint);
+
+      // Remove Matter's default wheel listener so vertical scroll stays 100% smooth
+      mouse.element.removeEventListener('mousewheel', mouse.mousewheel);
+      mouse.element.removeEventListener('DOMMouseScroll', mouse.mousewheel);
+
+      let hasDroppedInitially = false;
+      let isVisible = false;
+      const obs = new IntersectionObserver(([entry]) => {
+        isVisible = entry.isIntersecting;
+        if (isVisible && !hasDroppedInitially) {
+          hasDroppedInitially = true;
+          dropBatch(10);
+        }
+      }, { threshold: 0.15 });
+      obs.observe(stage);
+
+      window.addEventListener('resize', () => {
+        width = stage.clientWidth;
+        height = stage.clientHeight;
+        canvas.width = width;
+        canvas.height = height;
+        createWalls();
+      }, { passive: true });
+
+      function step() {
+        if (isVisible && !document.hidden) {
+          Engine.update(engine, 1000 / 60);
+          ctx.clearRect(0, 0, width, height);
+
+          dynamicBodies.forEach((b) => {
+            const s = b.seSpec;
+            ctx.save();
+            ctx.translate(b.position.x, b.position.y);
+            ctx.rotate(b.angle);
+
+            if (s.kind === 'vinyl') {
+              ctx.beginPath();
+              ctx.arc(0, 0, s.r, 0, Math.PI * 2);
+              ctx.fillStyle = s.bg;
+              ctx.fill();
+              ctx.lineWidth = 2.5;
+              ctx.strokeStyle = '#1A1410';
+              ctx.stroke();
+
+              ctx.beginPath();
+              ctx.arc(0, 0, s.r * 0.42, 0, Math.PI * 2);
+              ctx.fillStyle = s.fg;
+              ctx.fill();
+
+              ctx.fillStyle = s.bg;
+              ctx.font = 'bold 9px "JetBrains Mono", monospace';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(s.label, 0, 0);
+            } else {
+              const r = s.kind === 'pill' ? s.h / 2 : 6;
+              const x = -s.w / 2, y = -s.h / 2;
+              ctx.beginPath();
+              ctx.roundRect(x, y, s.w, s.h, r);
+              ctx.fillStyle = s.bg;
+              ctx.fill();
+              ctx.lineWidth = 2;
+              ctx.strokeStyle = '#1A1410';
+              ctx.stroke();
+
+              ctx.fillStyle = s.fg;
+              ctx.font = 'bold 11px "JetBrains Mono", monospace';
+              ctx.textAlign = 'center';
+              ctx.textBaseline = 'middle';
+              ctx.fillText(s.label, 0, 1);
+            }
+            ctx.restore();
+          });
+        }
+        requestAnimationFrame(step);
+      }
+      requestAnimationFrame(step);
+    })();
   </script>
 
 </body>
