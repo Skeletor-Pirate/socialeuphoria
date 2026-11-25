@@ -79,7 +79,7 @@
       --hs-terracotta: #D9822B;
     }
 
-    /* Lenis Smooth Scroll Recommended Base */
+    /* Lenis Smooth Scroll */
     html.lenis, html.lenis body {
       height: auto;
     }
@@ -120,23 +120,71 @@
       color: #FFFDF7;
     }
 
-    /* HopShop Poster Slanted Float Grid */
+    /* Preloader Orbit Arcs Animation */
+    @keyframes orbitSpin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .orbit-arc {
+      animation: orbitSpin 3.5s linear infinite;
+      transform-origin: center center;
+    }
+
+    /* HopShop Heading Mask Word Reveals */
+    .hs-whatson__mask {
+      display: inline-block;
+      overflow: hidden;
+      vertical-align: top;
+    }
+    .hs-whatson__word {
+      display: inline-block;
+      transform: translateY(0);
+      transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+    .hs-whatson__slab {
+      position: absolute;
+      inset: 0;
+      background: var(--hs-brick);
+      transform-origin: left;
+      z-index: -1;
+    }
+
+    /* HopShop Poster Slanted Float Grid & 3D Tilt */
     .hs-float-tile {
+      perspective: 1000px;
+      transform-style: preserve-3d;
       transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
     }
     .hs-float-tile:hover {
-      transform: translateY(-8px) scale(1.02);
-      box-shadow: 0 22px 38px -10px rgba(26, 20, 16, 0.35);
+      transform: translateY(-10px) scale(1.02);
+      box-shadow: 0 24px 44px -10px rgba(26, 20, 16, 0.38);
     }
 
-    /* Floating Hero Photos */
+    /* Floating Hero Photos with Parallax Spring */
     .hero-fly-photo {
       will-change: transform, opacity;
       transition: box-shadow 0.3s ease;
     }
     .hero-fly-photo:hover {
-      box-shadow: 0 20px 40px rgba(26, 20, 16, 0.45);
+      box-shadow: 0 22px 45px rgba(26, 20, 16, 0.5);
       z-index: 50 !important;
+    }
+
+    /* QR Code Laser Scan Sweep */
+    @keyframes scanLine {
+      0% { top: 0%; opacity: 0; }
+      15% { opacity: 1; }
+      85% { opacity: 1; }
+      100% { top: 100%; opacity: 0; }
+    }
+    .laser-scanner {
+      position: absolute;
+      left: 0;
+      right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, #F4D95B, #A3281C, #F4D95B, transparent);
+      box-shadow: 0 0 8px #F4D95B;
+      animation: scanLine 2.2s ease-in-out infinite;
     }
 
     /* Custom Scrollbar */
@@ -165,6 +213,47 @@
 
   <!-- Grain Layer -->
   <div class="hs-grain"></div>
+
+  <!-- ========================================================================= -->
+  <!-- 0. EXACT HOPSHOP SIGNATURE PRELOADER (CAPSULE VECTOR + RAF LERP LOOP)    -->
+  <!-- ========================================================================= -->
+  <div id="hs-preloader" role="progressbar" aria-label="Loading Social Euphoria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="fixed inset-0 z-[200] select-none" style="background:#EDE4D0;height:100dvh">
+    <!-- Dotted background texture -->
+    <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image: radial-gradient(rgba(26, 20, 16, 0.16) 1.2px, transparent 1.2px); background-size: 24px 24px;"></div>
+    <span class="sr-only">Loading Social Euphoria</span>
+    <div class="absolute left-1/2 top-1/2" style="width:min(72vw, 440px);aspect-ratio:4.110344827586207;transform:translate(-50%, -50%)">
+      
+      <!-- Ghost Base Wordmark (14% Opacity) -->
+      <div class="absolute inset-0 flex items-center justify-center font-chunky text-[clamp(1.75rem,5.5vw,3rem)] uppercase tracking-tighter text-[#1A1410] opacity-[0.14] select-none text-center whitespace-nowrap">
+        SOCIAL EUPHORIA
+      </div>
+
+      <!-- Filled Wordmark with Progressive Clip-Path Wipe -->
+      <div id="preloader-fill-wrapper" class="absolute inset-0 flex items-center justify-center overflow-hidden" style="clip-path:inset(0 100% 0 0)">
+        <div class="font-chunky text-[clamp(1.75rem,5.5vw,3rem)] uppercase tracking-tighter text-[#1A1410] select-none text-center whitespace-nowrap">
+          SOCIAL EUPHORIA
+        </div>
+      </div>
+
+      <!-- Exact HopShop Vector Capsule Rect with pathLength="1" stroke-dasharray="1" -->
+      <svg aria-hidden="true" class="pointer-events-none absolute overflow-visible" style="left:calc(min(72vw, 440px) * -0.06);top:calc(min(72vw, 440px) * -0.06);width:calc(100% + min(72vw, 440px) * 0.12);height:calc(100% + min(72vw, 440px) * 0.12)" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
+        <rect id="preloader-rect" x="0.5" y="0.5" width="99" height="99" rx="49.5" ry="49.5" stroke="#1A1410" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></rect>
+      </svg>
+
+      <!-- Counter below capsule -->
+      <div class="absolute left-1/2 font-chunky text-[clamp(2.25rem,9vw,4.5rem)] leading-none tabular-nums" style="top:calc(100% + min(72vw, 440px) * 0.06 + 1.25rem);transform:translateX(-50%);color:#1A1410" aria-hidden="true">
+        <span id="preloader-counter-val">0</span><span class="ml-[0.08em] text-[0.5em]">%</span>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Floating Hover Cursor Pill (HopShop Interactive Cursor Follower) -->
+  <div id="hs-hover-pill" class="pointer-events-none fixed z-[300] opacity-0 transition-opacity duration-200 px-3 py-1.5 rounded-pill bg-hs-brick text-white font-mono text-[10px] uppercase font-bold tracking-wider shadow-xl flex items-center gap-1.5" style="transform: translate3d(-100px, -100px, 0); top: 0; left: 0;">
+    <span id="hs-hover-pill-text">VIEW EVENT</span>
+    <i data-lucide="arrow-up-right" class="w-3 h-3"></i>
+  </div>
+
 
   <!-- ========================================================================= -->
   <!-- 1. TOP NAVIGATION (HOPSHOP BRAND BAR)                                      -->
@@ -260,17 +349,18 @@
         <div id="hero-bg-tint" class="absolute inset-0 bg-[#241210] opacity-0 pointer-events-none transition-opacity duration-300"></div>
 
         <!-- Animated SVG Grid Lines (HopShop Vector Matrix Overlay) -->
-        <svg id="hero-svg-grid" class="absolute inset-0 h-full w-full pointer-events-none opacity-0" fill="none" stroke="#F4D95B" stroke-width="1.2" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <path id="svg-v1" d="M50 0 V100" vector-effect="non-scaling-stroke"></path>
-          <path id="svg-v2" d="M15 0 V100" vector-effect="non-scaling-stroke"></path>
-          <path id="svg-v3" d="M85 0 V100" vector-effect="non-scaling-stroke"></path>
-          <path id="svg-h1" d="M0 35 H100" vector-effect="non-scaling-stroke"></path>
-          <path id="svg-h2" d="M0 65 H100" vector-effect="non-scaling-stroke"></path>
-          <path id="svg-box" d="M15 35 H85 V65 H15 Z" vector-effect="non-scaling-stroke"></path>
+        <svg id="hero-svg-grid" class="absolute inset-0 h-full w-full pointer-events-none opacity-0 z-10" fill="none" stroke="#F4D95B" stroke-width="1.2" preserveAspectRatio="none" viewBox="0 0 100 100">
+          <path class="blueprint-line" d="M50 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M12 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M88 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M0 50 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M0 36 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M0 64 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+          <path class="blueprint-line" d="M12 36 H88 V64 H12 Z" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
         </svg>
 
         <!-- Top Curated Tag Box (HopShop Brutalist Badge Layer) -->
-        <div id="hero-curated-box" class="relative z-20 max-w-xl w-full bg-[#1A1410]/5 border border-[#1A1410]/15 rounded-xl p-4 backdrop-blur-sm text-center">
+        <div id="hero-curated-box" class="relative z-30 max-w-xl w-full bg-[#1A1410]/5 border border-[#1A1410]/15 rounded-xl p-4 backdrop-blur-sm text-center">
           <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold text-hs-ink border-b border-[#1A1410]/15 pb-2 mb-2">
             <span class="text-hs-brick font-extrabold flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-hs-brick animate-ping"></span>
@@ -285,7 +375,7 @@
         </div>
 
         <!-- Monumental HopShop-Style Logotype Headline (Shrinks & Scales with Scroll Scrub) -->
-        <div id="hero-title-wrap" class="relative z-20 text-center my-auto flex flex-col items-center">
+        <div id="hero-title-wrap" class="relative z-20 text-center my-auto flex flex-col items-center pointer-events-none">
           <h1 id="hero-main-title" class="font-chunky text-[clamp(3.8rem,14vw,11.5rem)] leading-[0.88] tracking-[-0.03em] uppercase text-hs-ink select-none drop-shadow-sm origin-center">
             SOCIAL<br>
             <span class="text-hs-brick">EUPHORIA</span>
@@ -295,74 +385,120 @@
           </p>
         </div>
 
-        <!-- HopShop Central Secret Badge Box (Revealed via Horizontal Clip-Path as you scroll) -->
-        <div id="hero-secret-box" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-20 w-[min(84vw,540px)] bg-[#241210] border-2 border-hs-butter p-6 rounded-card shadow-2xl opacity-0" style="clip-path: inset(0% 49%);">
-          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-hs-linen/20 font-mono text-xs uppercase font-bold text-hs-linen">
+        <!-- HopShop Central Spec Badge Box (Revealed via Horizontal Clip-Path as you scroll) -->
+        <div id="hero-secret-box" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-15 w-[min(82vw,520px)] bg-[#1A1410] border-2 border-hs-butter p-6 rounded-card shadow-2xl opacity-0" style="clip-path: inset(0% 49% 0% 49%);">
+          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-[#EDE4D0]/20 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
             <span class="text-hs-butter">SOCIAL EUPHORIA</span>
-            <span>INVITE & ACCESS</span>
+            <span>INVITE AND ACCESS</span>
           </div>
-          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-hs-linen/20 font-mono text-xs uppercase font-bold text-hs-linen">
+          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-[#EDE4D0]/20 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
             <span class="text-hs-butter">ROOMS</span>
-            <span>CURATED CROWDS</span>
+            <span>CURATED MOUNTAIN RESORTS</span>
           </div>
-          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-hs-linen/20 font-mono text-xs uppercase font-bold text-hs-linen">
-            <span class="text-hs-butter">CURFEW</span>
-            <span>21:00 ABSOLUTE LOCK</span>
+          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-[#EDE4D0]/20 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
+            <span class="text-hs-butter">CROWDS</span>
+            <span>CHOSEN BY INVITATION</span>
           </div>
-          <div class="flex items-baseline justify-between gap-6 py-2 font-mono text-xs uppercase font-bold text-hs-linen">
-            <span class="text-hs-butter">PASS FORMAT</span>
-            <span>HOLOGRAPHIC QR PASS</span>
+          <div class="flex items-baseline justify-between gap-6 py-2 border-b border-[#EDE4D0]/20 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
+            <span class="text-hs-butter">FORMAT</span>
+            <span>PRIVATE / STRICT GATE LOCK 21:00</span>
+          </div>
+          <div class="flex items-baseline justify-between gap-6 py-2 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
+            <span class="text-hs-butter">DOOR</span>
+            <span>ENCRYPTED QR PASS</span>
           </div>
         </div>
 
-        <!-- 8 Dynamic Floating Party Photo Tiles (Fly in from Bottom and Orbit on Scroll) -->
-        <div id="hero-photos-cluster" class="absolute inset-0 pointer-events-none overflow-hidden z-10">
+        <!-- Dynamic Floating Photo Tiles & Graphic Shapes (HopShop 8 Flyers + 3 Shapes) -->
+        <div id="hero-photos-cluster" class="absolute inset-0 pointer-events-none overflow-hidden">
           
-          <!-- Photo 1: Sunset Soiree -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="-32vw" data-y="90vh" data-dest-x="-34vw" data-dest-y="-12vh" data-rot="-8deg" style="width: min(34vw, 240px); transform: translate(-50%, -50%) translate3d(-32vw, 90vh, 0px) rotate(-8deg);">
-            <div class="bg-white p-2.5 rounded-image shadow-xl border border-hs-ink/15">
-              <img src="assets/images/sunset_real_1.jpg" alt="Sunset Party" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Flyer 1: Sunset Soiree (Back Layer, Behind Title) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[8]" data-x="-30" data-y0="95" data-y1="-85" data-in="0.48" data-out="0.80" data-w="34" data-cap="240" data-rot="-6" data-spin="14" data-back="true" style="width: min(34vw, 240px); transform: translate(-50%, -50%) translate3d(-30vw, 95vh, 0px) rotate(-6deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/sunset_real_1.jpg" alt="Sunset Party" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-textDim font-bold text-center">HIMALAYAN SOIRÉE</span>
             </div>
           </div>
 
-          <!-- Photo 2: Afterdark Laser -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="-6vw" data-y="95vh" data-dest-x="-8vw" data-dest-y="18vh" data-rot="4deg" style="width: min(28vw, 200px); transform: translate(-50%, -50%) translate3d(-6vw, 95vh, 0px) rotate(4deg);">
-            <div class="bg-white p-2.5 rounded-image shadow-xl border border-hs-ink/15">
-              <img src="assets/images/afterdark_real_2.jpg" alt="Afterdark" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Flyer 2: Sin City Techno (Front Layer, Over Title) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[25]" data-x="26" data-y0="100" data-y1="-90" data-in="0.50" data-out="0.86" data-w="30" data-cap="220" data-rot="5" data-spin="-12" data-back="false" style="width: min(30vw, 220px); transform: translate(-50%, -50%) translate3d(26vw, 100vh, 0px) rotate(5deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/afterdark_real_2.jpg" alt="Afterdark" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-brick font-bold text-center">SIN CITY TECHNO</span>
             </div>
           </div>
 
-          <!-- Photo 3: Holi Color Splash -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="36vw" data-y="90vh" data-dest-x="34vw" data-dest-y="-10vh" data-rot="-5deg" style="width: min(26vw, 190px); transform: translate(-50%, -50%) translate3d(36vw, 90vh, 0px) rotate(-5deg);">
-            <div class="bg-white p-2.5 rounded-image shadow-xl border border-hs-ink/15">
-              <img src="assets/images/h2oli_real_2.jpg" alt="Holi" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Flyer 3: Holi Color Splash (Back Layer) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[8]" data-x="-4" data-y0="105" data-y1="-95" data-in="0.54" data-out="0.84" data-w="26" data-cap="200" data-rot="2" data-spin="8" data-back="true" style="width: min(26vw, 200px); transform: translate(-50%, -50%) translate3d(-4vw, 105vh, 0px) rotate(2deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/h2oli_real_2.jpg" alt="Holi" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-lagoon font-bold text-center">H²OLI COLOR RAVE</span>
             </div>
           </div>
 
-          <!-- Photo 4: Abhay Rawat Curation -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="-20vw" data-y="100vh" data-dest-x="-22vw" data-dest-y="24vh" data-rot="6deg" style="width: min(24vw, 180px); transform: translate(-50%, -50%) translate3d(-20vw, 100vh, 0px) rotate(6deg);">
-            <div class="bg-hs-oxblood text-white p-2.5 rounded-image shadow-xl border border-hs-butter">
-              <img src="assets/images/founder.jpg" alt="Abhay Rawat" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Shape 1: Floating Globe Wireframe (Back Layer) -->
+          <div class="hero-fly-shape absolute left-1/2 top-1/2 pointer-events-none z-[8]" data-x="20" data-y0="90" data-y1="-80" data-in="0.50" data-out="0.90" data-w="20" data-cap="170" data-rot="0" data-spin="90" style="width: min(20vw, 170px); transform: translate(-50%, -50%) translate3d(20vw, 90vh, 0px);">
+            <svg viewBox="0 0 100 100" fill="none" stroke="#A3281C" stroke-width="2" class="w-full h-auto opacity-75">
+              <circle cx="50" cy="50" r="45" stroke="#1A1410" stroke-width="1.5" />
+              <ellipse cx="50" cy="50" rx="45" ry="18" stroke="#A3281C" stroke-width="1.5" />
+              <ellipse cx="50" cy="50" rx="18" ry="45" stroke="#F4D95B" stroke-width="1.5" />
+              <line x1="5" y1="50" x2="95" y2="50" stroke="#1A1410" stroke-width="1.5" />
+              <line x1="50" y1="5" x2="50" y2="95" stroke="#1A1410" stroke-width="1.5" />
+            </svg>
+          </div>
+
+          <!-- Flyer 4: Abhay Rawat Curation (Back Layer) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[8]" data-x="36" data-y0="100" data-y1="-90" data-in="0.58" data-out="0.92" data-w="24" data-cap="190" data-rot="-4" data-spin="10" data-back="true" style="width: min(24vw, 190px); transform: translate(-50%, -50%) translate3d(36vw, 100vh, 0px) rotate(-4deg);">
+            <div class="bg-hs-oxblood text-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-butter transition-transform duration-200">
+              <img src="assets/images/founder.jpg" alt="Abhay Rawat" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-butter font-bold text-center">ABHAY RAWAT // CURATION</span>
             </div>
           </div>
 
-          <!-- Photo 5: Laser Tunnel -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="22vw" data-y="95vh" data-dest-x="24vw" data-dest-y="16vh" data-rot="3deg" style="width: min(22vw, 170px); transform: translate(-50%, -50%) translate3d(22vw, 95vh, 0px) rotate(3deg);">
-            <div class="bg-white p-2.5 rounded-image shadow-xl border border-hs-ink/15">
-              <img src="assets/images/gallery_1.jpg" alt="Laser Tunnel" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Flyer 5: White Lotus (Front Layer, Over Title) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[25]" data-x="-38" data-y0="100" data-y1="-92" data-in="0.62" data-out="0.95" data-w="28" data-cap="210" data-rot="4" data-spin="-9" data-back="false" style="width: min(28vw, 210px); transform: translate(-50%, -50%) translate3d(-38vw, 100vh, 0px) rotate(4deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/white_lotus.jpg" alt="White Lotus" class="w-full aspect-[4/5] object-cover rounded-image">
+              <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-brick font-bold text-center">WHITE LOTUS GALA</span>
+            </div>
+          </div>
+
+          <!-- Shape 2: Brutalist Burst (Front Layer) -->
+          <div class="hero-fly-shape absolute left-1/2 top-1/2 pointer-events-none z-[25]" data-x="-26" data-y0="95" data-y1="-85" data-in="0.60" data-out="0.94" data-w="16" data-cap="130" data-rot="0" data-spin="-60" style="width: min(16vw, 130px); transform: translate(-50%, -50%) translate3d(-26vw, 95vh, 0px);">
+            <svg viewBox="0 0 100 100" fill="#F4D95B" stroke="#1A1410" stroke-width="2" class="w-full h-auto">
+              <polygon points="50,0 62,35 98,35 68,57 79,91 50,70 21,91 32,57 2,35 38,35" />
+            </svg>
+          </div>
+
+          <!-- Flyer 6: Laser Tunnel 138 BPM (Front Layer, Over Title) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[25]" data-x="10" data-y0="108" data-y1="-100" data-in="0.66" data-out="0.97" data-w="32" data-cap="230" data-rot="-3" data-spin="7" data-back="false" style="width: min(32vw, 230px); transform: translate(-50%, -50%) translate3d(10vw, 108vh, 0px) rotate(-3deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/gallery_1.jpg" alt="Laser Tunnel" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-textDim font-bold text-center">LASER TUNNEL 138BPM</span>
             </div>
           </div>
 
-          <!-- Photo 6: 35mm Disposable Dump -->
-          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto" data-x="8vw" data-y="105vh" data-dest-x="10vw" data-dest-y="-22vh" data-rot="-4deg" style="width: min(25vw, 180px); transform: translate(-50%, -50%) translate3d(8vw, 105vh, 0px) rotate(-4deg);">
-            <div class="bg-white p-2.5 rounded-image shadow-xl border border-hs-ink/15">
-              <img src="assets/images/cameraroll_3.jpg" alt="Vault 35mm" class="w-full aspect-[4/3] object-cover rounded-image">
+          <!-- Flyer 7: 35mm Disposable Dump (Back Layer) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[8]" data-x="-18" data-y0="105" data-y1="-95" data-in="0.70" data-out="0.98" data-w="22" data-cap="170" data-rot="6" data-spin="-10" data-back="true" style="width: min(22vw, 170px); transform: translate(-50%, -50%) translate3d(-18vw, 105vh, 0px) rotate(6deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/cameraroll_3.jpg" alt="Vault 35mm" class="w-full aspect-[4/5] object-cover rounded-image">
               <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-textDim font-bold text-center">35mm FLASH DISPOSABLE</span>
+            </div>
+          </div>
+
+          <!-- Shape 3: Graphic Scribble / Sound Curve (Front Layer) -->
+          <div class="hero-fly-shape absolute left-1/2 top-1/2 pointer-events-none z-[25]" data-x="4" data-y0="100" data-y1="-90" data-in="0.68" data-out="0.98" data-w="22" data-cap="180" data-rot="0" data-spin="20" style="width: min(22vw, 180px); transform: translate(-50%, -50%) translate3d(4vw, 100vh, 0px);">
+            <svg viewBox="0 0 160 80" fill="none" stroke="#1A1410" stroke-width="4" stroke-linecap="round" class="w-full h-auto">
+              <path d="M10,40 Q30,10 50,40 T90,40 T130,40 T150,40" stroke="#A3281C" />
+              <path d="M10,45 Q40,75 70,45 T130,45" stroke="#F4D95B" />
+            </svg>
+          </div>
+
+          <!-- Flyer 8: Project X Lock-In (Back Layer) -->
+          <div class="hero-fly-photo absolute left-1/2 top-1/2 pointer-events-auto z-[8]" data-x="30" data-y0="105" data-y1="-95" data-in="0.74" data-out="0.99" data-w="24" data-cap="180" data-rot="-5" data-spin="12" data-back="true" style="width: min(24vw, 180px); transform: translate(-50%, -50%) translate3d(30vw, 105vh, 0px) rotate(-5deg);">
+            <div class="bg-white p-2.5 rounded-image shadow-[0_24px_60px_rgba(20,16,16,0.28)] border border-hs-ink/15 transition-transform duration-200">
+              <img src="assets/images/after_dark.jpg" alt="Afterdark" class="w-full aspect-[4/5] object-cover rounded-image">
+              <span class="block mt-1.5 font-mono text-[9px] uppercase tracking-wider text-hs-brick font-bold text-center">PROJECT X LOCK-IN</span>
             </div>
           </div>
 
@@ -390,16 +526,20 @@
     <!-- ========================================================================= -->
     <section id="whats-on" class="relative z-30 -mt-[65vh] md:-mt-[80vh] pb-24 sm:pb-36 px-4 sm:px-8 max-w-7xl mx-auto">
       
-      <!-- Section Heading with HopShop Accent Word Slab -->
+      <!-- Section Heading with HopShop Accent Word Slab & Overflow Mask -->
       <div id="whatson-heading-wrap" class="flex flex-col md:flex-row md:items-end justify-between gap-6 mb-16 border-b-2 border-hs-ink pb-6 bg-[#DACDB1]/95 backdrop-blur-md pt-8">
         <div>
           <span class="font-mono text-xs uppercase tracking-[0.24em] font-bold text-hs-brick block mb-2">
             // CALENDAR & ACCESS
           </span>
           <h2 class="font-chunky text-5xl sm:text-7xl md:text-8xl tracking-tight uppercase leading-none text-hs-ink flex items-center gap-3">
-            <span>WHAT’S</span>
-            <span class="inline-block bg-hs-brick text-white px-3 sm:px-4 py-1 rounded-sm shadow-sm rotate-[-1deg]">
-              ON
+            <span class="hs-whatson__mask">
+              <span class="hs-whatson__word">WHAT’S</span>
+            </span>
+            <span class="hs-whatson__mask relative">
+              <span class="inline-block bg-hs-brick text-white px-3 sm:px-4 py-1 rounded-sm shadow-sm rotate-[-1deg]">
+                ON
+              </span>
             </span>
           </h2>
         </div>
@@ -410,7 +550,7 @@
         </div>
       </div>
 
-      <!-- HopShop Floating Grid of 3:4 Poster Tiles with Staggered Parallax -->
+      <!-- HopShop Floating Grid of 3:4 Poster Tiles with Staggered Parallax & 3D Tilt -->
       <div id="float-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
 
         <!-- Card 1: Sunset Soirées Vol. III -->
@@ -716,8 +856,27 @@
         
         <div class="w-full grid grid-cols-1 md:grid-cols-[18rem_1fr] gap-12 items-center">
           
+          <!-- Mobile Segmented Progress Indicator (HopShop Mobile Signature) -->
+          <div class="md:hidden flex flex-col gap-2 w-full mb-6">
+            <div class="flex gap-2 w-full">
+              <span class="h-[3.5px] flex-1 overflow-hidden rounded-full bg-[#1A1410]/15">
+                <span id="formula-bar-1" class="block h-full w-full origin-left rounded-full bg-hs-brick transition-transform duration-500 scale-x-100"></span>
+              </span>
+              <span class="h-[3.5px] flex-1 overflow-hidden rounded-full bg-[#1A1410]/15">
+                <span id="formula-bar-2" class="block h-full w-full origin-left rounded-full bg-hs-brick transition-transform duration-500 scale-x-0"></span>
+              </span>
+              <span class="h-[3.5px] flex-1 overflow-hidden rounded-full bg-[#1A1410]/15">
+                <span id="formula-bar-3" class="block h-full w-full origin-left rounded-full bg-hs-brick transition-transform duration-500 scale-x-0"></span>
+              </span>
+            </div>
+            <div class="flex items-center justify-between font-mono text-[10px] uppercase font-bold text-hs-ink">
+              <span id="formula-mobile-label">01 · THE CROWD</span>
+              <span class="text-hs-brick">THE FORMULA</span>
+            </div>
+          </div>
+
           <!-- Sticky Left Sidebar (The Formula Progress Indicator) -->
-          <div class="bg-[#FFFDF7] p-8 rounded-card border-2 border-hs-ink shadow-md">
+          <div class="hidden md:block bg-[#FFFDF7] p-8 rounded-card border-2 border-hs-ink shadow-md">
             <div class="flex items-center gap-2 mb-2 font-mono text-[10px] uppercase tracking-widest text-hs-brick font-bold">
               <span class="w-2 h-2 rounded-full bg-hs-brick"></span>
               <span>MANIFIESTO</span>
@@ -834,7 +993,7 @@
             </button>
           </form>
 
-          <!-- Live Status Result (Populated Dynamically) -->
+          <!-- Live Status Result with Animated Laser Scanner -->
           <div id="statusResultBox" class="hidden mt-8 pt-8 border-t border-white/15">
             <div class="p-6 rounded-xl bg-hs-night border border-hs-butter/30 space-y-4">
               <div class="flex items-center justify-between border-b border-white/10 pb-3">
@@ -857,9 +1016,12 @@
                 </div>
               </div>
               
-              <!-- QR Code Canvas Display -->
-              <div class="flex items-center gap-4 bg-black/40 p-3 rounded-lg">
-                <canvas id="statusQrCanvas" width="80" height="80" class="w-20 h-20 rounded bg-white p-1 flex-shrink-0"></canvas>
+              <!-- QR Code Canvas Display with Laser Scanner Overlay -->
+              <div class="relative flex items-center gap-4 bg-black/40 p-3 rounded-lg overflow-hidden">
+                <div class="relative flex-shrink-0">
+                  <canvas id="statusQrCanvas" width="80" height="80" class="w-20 h-20 rounded bg-white p-1 block"></canvas>
+                  <div class="laser-scanner"></div>
+                </div>
                 <div class="text-left font-mono text-[10px] space-y-1 text-white/80">
                   <p class="font-bold text-white">OFFICIAL RFID PASS</p>
                   <p>Gate lock 21:00 IST sharp.</p>
@@ -951,7 +1113,11 @@
           <a href="#how-it-works" class="hover:text-hs-butter transition-colors">How it works</a>
           <a href="#status" class="hover:text-hs-butter transition-colors">Check status</a>
           <a href="https://instagram.com/socialeuphoriaa" target="_blank" rel="noopener noreferrer" class="hover:text-hs-butter transition-colors flex items-center gap-1.5">
-            <i data-lucide="instagram" class="w-3.5 h-3.5"></i>
+            <svg class="w-3.5 h-3.5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+              <rect width="20" height="20" x="2" y="2" rx="5" ry="5"></rect>
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+              <line x1="17.5" x2="17.51" y1="6.5" y2="6.5"></line>
+            </svg>
             <span>Instagram</span>
           </a>
         </div>
@@ -973,7 +1139,7 @@
   <!-- ========================================================================= -->
   <div id="eventDetailModal" class="fixed inset-0 z-[100] bg-black/80 backdrop-blur-md hidden items-center justify-center p-4 sm:p-8 overflow-y-auto">
     
-    <div class="relative w-full max-w-4xl bg-hs-terracotta text-white rounded-card border-2 border-hs-ink shadow-2xl overflow-hidden my-auto p-6 sm:p-10">
+    <div class="relative w-full max-w-4xl bg-hs-terracotta text-white rounded-card border-2 border-hs-ink shadow-2xl overflow-hidden my-auto p-6 sm:p-10 transform scale-95 transition-transform duration-300">
       
       <!-- Back Button -->
       <button onclick="closeEventDetail()" class="inline-flex items-center gap-2 font-mono text-xs font-bold uppercase tracking-wider text-white/80 hover:text-white mb-6">
@@ -1039,7 +1205,7 @@
   <!-- 10. REQUEST INVITE / GUEST REGISTRATION MODAL                            -->
   <!-- ========================================================================= -->
   <div id="inviteModal" class="fixed inset-0 z-[110] bg-black/85 backdrop-blur-md hidden items-center justify-center p-4 sm:p-6 overflow-y-auto">
-    <div class="relative w-full max-w-lg bg-[#FFFDF7] text-hs-ink rounded-card border-2 border-hs-ink shadow-2xl p-6 sm:p-8 my-auto">
+    <div class="relative w-full max-w-lg bg-[#FFFDF7] text-hs-ink rounded-card border-2 border-hs-ink shadow-2xl p-6 sm:p-8 my-auto transform scale-95 transition-transform duration-300">
       
       <div class="flex items-center justify-between pb-4 border-b border-hs-ink/15 mb-6">
         <div>
@@ -1161,7 +1327,68 @@
     // 1. Initialize Lucide Icons
     lucide.createIcons();
 
-    // 2. Initialize Lenis Smooth Scroll Engine
+    // 2. EXACT HOPSHOP PRELOADER CONTROLLER (RAF LERP & CAPSULE VECTOR STROKE)
+    const preloaderEl = document.getElementById('hs-preloader');
+    const preloaderFill = document.getElementById('preloader-fill-wrapper');
+    const preloaderRect = document.getElementById('preloader-rect');
+    const preloaderCounter = document.getElementById('preloader-counter-val');
+    
+    // Lock scrolling during preloader
+    document.documentElement.style.overflow = "hidden";
+    
+    let startTime = performance.now();
+    let currentProgress = 0;
+    let preloaderDone = false;
+    let rafId;
+
+    function updatePreloaderFrame(now) {
+      let elapsed = now - startTime;
+      // Target smoothly climbs towards 1.0 within ~1100ms
+      let target = Math.min(1, elapsed / 1100);
+      
+      // HopShop signature spring lerp: m += (target - m) * 0.18
+      currentProgress += (target - currentProgress) * 0.18;
+      if (target - currentProgress < 0.002) {
+        currentProgress = target;
+      }
+
+      // Update clip-path wipe, stroke dash offset, and percentage text
+      let pct = Math.round(100 * currentProgress);
+      if (preloaderFill) preloaderFill.style.clipPath = `inset(0 ${100 - pct}% 0 0)`;
+      if (preloaderRect) preloaderRect.style.strokeDashoffset = String((1 - currentProgress).toFixed(4));
+      if (preloaderCounter) preloaderCounter.textContent = String(pct);
+      if (preloaderEl) preloaderEl.setAttribute('aria-valuenow', String(pct));
+
+      if (currentProgress >= 1) {
+        if (!preloaderDone) {
+          preloaderDone = true;
+          if (preloaderCounter) preloaderCounter.textContent = "100";
+          if (preloaderFill) preloaderFill.style.clipPath = "inset(0 0% 0 0)";
+          if (preloaderRect) preloaderRect.style.strokeDashoffset = "0";
+
+          // HopShop exact exit animation: fade out with cubic-bezier(0.32, 0.72, 0, 1) over 350ms
+          gsap.to(preloaderEl, {
+            opacity: 0,
+            duration: 0.35,
+            ease: "cubic-bezier(0.32, 0.72, 0, 1)",
+            onComplete: () => {
+              preloaderEl.style.display = "none";
+              document.documentElement.style.overflow = "";
+              if (window.lenisInstance) window.lenisInstance.start();
+              // Trigger hero entrance
+              gsap.from("#hero-main-title", { scale: 0.94, opacity: 0.7, duration: 0.6, ease: "power2.out" });
+              gsap.from("#hero-curated-box", { y: -15, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.05 });
+            }
+          });
+        }
+      } else {
+        rafId = requestAnimationFrame(updatePreloaderFrame);
+      }
+    }
+    rafId = requestAnimationFrame(updatePreloaderFrame);
+
+
+    // 3. Initialize Lenis Smooth Scroll Engine
     let lenis;
     try {
       lenis = new Lenis({
@@ -1193,7 +1420,8 @@
     // Register GSAP Plugins
     gsap.registerPlugin(ScrollTrigger);
 
-    // 3. MASTER 420vh HERO PINNED SCROLL TIMELINE (HOPSHOP EXACT REPLICA)
+
+    // 4. MASTER 420vh HERO PINNED SCROLL TIMELINE (EXACT HOPSHOP BREAKPOINTS)
     const heroTl = gsap.timeline({
       scrollTrigger: {
         trigger: "#hero-track",
@@ -1205,55 +1433,181 @@
       }
     });
 
-    // Phase 1: Shrink title, fade scroll cue, fade out curated top pill
-    heroTl.to("#hero-scroll-cue", { opacity: 0, y: -20, duration: 0.1 }, 0);
-    heroTl.to("#hero-curated-box", { opacity: 0.2, y: -30, duration: 0.2 }, 0.05);
-    heroTl.to("#hero-coord-pill", { opacity: 0, y: 20, duration: 0.15 }, 0.05);
+    // Phase 1: Hold (0 -> 0.04), fade cue & initial pills
+    heroTl.to("#hero-scroll-cue", { opacity: 0, y: -20, duration: 0.04 }, 0);
+    heroTl.to("#hero-curated-box", { opacity: 0, y: -30, duration: 0.08 }, 0.04);
+    heroTl.to("#hero-coord-pill", { opacity: 0, y: 20, duration: 0.06 }, 0.04);
+    heroTl.to("#hero-subtitle", { opacity: 0, y: -20, duration: 0.08 }, 0.04);
 
-    // Title scale & translation
+    // Phase 2: Collapse (0.04 -> 0.16) — Title collapses into a vertical laser slit
     heroTl.to("#hero-main-title", {
-      scale: 0.58,
-      y: -50,
-      duration: 0.45,
+      scaleX: 0.05,
+      scaleY: 1.35,
+      duration: 0.12,
       ease: "power2.inOut"
-    }, 0.05);
-    heroTl.to("#hero-subtitle", {
-      opacity: 0,
-      y: -20,
-      duration: 0.2
-    }, 0.1);
+    }, 0.04);
 
-    // Phase 2: Fade in Yellow SVG Grid Lines & Ambient Dark Tint
-    heroTl.to("#hero-bg-tint", { opacity: 0.35, duration: 0.35 }, 0.2);
-    heroTl.to("#hero-svg-grid", { opacity: 0.75, duration: 0.35 }, 0.2);
+    // Phase 3: Night mode dark tint (0.10 -> 0.26)
+    heroTl.to("#hero-bg-tint", { opacity: 0.95, duration: 0.16, ease: "power1.inOut" }, 0.10);
 
-    // Phase 3: Horizontal Clip-Path Reveal of Central Secret Box
+    // Phase 4: Center Spec Badge Box expands horizontally (0.20 -> 0.46)
     heroTl.to("#hero-secret-box", {
       opacity: 1,
-      clipPath: "inset(0% 0%)",
-      duration: 0.4,
+      clipPath: "inset(0% 0% 0% 0%)",
+      duration: 0.26,
+      ease: "power2.out"
+    }, 0.20);
+
+    // Phase 5: Yellow Blueprint Grid Lines draw in with vector stroke (0.28 -> 0.44)
+    heroTl.to("#hero-svg-grid", { opacity: 1, duration: 0.08 }, 0.28);
+    heroTl.to(".blueprint-line", {
+      strokeDashoffset: 0,
+      stagger: 0.02,
+      duration: 0.14,
+      ease: "none"
+    }, 0.28);
+    // Blueprint grid fades out as rebuild approaches
+    heroTl.to("#hero-svg-grid", { opacity: 0, duration: 0.06 }, 0.44);
+
+    // Phase 6: Rebuild (0.44 -> 0.60) — Title rebuilds back to monumental scale
+    heroTl.to("#hero-main-title", {
+      scaleX: 1.0,
+      scaleY: 1.0,
+      duration: 0.16,
       ease: "power2.inOut"
-    }, 0.3);
+    }, 0.44);
 
-    // Phase 4: Dynamic Floating Party Photos Fly In from Bottom and Orbit
+    // Phase 7: Day returns (0.50 -> 0.62) — Background fades back to warm parchment
+    heroTl.to("#hero-bg-tint", { opacity: 0, duration: 0.12, ease: "power1.out" }, 0.50);
+
+    // Phase 8: Floating Objects & Flyers Continuous Flight (0.48 -> 0.96)
     const flyPhotos = document.querySelectorAll('.hero-fly-photo');
-    flyPhotos.forEach((photo, idx) => {
-      const destX = photo.getAttribute('data-dest-x') || '0vw';
-      const destY = photo.getAttribute('data-dest-y') || '0vh';
-      const destRot = photo.getAttribute('data-dest-rot') || '0deg';
+    flyPhotos.forEach((photo) => {
+      const inPhase = parseFloat(photo.getAttribute('data-in')) || 0.5;
+      const outPhase = parseFloat(photo.getAttribute('data-out')) || 0.9;
+      const x = parseFloat(photo.getAttribute('data-x')) || 0;
+      const y0 = parseFloat(photo.getAttribute('data-y0')) || 100;
+      const y1 = parseFloat(photo.getAttribute('data-y1')) || -90;
+      const rot = parseFloat(photo.getAttribute('data-rot')) || 0;
+      const spin = parseFloat(photo.getAttribute('data-spin')) || 0;
 
-      heroTl.to(photo, {
-        transform: `translate(-50%, -50%) translate3d(${destX}, ${destY}, 0px) rotate(${destRot})`,
-        duration: 0.55 + (idx * 0.04),
-        ease: "power1.out"
-      }, 0.35 + (idx * 0.02));
+      heroTl.fromTo(photo, 
+        {
+          transform: `translate(-50%, -50%) translate3d(${x}vw, ${y0}vh, 0px) rotate(${rot}deg)`
+        },
+        {
+          transform: `translate(-50%, -50%) translate3d(${x}vw, ${y1}vh, 0px) rotate(${rot + spin}deg)`,
+          duration: outPhase - inPhase,
+          ease: "none"
+        },
+        inPhase
+      );
     });
 
-    // Phase 5: Fade secret box slightly as What's On approaches
-    heroTl.to("#hero-secret-box", { scale: 0.95, opacity: 0.4, duration: 0.2 }, 0.85);
+    const flyShapes = document.querySelectorAll('.hero-fly-shape');
+    flyShapes.forEach((shape) => {
+      const inPhase = parseFloat(shape.getAttribute('data-in')) || 0.5;
+      const outPhase = parseFloat(shape.getAttribute('data-out')) || 0.9;
+      const x = parseFloat(shape.getAttribute('data-x')) || 0;
+      const y0 = parseFloat(shape.getAttribute('data-y0')) || 100;
+      const y1 = parseFloat(shape.getAttribute('data-y1')) || -90;
+      const rot = parseFloat(shape.getAttribute('data-rot')) || 0;
+      const spin = parseFloat(shape.getAttribute('data-spin')) || 0;
+
+      heroTl.fromTo(shape, 
+        {
+          transform: `translate(-50%, -50%) translate3d(${x}vw, ${y0}vh, 0px) rotate(${rot}deg)`
+        },
+        {
+          transform: `translate(-50%, -50%) translate3d(${x}vw, ${y1}vh, 0px) rotate(${rot + spin}deg)`,
+          duration: outPhase - inPhase,
+          ease: "none"
+        },
+        inPhase
+      );
+    });
+
+    // Phase 9: Exit (0.80 -> 0.92) — Title and secret box scale down and fade out
+    heroTl.to("#hero-main-title", { scale: 0.9, opacity: 0, duration: 0.12, ease: "power2.in" }, 0.80);
+    heroTl.to("#hero-secret-box", { scale: 0.92, opacity: 0, duration: 0.12, ease: "power2.in" }, 0.80);
 
 
-    // 4. WHAT'S ON PULL-UP PARALLAX SCROLL
+    // 5. HOPSHOP SPRING INERTIA MOUSE PHYSICS (EXACT DAMPING ARRAY)
+    const springPhysicsConfig = [
+      { fx: 0.0095, fy: 0.006,  ease: 0.016 },
+      { fx: 0.005,  fy: 0.0085, ease: 0.021 },
+      { fx: 0.0075, fy: 0.004,  ease: 0.013 },
+      { fx: 0.003,  fy: 0.01,   ease: 0.019 },
+      { fx: 0.01,   fy: 0.0045, ease: 0.023 },
+      { fx: 0.0045, fy: 0.0065, ease: 0.012 },
+      { fx: 0.0085, fy: 0.0035, ease: 0.018 },
+      { fx: 0.0035, fy: 0.0095, ease: 0.015 }
+    ];
+
+    let targetMouseX = 0, targetMouseY = 0;
+    const heroTilePhysics = Array.from(flyPhotos).map((el, i) => ({
+      el: el.querySelector('div') || el,
+      ...springPhysicsConfig[i % springPhysicsConfig.length],
+      x: 0,
+      y: 0
+    }));
+
+    window.addEventListener('pointermove', (e) => {
+      if (e.pointerType !== "touch") {
+        targetMouseX = (e.clientX / window.innerWidth - 0.5) * 2;
+        targetMouseY = (e.clientY / window.innerHeight - 0.5) * 2;
+      }
+    }, { passive: true });
+
+    function updateTileSpringPhysics() {
+      const w = window.innerWidth;
+      const h = window.innerHeight;
+      heroTilePhysics.forEach((item) => {
+        const tx = targetMouseX * item.fx * w;
+        const ty = targetMouseY * item.fy * h;
+        item.x += (tx - item.x) * item.ease;
+        item.y += (ty - item.y) * item.ease;
+        item.el.style.transform = `translate3d(${item.x.toFixed(2)}px, ${item.y.toFixed(2)}px, 0px)`;
+      });
+      requestAnimationFrame(updateTileSpringPhysics);
+    }
+    updateTileSpringPhysics();
+
+
+    // 5b. HOPSHOP FLOATING CURSOR FOLLOWER PILL
+    const hoverPill = document.getElementById('hs-hover-pill');
+    const hoverPillText = document.getElementById('hs-hover-pill-text');
+    let pillX = -100, pillY = -100;
+    let targetPillX = -100, targetPillY = -100;
+
+    window.addEventListener('pointermove', (e) => {
+      targetPillX = e.clientX + 14;
+      targetPillY = e.clientY + 14;
+    }, { passive: true });
+
+    function renderHoverPill() {
+      pillX += (targetPillX - pillX) * 0.28;
+      pillY += (targetPillY - pillY) * 0.28;
+      if (hoverPill) {
+        hoverPill.style.transform = `translate3d(${pillX.toFixed(1)}px, ${pillY.toFixed(1)}px, 0px)`;
+      }
+      requestAnimationFrame(renderHoverPill);
+    }
+    renderHoverPill();
+
+    document.querySelectorAll('.parallax-card, .hs-float-tile').forEach((card) => {
+      card.addEventListener('pointerenter', () => {
+        if (hoverPill) hoverPill.style.opacity = '1';
+        const title = card.getAttribute('data-event-title') || 'VIEW DOSSIER';
+        if (hoverPillText) hoverPillText.textContent = title;
+      });
+      card.addEventListener('pointerleave', () => {
+        if (hoverPill) hoverPill.style.opacity = '0';
+      });
+    });
+
+
+    // 6. WHAT'S ON PULL-UP PARALLAX SCROLL
     gsap.from("#whatson-heading-wrap", {
       scrollTrigger: {
         trigger: "#whats-on",
@@ -1281,10 +1635,26 @@
         y: offset,
         ease: "none"
       });
+
+      // 3D Card Perspective Tilt on Hover
+      card.addEventListener('mousemove', (e) => {
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const centerX = rect.width / 2;
+        const centerY = rect.height / 2;
+        const rotX = ((y - centerY) / centerY) * -7;
+        const rotY = ((x - centerX) / centerX) * 7;
+        card.style.transform = `perspective(1000px) rotateX(${rotX}deg) rotateY(${rotY}deg) scale3d(1.02, 1.02, 1.02)`;
+      });
+
+      card.addEventListener('mouseleave', () => {
+        card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+      });
     });
 
 
-    // 5. THE FORMULA — 300vh STICKY PINNED THESIS TIMELINE (HOPSHOP EXACT)
+    // 7. THE FORMULA — 300vh STICKY PINNED THESIS TIMELINE (HOPSHOP EXACT)
     const formulaTl = gsap.timeline({
       scrollTrigger: {
         trigger: "#formula-track",
@@ -1295,6 +1665,10 @@
         anticipatePin: 1
       }
     });
+
+    const mLabel = document.getElementById('formula-mobile-label');
+    const bar2 = document.getElementById('formula-bar-2');
+    const bar3 = document.getElementById('formula-bar-3');
 
     // Step 1 -> Step 2
     formulaTl.to("#thesis-statement-1", {
@@ -1309,6 +1683,8 @@
       duration: 0.2
     }, 0.25);
 
+    if (bar2) formulaTl.to(bar2, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 0.25);
+
     formulaTl.to("#step-nav-1", { opacity: 0.4, className: "flex items-center gap-3 text-hs-textDim opacity-40 transition-all duration-300" }, 0.25);
     formulaTl.to("#step-nav-2", { opacity: 1, className: "flex items-center gap-3 text-hs-brick transition-all duration-300" }, 0.28);
 
@@ -1317,7 +1693,9 @@
       y: 0,
       pointerEvents: "auto",
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
+      onStart: () => { if (mLabel) mLabel.textContent = "02 · THE RHYTHM"; },
+      onReverseComplete: () => { if (mLabel) mLabel.textContent = "01 · THE CROWD"; }
     }, 0.3);
 
     // Step 2 -> Step 3
@@ -1334,6 +1712,8 @@
       duration: 0.2
     }, 0.65);
 
+    if (bar3) formulaTl.to(bar3, { scaleX: 1, duration: 0.25, ease: "power2.out" }, 0.65);
+
     formulaTl.to("#step-nav-2", { opacity: 0.4, className: "flex items-center gap-3 text-hs-textDim opacity-40 transition-all duration-300" }, 0.65);
     formulaTl.to("#step-nav-3", { opacity: 1, className: "flex items-center gap-3 text-hs-brick transition-all duration-300" }, 0.68);
 
@@ -1342,11 +1722,13 @@
       y: 0,
       pointerEvents: "auto",
       duration: 0.3,
-      ease: "power2.out"
+      ease: "power2.out",
+      onStart: () => { if (mLabel) mLabel.textContent = "03 · THE SANCTUARY"; },
+      onReverseComplete: () => { if (mLabel) mLabel.textContent = "02 · THE RHYTHM"; }
     }, 0.7);
 
 
-    // 6. HOW IT WORKS 5-STEP REVEAL
+    // 8. HOW IT WORKS 5-STEP REVEAL
     gsap.from(".step-card", {
       scrollTrigger: {
         trigger: "#how-it-works",
@@ -1361,7 +1743,7 @@
     });
 
 
-    // 7. Navigation Active Indicator on Scroll
+    // 9. Navigation Active Indicator on Scroll
     const navItems = document.querySelectorAll('.nav-item');
     const sections = ['hero-track', 'whats-on', 'how-it-works', 'formula-track', 'status', 'vault'];
 
@@ -1390,14 +1772,14 @@
     });
 
 
-    // 8. Mobile Navigation Toggle
+    // 10. Mobile Navigation Toggle
     function toggleMobileNav() {
       const nav = document.getElementById('mobile-nav');
       nav.classList.toggle('hidden');
     }
 
 
-    // 9. Event Data for HopShop-style modal overlay
+    // 11. Event Data for HopShop-style modal overlay
     const eventDatabase = {
       sunset: {
         title: "Sunset Soirées Vol. III",
@@ -1478,7 +1860,7 @@
       modal.classList.remove('flex');
     }
 
-    // 10. Procedural QR Code Drawer
+    // 12. Procedural QR Code Drawer
     function drawProceduralQR(canvas, text) {
       if (!canvas) return;
       const ctx = canvas.getContext('2d');
@@ -1523,7 +1905,7 @@
       }
     }
 
-    // 11. Invite Modal Logic
+    // 13. Invite Modal Logic
     function openInviteModal() {
       const modal = document.getElementById('inviteModal');
       modal.classList.remove('hidden');
@@ -1553,7 +1935,7 @@
       document.getElementById('passSuccessView').classList.remove('hidden');
     }
 
-    // 12. Status Lookup Logic
+    // 14. Status Lookup Logic
     function handleStatusLookup(e) {
       e.preventDefault();
       const query = document.getElementById('statusQueryInput').value.trim();
@@ -1570,7 +1952,7 @@
       drawProceduralQR(canvas, `SE-PASS-VERIFIED-${query}`);
     }
 
-    // 13. Download Pass PNG (1080x1920 Instagram Story Pass)
+    // 15. Download Pass PNG (1080x1920 Instagram Story Pass)
     function downloadPassPng() {
       const name = document.getElementById('issuedName').textContent || document.getElementById('resGuestName').textContent || 'Aryan Sharma';
       const canvas = document.createElement('canvas');
@@ -1643,7 +2025,7 @@
       link.click();
     }
 
-    // 14. Lightbox
+    // 16. Lightbox
     function openLightbox(src) {
       document.getElementById('lightboxImg').src = src;
       const modal = document.getElementById('lightboxModal');
