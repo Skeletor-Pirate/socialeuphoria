@@ -66,6 +66,9 @@
   <!-- Matter.js 2D Rigid-Body Physics -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/matter-js/0.19.0/matter.min.js"></script>
 
+  <!-- Three.js WebGL Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
   <!-- Lucide Icons -->
   <script src="https://unpkg.com/lucide@latest"></script>
 
@@ -287,9 +290,79 @@
       will-change: transform;
     }
 
+    /* Custom Kinetic Dual-Ring Cursor (Desktop Fine Pointer Only) */
+    @media (hover: hover) and (pointer: fine) {
+      .se-cursor-dot, .se-cursor-ring {
+        position: fixed;
+        top: 0;
+        left: 0;
+        pointer-events: none;
+        z-index: 1050;
+        border-radius: 9999px;
+        transform: translate3d(-100px, -100px, 0);
+      }
+      .se-cursor-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--hs-brick);
+        margin: -4px 0 0 -4px;
+        transition: transform 0.15s ease, background-color 0.2s ease;
+      }
+      .se-cursor-ring {
+        width: 38px;
+        height: 38px;
+        border: 1.5px solid rgba(26, 20, 16, 0.55);
+        margin: -19px 0 0 -19px;
+        transition: width 0.25s cubic-bezier(0.16, 1, 0.3, 1), height 0.25s cubic-bezier(0.16, 1, 0.3, 1), margin 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, background-color 0.2s ease;
+      }
+      .se-cursor-ring.is-vault {
+        width: 64px;
+        height: 64px;
+        margin: -32px 0 0 -32px;
+        border-color: var(--hs-butter);
+        background: rgba(163, 40, 28, 0.14);
+      }
+      .se-cursor-ring.is-active {
+        width: 52px;
+        height: 52px;
+        margin: -26px 0 0 -26px;
+        border-color: var(--hs-brick);
+      }
+    }
+    @media (hover: none), (pointer: coarse) {
+      .se-cursor-dot, .se-cursor-ring { display: none !important; }
+    }
+
+    /* 35mm Filmstrip Sprocket Border */
+    .film-sprockets {
+      background-image: repeating-linear-gradient(
+        to right,
+        transparent 0px,
+        transparent 14px,
+        #1A1410 14px,
+        #1A1410 26px
+      );
+      height: 10px;
+      opacity: 0.85;
+    }
+
+    /* Radial Vinyl Spin for Preloader */
+    @keyframes vinylSpinSlow {
+      to { transform: rotate(360deg); }
+    }
+    .vinyl-spin {
+      animation: vinylSpinSlow 6s linear infinite;
+    }
+
+    /* Velocity Skew & RGB Edge Shift */
+    .vel-reactive {
+      will-change: transform, filter;
+      transition: filter 0.15s ease-out;
+    }
+
     /* Reduced Motion Guardrail */
     @media (prefers-reduced-motion: reduce) {
-      .hs-marquee-track, .step-wave-line, .laser-scanner, .orbit-arc {
+      .hs-marquee-track, .step-wave-line, .laser-scanner, .orbit-arc, .vinyl-spin {
         animation: none !important;
       }
       .bass-drop-active {
@@ -326,37 +399,52 @@
     </button>
   </aside>
 
-  <!-- ========================================================================= -->
-  <!-- 0. EXACT HOPSHOP SIGNATURE PRELOADER (CAPSULE VECTOR + RAF LERP LOOP)    -->
-  <!-- ========================================================================= -->
-  <div id="hs-preloader" role="progressbar" aria-label="Loading Social Euphoria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="fixed inset-0 z-[200] select-none" style="background:#EDE4D0;height:100dvh">
-    <!-- Dotted background texture -->
-    <div class="absolute inset-0 pointer-events-none opacity-30" style="background-image: radial-gradient(rgba(26, 20, 16, 0.16) 1.2px, transparent 1.2px); background-size: 24px 24px;"></div>
-    <span class="sr-only">Loading Social Euphoria</span>
-    <div class="absolute left-1/2 top-1/2" style="width:min(72vw, 440px);aspect-ratio:4.110344827586207;transform:translate(-50%, -50%)">
-      
-      <!-- Ghost Base Wordmark (14% Opacity) -->
-      <div class="absolute inset-0 flex items-center justify-center font-chunky text-[clamp(1.75rem,5.5vw,3rem)] uppercase tracking-tighter text-[#1A1410] opacity-[0.14] select-none text-center whitespace-nowrap">
-        SOCIAL EUPHORIA
-      </div>
+  <!-- Custom Kinetic Dual-Ring Cursor (Desktop Fine Pointer) -->
+  <div id="se-cursor-dot" class="se-cursor-dot" aria-hidden="true"></div>
+  <div id="se-cursor-ring" class="se-cursor-ring" aria-hidden="true"></div>
 
-      <!-- Filled Wordmark with Progressive Clip-Path Wipe -->
-      <div id="preloader-fill-wrapper" class="absolute inset-0 flex items-center justify-center overflow-hidden" style="clip-path:inset(0 100% 0 0)">
-        <div class="font-chunky text-[clamp(1.75rem,5.5vw,3rem)] uppercase tracking-tighter text-[#1A1410] select-none text-center whitespace-nowrap">
-          SOCIAL EUPHORIA
+  <!-- ========================================================================= -->
+  <!-- 0. SOCIAL EUPHORIA 138 BPM RADIAL APERTURE PRELOADER                      -->
+  <!-- ========================================================================= -->
+  <div id="hs-preloader" role="progressbar" aria-label="Loading Social Euphoria" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" class="fixed inset-0 z-[200] select-none flex items-center justify-center overflow-hidden" style="background:#1A1410;height:100dvh;clip-path:circle(150% at 50% 50%);">
+    <!-- Subtle warm radial glow -->
+    <div class="absolute inset-0 pointer-events-none opacity-40" style="background: radial-gradient(circle at center, rgba(163,40,28,0.42) 0%, transparent 65%);"></div>
+    <span class="sr-only">Loading Social Euphoria</span>
+
+    <div class="relative flex flex-col items-center justify-center">
+      <!-- Concentric 138 BPM Radar / Vinyl Aperture -->
+      <div class="relative w-56 h-56 sm:w-72 sm:h-72 flex items-center justify-center">
+        <svg class="absolute inset-0 w-full h-full -rotate-90" viewBox="0 0 200 200" fill="none">
+          <!-- Outer faint track -->
+          <circle cx="100" cy="100" r="90" stroke="rgba(237,228,208,0.14)" stroke-width="1.5" />
+          <!-- Progress arc -->
+          <circle id="preloader-rect" cx="100" cy="100" r="90" stroke="#F4D95B" stroke-width="2.5" stroke-linecap="round" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1" />
+          <!-- Inner spinning dashed vinyl groove -->
+          <circle class="vinyl-spin origin-center" cx="100" cy="100" r="72" stroke="#A3281C" stroke-width="1.5" stroke-dasharray="16 10 4 10" />
+          <circle cx="100" cy="100" r="54" stroke="rgba(237,228,208,0.18)" stroke-width="1" />
+        </svg>
+
+        <!-- Center Counter & Wordmark -->
+        <div class="relative z-10 flex flex-col items-center text-center">
+          <span class="font-mono text-[9px] sm:text-[10px] uppercase tracking-[0.28em] text-hs-butter font-bold mb-1">
+            DOON // 138 BPM
+          </span>
+          <div class="font-chunky text-5xl sm:text-6xl leading-none tabular-nums text-[#EDE4D0]">
+            <span id="preloader-counter-val">0</span><span class="text-2xl sm:text-3xl text-hs-brick ml-0.5">%</span>
+          </div>
+          <div id="preloader-fill-wrapper" class="mt-2 overflow-hidden" style="clip-path:inset(0 100% 0 0)">
+            <span class="font-mono text-[10px] uppercase tracking-[0.26em] text-[#EDE4D0] font-bold whitespace-nowrap">
+              SOCIAL EUPHORIA
+            </span>
+          </div>
         </div>
       </div>
 
-      <!-- Exact HopShop Vector Capsule Rect with pathLength="1" stroke-dasharray="1" -->
-      <svg aria-hidden="true" class="pointer-events-none absolute overflow-visible" style="left:calc(min(72vw, 440px) * -0.06);top:calc(min(72vw, 440px) * -0.06);width:calc(100% + min(72vw, 440px) * 0.12);height:calc(100% + min(72vw, 440px) * 0.12)" viewBox="0 0 100 100" preserveAspectRatio="none" fill="none">
-        <rect id="preloader-rect" x="0.5" y="0.5" width="99" height="99" rx="49.5" ry="49.5" stroke="#1A1410" stroke-width="1.5" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></rect>
-      </svg>
-
-      <!-- Counter below capsule -->
-      <div class="absolute left-1/2 font-chunky text-[clamp(2.25rem,9vw,4.5rem)] leading-none tabular-nums" style="top:calc(100% + min(72vw, 440px) * 0.06 + 1.25rem);transform:translateX(-50%);color:#1A1410" aria-hidden="true">
-        <span id="preloader-counter-val">0</span><span class="ml-[0.08em] text-[0.5em]">%</span>
+      <!-- Coordinate Lock-In Readout -->
+      <div class="mt-6 font-mono text-[10px] uppercase tracking-[0.24em] text-[#EDE4D0]/60 flex items-center gap-2">
+        <span class="w-1.5 h-1.5 rounded-full bg-hs-brick animate-ping"></span>
+        <span>LOCKING 30.3165° N · 78.0322° E</span>
       </div>
-
     </div>
   </div>
 
@@ -455,30 +543,31 @@
     <section id="hero-track" class="relative pointer-events-auto" style="height: 420vh;">
       
       <!-- Sticky 100dvh Viewport Container -->
-      <div id="hero-sticky" class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col items-center justify-between px-4 sm:px-8 pt-16 pb-12 select-none">
+      <div id="hero-sticky" class="sticky top-0 h-[100dvh] w-full overflow-hidden flex flex-col items-center justify-between px-4 sm:px-8 pt-16 pb-12 select-none" style="perspective: 1200px;">
         
         <!-- Ambient Background Tint (Fades in during mid-scroll) -->
-        <div id="hero-bg-tint" class="absolute inset-0 bg-[#241210] opacity-0 pointer-events-none transition-opacity duration-300"></div>
+        <div id="hero-bg-tint" class="absolute inset-0 bg-[#160B0A] opacity-0 pointer-events-none transition-opacity duration-300 z-[2]"></div>
 
-        <!-- Animated SVG Grid Lines (HopShop Vector Matrix Overlay) -->
-        <svg id="hero-svg-grid" class="absolute inset-0 h-full w-full pointer-events-none opacity-0 z-10" fill="none" stroke="#F4D95B" stroke-width="1.2" preserveAspectRatio="none" viewBox="0 0 100 100">
-          <path class="blueprint-line" d="M50 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M12 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M88 0 V100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M0 50 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M0 36 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M0 64 H100" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
-          <path class="blueprint-line" d="M12 36 H88 V64 H12 Z" vector-effect="non-scaling-stroke" pathLength="1" stroke-dasharray="1" stroke-dashoffset="1"></path>
+        <!-- Three.js WebGL Interactive 3D Particle & Heat-Haze Canvas -->
+        <canvas id="se-webgl-hero" aria-hidden="true" class="absolute inset-0 w-full h-full pointer-events-none z-[4]"></canvas>
+
+        <!-- Original Himalayan Elevation & 138 BPM Acoustic Radar HUD -->
+        <svg id="hero-radar-hud" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[min(92vw,760px)] h-[min(92vw,760px)] pointer-events-none opacity-0 z-[10]" viewBox="0 0 400 400" fill="none">
+          <circle class="blueprint-line" cx="200" cy="200" r="180" stroke="#F4D95B" stroke-width="1" stroke-dasharray="6 8" pathLength="1" stroke-dashoffset="1" opacity="0.55" />
+          <circle class="blueprint-line" cx="200" cy="200" r="135" stroke="#A3281C" stroke-width="1.5" pathLength="1" stroke-dashoffset="1" opacity="0.8" />
+          <circle class="blueprint-line" cx="200" cy="200" r="88" stroke="#EDE4D0" stroke-width="1" stroke-dasharray="3 6" pathLength="1" stroke-dashoffset="1" opacity="0.45" />
+          <line class="blueprint-line" x1="200" y1="10" x2="200" y2="390" stroke="#F4D95B" stroke-width="0.8" pathLength="1" stroke-dashoffset="1" opacity="0.4" />
+          <line class="blueprint-line" x1="10" y1="200" x2="390" y2="200" stroke="#F4D95B" stroke-width="0.8" pathLength="1" stroke-dashoffset="1" opacity="0.4" />
         </svg>
 
-        <!-- Top Curated Tag Box (HopShop Brutalist Badge Layer) -->
+        <!-- Top Curated Tag Box (Social Euphoria Protocol Badge) -->
         <div id="hero-curated-box" class="relative z-30 max-w-xl w-full bg-[#1A1410]/5 border border-[#1A1410]/15 rounded-xl p-4 backdrop-blur-sm text-center">
           <div class="flex items-center justify-between font-mono text-[10px] sm:text-xs uppercase tracking-[0.2em] font-bold text-hs-ink border-b border-[#1A1410]/15 pb-2 mb-2">
             <span class="text-hs-brick font-extrabold flex items-center gap-1.5">
               <span class="w-2 h-2 rounded-full bg-hs-brick animate-ping"></span>
               SOCIAL EUPHORIA
             </span>
-            <span class="text-hs-textDim">INVITE AND ACCESS</span>
+            <span class="text-hs-textDim">DEHRADUN // DOON VALLEY</span>
           </div>
           <div class="flex items-center justify-between font-mono text-[9px] sm:text-[11px] uppercase tracking-wider text-hs-textSoft">
             <span>CURATED MOUNTAIN ROOMS</span>
@@ -486,19 +575,19 @@
           </div>
         </div>
 
-        <!-- Monumental HopShop-Style Logotype Headline (Shrinks & Scales with Scroll Scrub) -->
-        <div id="hero-title-wrap" class="relative z-20 text-center my-auto flex flex-col items-center pointer-events-none">
+        <!-- Monumental Split-Kinetic Logotype Headline -->
+        <div id="hero-title-wrap" class="relative z-20 text-center my-auto flex flex-col items-center pointer-events-none" style="transform-style: preserve-3d;">
           <h1 id="hero-main-title" class="font-chunky text-[clamp(3.8rem,14vw,11.5rem)] leading-[0.88] tracking-[-0.03em] uppercase text-hs-ink select-none drop-shadow-sm origin-center">
-            SOCIAL<br>
-            <span class="text-hs-brick">EUPHORIA</span>
+            <span id="hero-word-social" class="block will-change-transform">SOCIAL</span>
+            <span id="hero-word-euphoria" class="block text-hs-brick will-change-transform">EUPHORIA</span>
           </h1>
           <p id="hero-subtitle" class="font-mono text-xs sm:text-base font-bold tracking-[0.24em] text-hs-textSoft uppercase mt-4 max-w-lg">
             CURATING HELL TO HAVE FUN — DEHRADUN
           </p>
         </div>
 
-        <!-- HopShop Central Spec Badge Box (Revealed via Horizontal Clip-Path as you scroll) -->
-        <div id="hero-secret-box" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-15 w-[min(82vw,520px)] bg-[#1A1410] border-2 border-hs-butter p-6 rounded-card shadow-2xl opacity-0" style="clip-path: inset(0% 49% 0% 49%);">
+        <!-- Social Euphoria Central Spec Badge Box (Revealed via Horizontal Clip-Path as you scroll) -->
+        <div id="hero-secret-box" class="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-[15] w-[min(82vw,520px)] bg-[#1A1410] border-2 border-hs-butter p-6 rounded-card shadow-2xl opacity-0" style="clip-path: inset(0% 49% 0% 49%);">
           <div class="flex items-baseline justify-between gap-6 py-2 border-b border-[#EDE4D0]/20 font-mono text-xs uppercase font-bold text-[#EDE4D0]">
             <span class="text-hs-butter">SOCIAL EUPHORIA</span>
             <span>INVITE AND ACCESS</span>
@@ -662,11 +751,19 @@
         </div>
       </div>
 
+      <!-- Interactive Edition Filter Pills -->
+      <div id="editions-filter-bar" class="flex flex-wrap items-center gap-2.5 mb-10 font-mono text-[11px] font-bold uppercase tracking-wider">
+        <button onclick="filterEditions('all', this)" class="edition-filter-btn px-4 py-2 rounded-pill border-2 border-hs-ink bg-hs-ink text-[#EDE4D0] transition-all cursor-pointer">ALL EDITIONS (06)</button>
+        <button onclick="filterEditions('night', this)" class="edition-filter-btn px-4 py-2 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-brick hover:text-white transition-all cursor-pointer">NIGHT // 138 BPM</button>
+        <button onclick="filterEditions('day', this)" class="edition-filter-btn px-4 py-2 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-lagoon hover:text-white transition-all cursor-pointer">DAYLIGHT // ESTATES</button>
+        <button onclick="filterEditions('curation', this)" class="edition-filter-btn px-4 py-2 rounded-pill border-2 border-hs-ink bg-[#FFFDF7] text-hs-ink hover:bg-hs-butter transition-all cursor-pointer">CURATION</button>
+      </div>
+
       <!-- HopShop Floating Grid of 3:4 Poster Tiles with Staggered Parallax & 3D Tilt -->
       <div id="float-grid-container" class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 sm:gap-10">
 
         <!-- Card 1: Sunset Soirées Vol. III -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" onclick="openEventDetail('sunset')" data-speed="1.08">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" data-category="day" onclick="openEventDetail('sunset')" data-speed="1.08">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/sunset_soiree.jpg" alt="Sunset Soirées Vol. III" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-brick text-white shadow-sm">
@@ -695,7 +792,7 @@
         </article>
 
         <!-- Card 2: Sin City Nocturne -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" onclick="openEventDetail('sincity')" data-speed="0.95">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" data-category="night" onclick="openEventDetail('sincity')" data-speed="0.95">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/after_dark.jpg" alt="Sin City Nocturne" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-lagoon text-white shadow-sm">
@@ -724,7 +821,7 @@
         </article>
 
         <!-- Card 3: H²OLI Festival -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" onclick="openEventDetail('h2oli')" data-speed="1.12">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" data-category="day" onclick="openEventDetail('h2oli')" data-speed="1.12">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/h2oli_festival.jpg" alt="H²OLI Festival" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-butter text-hs-ink shadow-sm">
@@ -753,7 +850,7 @@
         </article>
 
         <!-- Card 4: The White Lotus Gala -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" onclick="openEventDetail('whitelotus')" data-speed="0.92">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" data-category="night" onclick="openEventDetail('whitelotus')" data-speed="0.92">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/white_lotus.jpg" alt="The White Lotus Gala" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-dusk text-white shadow-sm">
@@ -779,7 +876,7 @@
         </article>
 
         <!-- Card 5: Project X Doon Valley -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" onclick="openEventDetail('projectx')" data-speed="1.1">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-[#FFFDF7] p-4 rounded-panel border-2 border-hs-ink shadow-[0_12px_24px_-8px_rgba(26,20,16,0.18)]" data-category="night" onclick="openEventDetail('projectx')" data-speed="1.1">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/gallery_1.jpg" alt="Project X Mountain Rave" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-oxblood text-hs-butter shadow-sm">
@@ -805,7 +902,7 @@
         </article>
 
         <!-- Card 6: Abhay Rawat Curation Dossier -->
-        <article class="hs-float-tile parallax-card group cursor-pointer bg-hs-night text-white p-4 rounded-panel border-2 border-hs-brick shadow-[0_12px_24px_-8px_rgba(26,20,16,0.3)]" onclick="openEventDetail('curator')" data-speed="1.0">
+        <article class="hs-float-tile parallax-card vel-reactive group cursor-pointer bg-hs-night text-white p-4 rounded-panel border-2 border-hs-brick shadow-[0_12px_24px_-8px_rgba(26,20,16,0.3)]" data-category="curation" onclick="openEventDetail('curator')" data-speed="1.0">
           <div class="relative aspect-[3/4] w-full overflow-hidden rounded-image bg-black mb-4">
             <img src="assets/images/abhay_rawat_card.jpg" alt="Abhay Rawat" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
             <span class="absolute top-3 left-3 px-3 py-1 rounded-pill font-mono text-[10px] font-bold uppercase tracking-wider bg-hs-butter text-hs-ink shadow-sm">
@@ -1206,24 +1303,44 @@
         </div>
       </div>
 
-      <!-- Masonry Grid of 35mm Photos -->
-      <div class="grid grid-cols-2 md:grid-cols-4 gap-4 sm:gap-6">
-        <div class="group relative overflow-hidden rounded-image border-2 border-hs-ink aspect-square bg-black cursor-pointer" onclick="openLightbox('assets/images/cameraroll_1.jpg')">
-          <img src="assets/images/cameraroll_1.jpg" alt="Vault 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-white font-mono text-[8px] uppercase tracking-wider">ROLL #01</span>
+      <!-- 35mm Filmstrip Contact Sheet (Horizontal Scrub on Desktop, 2-Col Grid on Mobile) -->
+      <div class="relative rounded-panel border-2 border-hs-ink bg-[#141211] p-4 sm:p-6 shadow-[8px_8px_0px_#1A1410] overflow-hidden">
+        <div class="film-sprockets w-full mb-4 bg-[#EDE4D0]/90 rounded-sm"></div>
+
+        <div id="vault-film-track" class="grid grid-cols-2 md:flex md:flex-nowrap gap-4 sm:gap-6 will-change-transform">
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/cameraroll_1.jpg')">
+            <img src="assets/images/cameraroll_1.jpg" alt="Vault 1" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 01A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #01 // DOON</span>
+          </div>
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/afterdark_real_3.jpg')">
+            <img src="assets/images/afterdark_real_3.jpg" alt="Vault 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 02A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #02 // BUNKER</span>
+          </div>
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/sunset_real_3.jpg')">
+            <img src="assets/images/sunset_real_3.jpg" alt="Vault 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 03A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #03 // SUNSET</span>
+          </div>
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/h2oli_real_3.jpg')">
+            <img src="assets/images/h2oli_real_3.jpg" alt="Vault 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 04A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #04 // H²OLI</span>
+          </div>
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/cameraroll_3.jpg')">
+            <img src="assets/images/cameraroll_3.jpg" alt="Vault 5" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 05A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #05 // FLASH</span>
+          </div>
+          <div class="vault-frame vel-reactive md:w-[290px] md:flex-shrink-0 group relative overflow-hidden rounded-image border-2 border-hs-butter/30 aspect-[4/5] bg-black cursor-pointer" onclick="openLightbox('assets/images/gallery_1.jpg')">
+            <img src="assets/images/gallery_1.jpg" alt="Vault 6" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
+            <span class="absolute top-2 right-2 px-2 py-0.5 rounded bg-hs-brick text-white font-mono text-[8px] uppercase tracking-wider font-bold">EXP 06A</span>
+            <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/80 text-hs-butter font-mono text-[8px] uppercase tracking-wider">ROLL #06 // 138 BPM</span>
+          </div>
         </div>
-        <div class="group relative overflow-hidden rounded-image border-2 border-hs-ink aspect-square bg-black cursor-pointer" onclick="openLightbox('assets/images/afterdark_real_3.jpg')">
-          <img src="assets/images/afterdark_real_3.jpg" alt="Vault 2" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-white font-mono text-[8px] uppercase tracking-wider">ROLL #02</span>
-        </div>
-        <div class="group relative overflow-hidden rounded-image border-2 border-hs-ink aspect-square bg-black cursor-pointer" onclick="openLightbox('assets/images/sunset_real_3.jpg')">
-          <img src="assets/images/sunset_real_3.jpg" alt="Vault 3" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-white font-mono text-[8px] uppercase tracking-wider">ROLL #03</span>
-        </div>
-        <div class="group relative overflow-hidden rounded-image border-2 border-hs-ink aspect-square bg-black cursor-pointer" onclick="openLightbox('assets/images/h2oli_real_3.jpg')">
-          <img src="assets/images/h2oli_real_3.jpg" alt="Vault 4" class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500 grayscale-[0.25] group-hover:grayscale-0">
-          <span class="absolute bottom-2 left-2 px-2 py-0.5 rounded bg-black/75 text-white font-mono text-[8px] uppercase tracking-wider">ROLL #04</span>
-        </div>
+
+        <div class="film-sprockets w-full mt-4 bg-[#EDE4D0]/90 rounded-sm"></div>
       </div>
 
     </section>
@@ -1244,10 +1361,13 @@
               BACKSTAGE PASS DROP
             </h2>
           </div>
-          <div class="flex items-center gap-3">
-            <span class="hidden md:inline-block font-mono text-[10px] uppercase tracking-wider text-hs-textDim">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span class="hidden lg:inline-block font-mono text-[10px] uppercase tracking-wider text-hs-textDim">
               GRAB, DRAG &amp; TOSS ARTIFACTS
             </span>
+            <button id="zero-g-btn" onclick="toggleZeroGravity()" class="magnetic-btn inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-pill bg-hs-butter hover:bg-hs-ink hover:text-white text-hs-ink border-2 border-hs-ink font-mono text-[11px] font-bold uppercase tracking-wider shadow-sm cursor-pointer">
+              <span id="zero-g-label">ZERO-G: OFF</span>
+            </button>
             <button onclick="spawnMorePhysicsPasses()" class="magnetic-btn inline-flex items-center gap-2 px-4 py-2.5 rounded-pill bg-hs-brick hover:bg-hs-ink text-white font-mono text-[11px] font-bold uppercase tracking-wider shadow-md cursor-pointer">
               <span>DROP MORE PASSES</span>
               <i data-lucide="arrow-down" class="w-3.5 h-3.5"></i>
@@ -1548,18 +1668,18 @@
           if (preloaderFill) preloaderFill.style.clipPath = "inset(0 0% 0 0)";
           if (preloaderRect) preloaderRect.style.strokeDashoffset = "0";
 
-          // HopShop exact exit animation: fade out with cubic-bezier(0.32, 0.72, 0, 1) over 350ms
+          // Radial Iris-Wipe exit into the Hero
           gsap.to(preloaderEl, {
-            opacity: 0,
-            duration: 0.35,
-            ease: "cubic-bezier(0.32, 0.72, 0, 1)",
+            clipPath: "circle(0% at 50% 50%)",
+            duration: 0.65,
+            ease: "power3.inOut",
             onComplete: () => {
               preloaderEl.style.display = "none";
               document.documentElement.style.overflow = "";
               if (window.lenisInstance) window.lenisInstance.start();
-              // Trigger hero entrance
-              gsap.from("#hero-main-title", { scale: 0.94, opacity: 0.7, duration: 0.6, ease: "power2.out" });
-              gsap.from("#hero-curated-box", { y: -15, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.05 });
+              gsap.from("#hero-word-social", { x: -45, opacity: 0, duration: 0.7, ease: "power3.out" });
+              gsap.from("#hero-word-euphoria", { x: 45, opacity: 0, duration: 0.7, ease: "power3.out" });
+              gsap.from("#hero-curated-box", { y: -15, opacity: 0, duration: 0.5, ease: "power2.out", delay: 0.08 });
             }
           });
         }
@@ -1603,7 +1723,7 @@
     gsap.registerPlugin(ScrollTrigger);
 
 
-    // 4. MASTER 420vh HERO PINNED SCROLL TIMELINE (EXACT HOPSHOP BREAKPOINTS)
+    // 4. MASTER 420vh HERO PINNED SCROLL TIMELINE (3D SPLIT-ARC & RADAR HUD)
     const heroTl = gsap.timeline({
       scrollTrigger: {
         trigger: "#hero-track",
@@ -1621,45 +1741,64 @@
     heroTl.to("#hero-coord-pill", { opacity: 0, y: 20, duration: 0.06 }, 0.04);
     heroTl.to("#hero-subtitle", { opacity: 0, y: -20, duration: 0.08 }, 0.04);
 
-    // Phase 2: Collapse (0.04 -> 0.16) — Title collapses into a vertical laser slit
-    heroTl.to("#hero-main-title", {
-      scaleX: 0.05,
-      scaleY: 1.35,
-      duration: 0.12,
+    // Phase 2: 3D Kinetic Split (0.04 -> 0.18) — Words split horizontally with 3D perspective tilt
+    heroTl.to("#hero-word-social", {
+      x: "-24vw",
+      rotateY: 18,
+      scale: 0.72,
+      opacity: 0.22,
+      duration: 0.14,
+      ease: "power2.inOut"
+    }, 0.04);
+    heroTl.to("#hero-word-euphoria", {
+      x: "24vw",
+      rotateY: -18,
+      scale: 0.72,
+      opacity: 0.22,
+      duration: 0.14,
       ease: "power2.inOut"
     }, 0.04);
 
-    // Phase 3: Night mode dark tint (0.10 -> 0.26)
-    heroTl.to("#hero-bg-tint", { opacity: 0.95, duration: 0.16, ease: "power1.inOut" }, 0.10);
+    // Phase 3: Himalayan Night Tint (0.10 -> 0.26)
+    heroTl.to("#hero-bg-tint", { opacity: 0.94, duration: 0.16, ease: "power1.inOut" }, 0.10);
 
     // Phase 4: Center Spec Badge Box expands horizontally (0.20 -> 0.46)
     heroTl.to("#hero-secret-box", {
       opacity: 1,
       clipPath: "inset(0% 0% 0% 0%)",
-      duration: 0.26,
+      duration: 0.24,
       ease: "power2.out"
     }, 0.20);
 
-    // Phase 5: Yellow Blueprint Grid Lines draw in with vector stroke (0.28 -> 0.44)
-    heroTl.to("#hero-svg-grid", { opacity: 1, duration: 0.08 }, 0.28);
+    // Phase 5: 138 BPM Acoustic Radar HUD draws in & rotates (0.22 -> 0.46)
+    heroTl.to("#hero-radar-hud", { opacity: 1, rotation: 90, scale: 1.08, duration: 0.24, ease: "none" }, 0.22);
     heroTl.to(".blueprint-line", {
       strokeDashoffset: 0,
       stagger: 0.02,
-      duration: 0.14,
+      duration: 0.16,
       ease: "none"
-    }, 0.28);
-    // Blueprint grid fades out as rebuild approaches
-    heroTl.to("#hero-svg-grid", { opacity: 0, duration: 0.06 }, 0.44);
+    }, 0.22);
+    heroTl.to("#hero-radar-hud", { opacity: 0, scale: 1.25, duration: 0.08 }, 0.44);
 
-    // Phase 6: Rebuild (0.44 -> 0.60) — Title rebuilds back to monumental scale
-    heroTl.to("#hero-main-title", {
-      scaleX: 1.0,
-      scaleY: 1.0,
+    // Phase 6: Rejoin & Lock-In (0.44 -> 0.60) — Words snap back to monumental center
+    heroTl.to("#hero-word-social", {
+      x: "0vw",
+      rotateY: 0,
+      scale: 1,
+      opacity: 1,
+      duration: 0.16,
+      ease: "power2.inOut"
+    }, 0.44);
+    heroTl.to("#hero-word-euphoria", {
+      x: "0vw",
+      rotateY: 0,
+      scale: 1,
+      opacity: 1,
       duration: 0.16,
       ease: "power2.inOut"
     }, 0.44);
 
-    // Phase 7: Day returns (0.50 -> 0.62) — Background fades back to warm parchment
+    // Phase 7: Day returns (0.50 -> 0.62)
     heroTl.to("#hero-bg-tint", { opacity: 0, duration: 0.12, ease: "power1.out" }, 0.50);
 
     // Phase 8: Floating Objects & Flyers Continuous Flight (0.48 -> 0.96)
@@ -2525,6 +2664,7 @@
       ];
 
       let walls = [];
+      let isZeroG = false;
       function createWalls() {
         if (walls.length) Composite.remove(engine.world, walls);
         const t = 60;
@@ -2533,9 +2673,40 @@
           Bodies.rectangle(-t / 2, height / 2, t, height * 2, { isStatic: true }),
           Bodies.rectangle(width + t / 2, height / 2, t, height * 2, { isStatic: true })
         ];
+        if (isZeroG) {
+          walls.push(Bodies.rectangle(width / 2, -t / 2, width + 100, t, { isStatic: true }));
+        }
         Composite.add(engine.world, walls);
       }
       createWalls();
+
+      window.toggleZeroGravity = () => {
+        isZeroG = !isZeroG;
+        engine.gravity.y = isZeroG ? 0 : 1.05;
+        createWalls();
+        const lbl = document.getElementById('zero-g-label');
+        const btn = document.getElementById('zero-g-btn');
+        if (lbl) lbl.textContent = isZeroG ? 'ZERO-G: ON' : 'ZERO-G: OFF';
+        if (btn) {
+          btn.classList.toggle('bg-hs-ink', isZeroG);
+          btn.classList.toggle('text-hs-butter', isZeroG);
+          btn.classList.toggle('bg-hs-butter', !isZeroG);
+          btn.classList.toggle('text-hs-ink', !isZeroG);
+        }
+        if (isZeroG) {
+          dynamicBodies.forEach((b) => {
+            if (b.position.y < 30) {
+              Matter.Body.setPosition(b, { x: b.position.x, y: 40 + Math.random() * (height - 100) });
+            }
+            Matter.Body.setVelocity(b, {
+              x: (Math.random() - 0.5) * 8,
+              y: -2 - Math.random() * 4
+            });
+            Matter.Body.setAngularVelocity(b, (Math.random() - 0.5) * 0.08);
+          });
+        }
+        playTactileSfx('thud');
+      };
 
       const dynamicBodies = [];
       function dropBatch(count) {
@@ -2653,6 +2824,175 @@
         requestAnimationFrame(step);
       }
       requestAnimationFrame(step);
+    })();
+
+    // =========================================================================
+    // 22. THREE.JS WEBGL HERO PARTICLE & EMBER DISPLACEMENT FIELD
+    // =========================================================================
+    (function initThreeHero() {
+      if (typeof THREE === 'undefined' || prefersReducedMotion) return;
+      const canvas = document.getElementById('se-webgl-hero');
+      const heroTrack = document.getElementById('hero-track');
+      if (!canvas || !heroTrack) return;
+
+      const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+      renderer.setSize(window.innerWidth, window.innerHeight);
+
+      const scene = new THREE.Scene();
+      const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
+      camera.position.z = 5;
+
+      const count = 150;
+      const positions = new Float32Array(count * 3);
+      const colors = new Float32Array(count * 3);
+      const cBrick = new THREE.Color('#A3281C');
+      const cButter = new THREE.Color('#F4D95B');
+      const cInk = new THREE.Color('#1A1410');
+
+      for (let i = 0; i < count; i++) {
+        positions[i * 3] = (Math.random() - 0.5) * 12;
+        positions[i * 3 + 1] = (Math.random() - 0.5) * 8;
+        positions[i * 3 + 2] = (Math.random() - 0.5) * 4;
+        const pick = i % 3 === 0 ? cBrick : (i % 3 === 1 ? cButter : cInk);
+        colors[i * 3] = pick.r;
+        colors[i * 3 + 1] = pick.g;
+        colors[i * 3 + 2] = pick.b;
+      }
+
+      const geo = new THREE.BufferGeometry();
+      geo.setAttribute('position', new THREE.BufferAttribute(positions, 3));
+      geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+      const mat = new THREE.PointsMaterial({
+        size: 0.085,
+        vertexColors: true,
+        transparent: true,
+        opacity: 0.65
+      });
+
+      const points = new THREE.Points(geo, mat);
+      scene.add(points);
+
+      let heroInView = true;
+      const heroObs = new IntersectionObserver(([entry]) => {
+        heroInView = entry.isIntersecting;
+      }, { threshold: 0.01 });
+      heroObs.observe(heroTrack);
+
+      window.addEventListener('resize', () => {
+        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.updateProjectionMatrix();
+        renderer.setSize(window.innerWidth, window.innerHeight);
+      }, { passive: true });
+
+      function animateThree() {
+        if (heroInView && !document.hidden) {
+          points.rotation.y += 0.0012 + Math.abs(seScrollVelocity) * 0.0008;
+          points.rotation.x += (targetMouseY * 0.18 - points.rotation.x) * 0.04;
+          points.position.x += (targetMouseX * 0.45 - points.position.x) * 0.05;
+          const pulseScale = 1 + bassPulseEnergy * 0.22;
+          points.scale.set(pulseScale, pulseScale, 1);
+          renderer.render(scene, camera);
+        }
+        requestAnimationFrame(animateThree);
+      }
+      requestAnimationFrame(animateThree);
+    })();
+
+    // =========================================================================
+    // 23. CUSTOM KINETIC DUAL-RING CURSOR, EDITION FILTER & VAULT FILMSTRIP
+    // =========================================================================
+    (function initCustomCursorAndVelocity() {
+      const dot = document.getElementById('se-cursor-dot');
+      const ring = document.getElementById('se-cursor-ring');
+      if (!dot || !ring || window.matchMedia('(hover: none), (pointer: coarse)').matches) return;
+
+      let cx = -100, cy = -100, rx = -100, ry = -100;
+      window.addEventListener('pointermove', (e) => {
+        if (e.pointerType === 'touch') return;
+        cx = e.clientX;
+        cy = e.clientY;
+        dot.style.transform = `translate3d(${cx}px, ${cy}px, 0)`;
+      }, { passive: true });
+
+      function loopCursor() {
+        rx += (cx - rx) * 0.16;
+        ry += (cy - ry) * 0.16;
+        const scalePulse = 1 + bassPulseEnergy * 0.25;
+        ring.style.transform = `translate3d(${rx.toFixed(1)}px, ${ry.toFixed(1)}px, 0) scale(${scalePulse.toFixed(2)})`;
+        requestAnimationFrame(loopCursor);
+      }
+      requestAnimationFrame(loopCursor);
+
+      document.querySelectorAll('.vault-frame').forEach((el) => {
+        el.addEventListener('pointerenter', () => ring.classList.add('is-vault'));
+        el.addEventListener('pointerleave', () => ring.classList.remove('is-vault'));
+      });
+      document.querySelectorAll('a, button, .hs-float-tile').forEach((el) => {
+        el.addEventListener('pointerenter', () => ring.classList.add('is-active'));
+        el.addEventListener('pointerleave', () => ring.classList.remove('is-active'));
+      });
+
+      // Scroll-Velocity SkewY + RGB Chromatic Split on .vel-reactive cards
+      function loopVelocitySkew() {
+        if (!prefersReducedMotion) {
+          const clampedVel = Math.max(-18, Math.min(18, seScrollVelocity));
+          const skew = (clampedVel * 0.14).toFixed(2);
+          const rgbPx = Math.min(Math.abs(clampedVel) * 0.15, 2.2).toFixed(2);
+          document.querySelectorAll('.vel-reactive').forEach((card) => {
+            card.style.transform = `skewY(${skew}deg)`;
+            card.style.filter = Math.abs(clampedVel) > 1.5
+              ? `drop-shadow(${rgbPx}px 0 0 rgba(163,40,28,0.45)) drop-shadow(-${rgbPx}px 0 0 rgba(94,156,149,0.45))`
+              : 'none';
+          });
+        }
+        requestAnimationFrame(loopVelocitySkew);
+      }
+      requestAnimationFrame(loopVelocitySkew);
+    })();
+
+    // Interactive Editions Filter
+    window.filterEditions = function(category, btnEl) {
+      playTactileSfx('click');
+      document.querySelectorAll('.edition-filter-btn').forEach((b) => {
+        b.classList.remove('bg-hs-ink', 'text-[#EDE4D0]');
+        b.classList.add('bg-[#FFFDF7]', 'text-hs-ink');
+      });
+      if (btnEl) {
+        btnEl.classList.add('bg-hs-ink', 'text-[#EDE4D0]');
+        btnEl.classList.remove('bg-[#FFFDF7]', 'text-hs-ink');
+      }
+      const cards = document.querySelectorAll('#float-grid-container article');
+      cards.forEach((card) => {
+        const match = category === 'all' || card.getAttribute('data-category') === category;
+        card.style.display = match ? '' : 'none';
+        if (match && typeof gsap !== 'undefined') {
+          gsap.fromTo(card, { opacity: 0, y: 24, scale: 0.96 }, { opacity: 1, y: 0, scale: 1, duration: 0.4, ease: 'power2.out' });
+        }
+      });
+      if (typeof ScrollTrigger !== 'undefined') ScrollTrigger.refresh();
+    };
+
+    // Horizontal 35mm Filmstrip Scrub on Desktop
+    (function initVaultFilmstripScrub() {
+      if (window.innerWidth < 768 || prefersReducedMotion || typeof gsap === 'undefined') return;
+      const track = document.getElementById('vault-film-track');
+      const vaultSection = document.getElementById('vault');
+      if (!track || !vaultSection) return;
+      const scrollDist = Math.max(0, track.scrollWidth - track.parentElement.clientWidth + 48);
+      if (scrollDist > 20) {
+        gsap.to(track, {
+          x: -scrollDist,
+          ease: 'none',
+          scrollTrigger: {
+            trigger: '#vault',
+            start: 'top 25%',
+            end: 'bottom 20%',
+            scrub: 1
+          }
+        });
+      }
     })();
   </script>
 
